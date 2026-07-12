@@ -1,0 +1,57 @@
+<svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>코틀린 배열: IntArray vs Array&lt;Int&gt;, 크기 고정, val과 원소 변경, 배열 vs List</title>
+  <desc>IntArray는 자바 int[](박싱 없음), Array Int는 Integer[](박싱). 배열은 크기 고정, val이어도 원소는 바뀜. 실무는 대개 List를 쓴다.</desc>
+  <style>
+    .title{ font-size:19px; font-weight:700; }
+    .sub  { font-size:12.5px; }
+    .hdr  { font-size:14px; font-weight:700; }
+    .lbl  { font-size:12px; font-weight:600; }
+    .mono { font-family: ui-monospace,"Cascadia Code",monospace; font-size:11.5px; }
+    .monoS{ font-family: ui-monospace,"Cascadia Code",monospace; font-size:10.5px; }
+  </style>
+
+  <rect x="0" y="0" width="760" height="500" fill="#faf9f7"/>
+
+  <text x="30" y="34" class="title" fill="#1a1a1a">배열(Array) — 코틀린엔 <tspan fill="#7c5cff">배열 전용 문법이 없다</tspan></text>
+  <text x="30" y="54" class="sub" fill="#666">자바 int[] 은 언어 문법 → 코틀린은 전부 함수·클래스 (intArrayOf / arrayOf)</text>
+
+  <!-- IntArray -->
+  <rect x="30" y="72" width="340" height="128" rx="10" fill="#e9f7ef" stroke="#2e9e5b" stroke-width="1.5"/>
+  <text x="48" y="95" class="hdr" fill="#2e9e5b">intArrayOf(1,2,3) → IntArray</text>
+  <rect x="48" y="106" width="304" height="24" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="58" y="122" class="mono" fill="#1a1a1a">실제 자바 타입:  int[]</text>
+  <text x="48" y="150" class="lbl" fill="#2e9e5b">박싱 없음 → 숫자 대량처리에 빠름</text>
+  <text x="48" y="172" class="monoS" fill="#666">Long/Double/Char/BooleanArray 도 동일</text>
+  <text x="48" y="190" class="monoS" fill="#666">1  2  3   (원시값 그대로)</text>
+
+  <!-- Array<Int> -->
+  <rect x="390" y="72" width="340" height="128" rx="10" fill="#f5f0e8" stroke="#b8722c" stroke-width="1.5"/>
+  <text x="408" y="95" class="hdr" fill="#b8722c">arrayOf(1,2,3) → Array&lt;Int&gt;</text>
+  <rect x="408" y="106" width="304" height="24" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="418" y="122" class="mono" fill="#1a1a1a">실제 자바 타입:  Integer[]</text>
+  <text x="408" y="150" class="lbl" fill="#c0392b">원소마다 Integer 박싱 발생</text>
+  <text x="408" y="172" class="monoS" fill="#666">객체 참조가 필요할 때(제네릭 등) 사용</text>
+  <text x="408" y="190" class="monoS" fill="#666">[Integer:1] [Integer:2] [Integer:3]</text>
+
+  <!-- val & element mutation -->
+  <rect x="30" y="216" width="700" height="96" rx="10" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="46" y="240" class="hdr" fill="#7c5cff">배열의 성질: 크기 고정 + val이어도 원소는 바뀐다 (= 자바 final int[])</text>
+  <text x="46" y="264" class="mono" fill="#1a1a1a">val a = intArrayOf(1, 2, 3)</text>
+  <text x="46" y="284" class="mono" fill="#2e9e5b">a[0] = 99        // ✅ 원소 변경 OK (참조는 그대로)</text>
+  <text x="46" y="304" class="mono" fill="#c0392b">a = intArrayOf(4,5)  // ❌ 재할당 불가 (val) ·  add/remove 없음 (크기 고정)</text>
+
+  <!-- array vs list -->
+  <rect x="30" y="328" width="700" height="150" rx="10" fill="#fff" stroke="#ccc"/>
+  <text x="46" y="352" class="hdr" fill="#1a1a1a">배열 vs List — 실무에선 <tspan fill="#7c5cff">거의 List</tspan></text>
+
+  <text x="46" y="378" class="lbl" fill="#b8722c">배열(Array)을 쓰는 때</text>
+  <text x="60" y="398" class="monoS" fill="#666">· 원시타입 숫자 대량처리(IntArray로 박싱 회피)</text>
+  <text x="60" y="416" class="monoS" fill="#666">· 자바 API 상호운용 / vararg 스프레드( *arr )</text>
+
+  <text x="400" y="378" class="lbl" fill="#7c5cff">List를 쓰는 때 (기본값)</text>
+  <text x="414" y="398" class="monoS" fill="#666">· 크기가 바뀔 수 있다 → mutableListOf</text>
+  <text x="414" y="416" class="monoS" fill="#666">· 읽기전용 보장·풍부한 함수(filter/map 등)</text>
+
+  <text x="46" y="446" class="mono" fill="#1a1a1a">변환:  a.toList()   ·   list.toIntArray()   ·   list.toTypedArray()</text>
+  <text x="46" y="466" class="lbl" fill="#7c5cff">한 줄 결론: 특별한 이유 없으면 배열 말고 List를 써라</text>
+</svg>

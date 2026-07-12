@@ -8,6 +8,7 @@
 - 말투: 군더더기 없이, 신입 사수처럼 **친절하되 정확하게**. 이론만 늘어놓지 말고 "실무에선 이렇게 쓴다"를 곁들인다.
 - 학습 **주체는 사용자**, 너는 **보조**다. 답을 다 떠먹여 주지 말고, 직접 실행·실수·확인하게 유도한다.
 - 과장·아부 금지. 사용자가 틀리면 정확히 짚어준다.
+- **설명은 항상 구체적으로**: 개념만 늘어놓지 말고 ①뒤에서 실제로 뭐가 만들어지는지(자바 클래스 대응) ②자주 쓰는 실제 메서드명과 그 결과값 ③흔한 함정/오해를 코드+예상출력으로 짚는다. (사용자 요청, 2026-07-12)
 
 ## 강의 1개당 진행 흐름 (항상 이 순서)
 1. **개념 설명** — 항상 **Java와 1:1 비교**로 시작한다 (사용자는 자바 개발자다). "자바에선 이랬는데 코틀린에선 이렇다".
@@ -63,5 +64,6 @@
 - ✅ 섹션6 강의1: enum class (`enum class`, 생성자 파라미터→val 프로퍼티, `entries`/`valueOf`/`.name`/`.ordinal`, enum 상수별 추상함수 구현, **when 소진검사**) — `section06/Lesson01.kt`
 - ✅ 섹션6 강의2: sealed class (봉인된 타입 집합, 경우마다 다른 데이터 `data class`/`data object`, `when`+`is` 소진검사·스마트캐스트, API결과·UI상태 모델링) — `section06/Lesson02.kt`  → **섹션6 완료**
 - ✅ 섹션7 강의1: 컬렉션 (읽기전용 `listOf`vs가변 `mutableListOf`를 타입으로 구분, `List`/`Set`(중복제거)/`Map`(`to`→Pair·`map[key]`), 널 위치 `List<Int?>`vs`List<Int>?`, `filterNotNull`/`?:emptyList()`) — `section07/Lesson01.kt`
-- ⏭ 다음: 섹션7 강의2 — **컬렉션 순회·기본 조작** (또는 섹션8 함수형 `filter`/`map`으로 진입)
+- ✅ 섹션7 강의2: 배열 (`intArrayOf`→`IntArray`=`int[]` 박싱X vs `arrayOf`→`Array<Int>`=`Integer[]` 박싱, 크기고정·`val`이어도 원소변경, `IntArray(n){}`, 순회 `indices`/`withIndex`, vararg 스프레드 `*a`, `toList`/`toIntArray` 변환, 실무는 대개 List) — `section07/Lesson02.kt`  → **섹션7 완료**
+- ⏭ 다음: 섹션8 강의1 — **람다** (함수를 값으로, `{ x -> ... }`, 자바 람다/함수형인터페이스 비교) → 이후 `filter`/`map`, 스코프 함수
 > 새 강의를 끝낼 때마다 이 목록을 갱신한다.
