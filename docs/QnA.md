@@ -17,6 +17,7 @@
 - [Q11. 왜 `is Box<Int>`는 안 되고 `is Box<*>`만 되나 (타입 소거)](#q11)
 - [Q12. as 캐스트는 뭔데? (as / as? / is 스마트캐스트)](#q12)
 - [Q13. `init`/`Regex`와 `check(::repo.isInitialized){}` 한 줄 뜯어보기](#q13)
+- [Q14. 생성자 주입만 썼는데 lazy/lateinit이 왜 필요 없었나?](#q14)
 
 ---
 
@@ -326,3 +327,33 @@ val n = obj as Int        // 💥 ClassCastException (실제 String인데 Int로
 
 **왜 이렇게?** `lateinit var repo: UserStore`는 **non-null**이라 `repo == null` 비교 자체가 불가 → 초기화 여부 확인의 유일한 방법이 `::repo.isInitialized`.
 한 줄: **"repo 아직 주입 안 됐으면 즉시 명확한 예외로 실패시켜라"는 안전장치.**
+
+---
+
+<a id="q14"></a>
+## Q14. 생성자 주입만 썼는데 lazy/lateinit이 왜 필요 없었나?
+- 📅 2026-07-12 · 🔗 고급 섹션2 강의1 · 💻 `section10/InjectionStyles.kt`
+
+**질문**
+> lazy/lateinit이 없으면 어떻게 되나? 스프링에서 private final Repository로 생성자 주입만 받았고 lazy/lateinit을 쓴 적이 없다.
+
+**답변**
+**생성자 주입을 하면 lateinit이 필요 없다 — 네 방식이 정석이라 안 썼던 게 정상.**
+```kotlin
+@Service
+class OrderService(private val repository: OrderRepository) { ... }  // val, 만들 때 이미 주입
+```
+자바 `private final Repository repo + 생성자`와 동일. 객체 생성 순간 완성되니 "나중에 넣을게"(lateinit)가 낄 자리가 없음.
+
+**lateinit이 존재하는 이유 = 코틀린 null 안전성 + 필드 주입**
+- 자바 필드 주입: `@Autowired private Repository repo;` — 잠깐 null이어도 자바는 허용.
+- 코틀린 `var repo: Repository`는 non-null이라 "잠깐 null"을 금지 → 선언 즉시 값 필요.
+- 그래서 "생성자 없이 프레임워크가 나중에 주입"을 표현하려면 `lateinit` 필요.
+→ 즉 lateinit은 **비권장 필드 주입**을 위한 우회. 생성자 주입엔 불필요.
+
+**lateinit 없이 필드 주입하면?** ① 컴파일 에러 ② `Repository? = null`로 만들어 `!!`/`?.` 지옥 ③ 생성자 주입으로 전환(정답).
+
+**lateinit이 진짜 필요한 곳**: 테스트 `@BeforeEach lateinit var sut`, 안드로이드 `lateinit var binding`(생성자 못 만듦), 레거시 필드 주입.
+
+**lazy는 주입과 무관**: 비싼 계산을 처음 쓸 때까지 미루는 최적화(로거·무거운 파생값). 안 써도 그만.
+한 줄: **생성자 주입=val=완성 → lateinit 불필요. lateinit은 생성자 주입이 불가능할 때의 탈출구.**
