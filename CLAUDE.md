@@ -82,6 +82,7 @@
 - ✅ 고급 섹션1(제네릭) 강의1: 제네릭 기초 (제네릭 클래스 `class Box<T>`, 제네릭 함수 `fun <T>`·확장함수, 타입 파라미터 2개 `<A,B>`, 타입 제약 `<T:Number>`=자바 extends, Any+캐스트 위험 대비, 타입소거 `is Box<*>`) — `section09/Lesson01.kt`
 - ✅ 고급 섹션1(제네릭) 강의2: 변성 (기본=무공변 `MutableList`, 왜 막나=넣기 참사, `out T`=공변=생산자(반환만)=`List<out E>`·자바 `? extends`, `in T`=반공변=소비자(파라미터만)=자바 `? super`, PECS, declaration-site, `copy(List<out T>, MutableList<in T>)`) — `section09/Lesson02.kt`
 - ✅ 고급 섹션1(제네릭) 강의3: 마무리 (`inline`+`reified`로 타입소거 우회→`is T`/`T::class`, 표준 `filterIsInstance`, star projection `<*>`=타입 unknown·읽기Any?·쓰기막힘, `List<*>`vs`List<Any?>`) — `section09/Lesson03.kt`  → **고급 섹션1(제네릭) 완료**
-- ⏭ 다음: 고급 섹션2(지연과 위임) 강의1 — **`lazy`** (지연 초기화, `by lazy {}`, `lateinit`과 비교)
+- ✅ 고급 섹션2(지연과 위임) 강의1: 지연 초기화 (`by lazy {}`=val·처음 접근 시 계산 후 캐시·기본 스레드안전, `lateinit var`=non-null var를 외부에서 나중 대입·접근 전 예외·`::x.isInitialized`, 내가계산=lazy/남이주입=lateinit) — `section10/Lesson01.kt`
+- ⏭ 다음: 고급 섹션2 강의2 — **위임 프로퍼티 `by`** (`by lazy`의 정체=위임, 커스텀 위임, `observable`/`vetoable`, `by map`)
 
 > 새 강의를 끝낼 때마다 이 목록을 갱신한다.
