@@ -62,5 +62,6 @@
 - ✅ 섹션5 강의2: 인터페이스 (`interface`, `:`로 구현·다중구현 `,`, default 메서드 키워드없이, 추상 프로퍼티 `get()`·backing field 없음, `super<타입>.m()` 충돌해결) — `section05/Lesson02.kt`  → **섹션5 완료**
 - ✅ 섹션6 강의1: enum class (`enum class`, 생성자 파라미터→val 프로퍼티, `entries`/`valueOf`/`.name`/`.ordinal`, enum 상수별 추상함수 구현, **when 소진검사**) — `section06/Lesson01.kt`
 - ✅ 섹션6 강의2: sealed class (봉인된 타입 집합, 경우마다 다른 데이터 `data class`/`data object`, `when`+`is` 소진검사·스마트캐스트, API결과·UI상태 모델링) — `section06/Lesson02.kt`  → **섹션6 완료**
-- ⏭ 다음: 섹션7 강의1 — **컬렉션** (List/Set/Map, 가변/불변 `listOf`vs`mutableListOf`, 널가능 컬렉션)
+- ✅ 섹션7 강의1: 컬렉션 (읽기전용 `listOf`vs가변 `mutableListOf`를 타입으로 구분, `List`/`Set`(중복제거)/`Map`(`to`→Pair·`map[key]`), 널 위치 `List<Int?>`vs`List<Int>?`, `filterNotNull`/`?:emptyList()`) — `section07/Lesson01.kt`
+- ⏭ 다음: 섹션7 강의2 — **컬렉션 순회·기본 조작** (또는 섹션8 함수형 `filter`/`map`으로 진입)
 > 새 강의를 끝낼 때마다 이 목록을 갱신한다.

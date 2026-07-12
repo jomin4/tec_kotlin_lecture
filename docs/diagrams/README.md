@@ -26,6 +26,7 @@
 | [s05l02_interface.svg](s05l02_interface.svg) | interface(Java비교), default메서드, 추상프로퍼티, 다중구현 | 섹션5 강의2 |
 | [s06l01_enum.svg](s06l01_enum.svg) | enum class(Java비교), 프로퍼티/entries, when 소진검사 | 섹션6 강의1 |
 | [s06l02_sealed-class.svg](s06l02_sealed-class.svg) | sealed class(vs enum), 서로 다른 데이터 타입집합, when+is 소진검사·스마트캐스트 | 섹션6 강의2 |
+| [s07l01_collections.svg](s07l01_collections.svg) | 컬렉션: 읽기전용 vs 가변(listOf/mutableListOf), List/Set/Map, 널 위치 | 섹션7 강의1 |
 | [q03_kt-jar-pipeline.svg](q03_kt-jar-pipeline.svg) | .kt → .class → .jar → 실행 흐름 | QnA Q3 |
 | [q04_npe-safecall.svg](q04_npe-safecall.svg) | NPE: Java 죽음 vs Kotlin 안전호출 | QnA Q4 |
 | [q05_why-equals-hashcode-tostring.svg](q05_why-equals-hashcode-tostring.svg) | equals/hashCode/toString을 DTO에서 재정의하는 이유 | QnA Q5 |

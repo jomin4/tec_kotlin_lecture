@@ -1,0 +1,72 @@
+<svg viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>코틀린 컬렉션: 읽기전용 vs 가변, List/Set/Map, 널 위치</title>
+  <desc>코틀린은 읽기전용(listOf)과 가변(mutableListOf)을 타입으로 구분한다. Set은 중복 제거, Map은 to로 키-값. 널 위치에 따라 List Int? / List Int ? / 둘다가 다르다.</desc>
+  <style>
+    .title{ font-size:19px; font-weight:700; }
+    .sub  { font-size:12.5px; }
+    .hdr  { font-size:14px; font-weight:700; }
+    .lbl  { font-size:12px; font-weight:600; }
+    .mono { font-family: ui-monospace,"Cascadia Code",monospace; font-size:11.5px; }
+    .monoS{ font-family: ui-monospace,"Cascadia Code",monospace; font-size:10.5px; }
+  </style>
+
+  <rect x="0" y="0" width="760" height="520" fill="#faf9f7"/>
+
+  <text x="30" y="34" class="title" fill="#1a1a1a">코틀린 컬렉션 = <tspan fill="#7c5cff">읽기전용</tspan> vs <tspan fill="#b8722c">가변</tspan> 을 "타입으로" 구분</text>
+  <text x="30" y="54" class="sub" fill="#666">자바는 List가 무조건 가변 → 코틀린은 만들 때부터 바꿀 수 있는지가 타입에 박힌다</text>
+
+  <!-- read-only side -->
+  <rect x="30" y="72" width="340" height="118" rx="10" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="48" y="95" class="hdr" fill="#7c5cff">읽기 전용 (기본값·권장)</text>
+  <rect x="48" y="106" width="304" height="24" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="58" y="122" class="mono" fill="#1a1a1a">val a = listOf("홍길동", "김철수")</text>
+  <text x="48" y="150" class="lbl" fill="#666">타입: List&lt;String&gt;</text>
+  <text x="48" y="170" class="monoS" fill="#c0392b">a.add("이순신")   // ❌ 컴파일 에러 (add 자체가 없음)</text>
+
+  <!-- mutable side -->
+  <rect x="390" y="72" width="340" height="118" rx="10" fill="#f5f0e8" stroke="#b8722c" stroke-width="1.5"/>
+  <text x="408" y="95" class="hdr" fill="#b8722c">가변 (Mutable · 꼭 바꿀 때만)</text>
+  <rect x="408" y="106" width="304" height="24" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="418" y="122" class="mono" fill="#1a1a1a">val b = mutableListOf("홍길동")</text>
+  <text x="408" y="150" class="lbl" fill="#666">타입: MutableList&lt;String&gt;</text>
+  <text x="408" y="170" class="monoS" fill="#2e9e5b">b.add("김철수")   // ✅ 추가/삭제 가능</text>
+
+  <!-- 3 kinds -->
+  <text x="30" y="216" class="hdr" fill="#1a1a1a">3종 세트 — 만드는 법</text>
+
+  <rect x="30" y="228" width="226" height="96" rx="10" fill="#e9f7ef" stroke="#2e9e5b" stroke-width="1.5"/>
+  <text x="46" y="250" class="hdr" fill="#2e9e5b">List — 순서O 중복O</text>
+  <text x="46" y="272" class="monoS" fill="#1a1a1a">listOf(1, 2, 2, 3)</text>
+  <text x="46" y="290" class="monoS" fill="#666">mutableListOf(...)</text>
+  <text x="46" y="312" class="monoS" fill="#7c5cff">접근: list[0]</text>
+
+  <rect x="267" y="228" width="226" height="96" rx="10" fill="#e9f7ef" stroke="#2e9e5b" stroke-width="1.5"/>
+  <text x="283" y="250" class="hdr" fill="#2e9e5b">Set — 중복 자동제거</text>
+  <text x="283" y="272" class="monoS" fill="#1a1a1a">setOf(1, 2, 2, 3)</text>
+  <text x="283" y="290" class="monoS" fill="#c0392b">→ [1, 2, 3]</text>
+  <text x="283" y="312" class="monoS" fill="#7c5cff">contains / in 으로 조회</text>
+
+  <rect x="504" y="228" width="226" height="96" rx="10" fill="#e9f7ef" stroke="#2e9e5b" stroke-width="1.5"/>
+  <text x="520" y="250" class="hdr" fill="#2e9e5b">Map — 키-값</text>
+  <text x="520" y="272" class="monoS" fill="#1a1a1a">mapOf("a" to 1)</text>
+  <text x="520" y="290" class="monoS" fill="#7c5cff">to = Pair 만드는 중위함수</text>
+  <text x="520" y="312" class="monoS" fill="#7c5cff">접근: map["a"]  // 1</text>
+
+  <!-- null position -->
+  <rect x="30" y="342" width="700" height="150" rx="10" fill="#fff" stroke="#ccc"/>
+  <text x="46" y="366" class="hdr" fill="#1a1a1a">널(null)이 <tspan fill="#c0392b">어디에</tspan> 붙느냐 — 자바엔 없던 구분</text>
+
+  <text x="46" y="392" class="mono" fill="#7c5cff">List&lt;Int?&gt;</text>
+  <text x="200" y="392" class="lbl" fill="#666">원소가 null 가능 · 리스트는 있음</text>
+  <text x="560" y="392" class="monoS" fill="#666">[1, null, 3]</text>
+
+  <text x="46" y="422" class="mono" fill="#b8722c">List&lt;Int&gt;?</text>
+  <text x="200" y="422" class="lbl" fill="#666">리스트 자체가 null 가능 · 원소는 널 아님</text>
+  <text x="560" y="422" class="monoS" fill="#666">null 또는 [1, 2]</text>
+
+  <text x="46" y="452" class="mono" fill="#c0392b">List&lt;Int?&gt;?</text>
+  <text x="200" y="452" class="lbl" fill="#666">둘 다 null 가능</text>
+  <text x="560" y="452" class="monoS" fill="#666">null 또는 [1, null]</text>
+
+  <text x="46" y="480" class="lbl" fill="#7c5cff">? 의 위치를 읽어라: 꺾쇠 안 → 원소, 꺾쇠 밖 → 컬렉션 그 자체</text>
+</svg>
