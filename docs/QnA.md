@@ -15,6 +15,7 @@
 - [Q9. it은 뭐야?](#q9)
 - [Q10. 스코프 함수 5개 각각 언제 쓰나? (구체 사용법)](#q10)
 - [Q11. 왜 `is Box<Int>`는 안 되고 `is Box<*>`만 되나 (타입 소거)](#q11)
+- [Q12. as 캐스트는 뭔데? (as / as? / is 스마트캐스트)](#q12)
 
 ---
 
@@ -266,3 +267,36 @@ inline fun <reified T> Box<*>.holds(): Boolean = value is T
 Box(42).holds<Int>()    // true
 ```
 한 줄: **런타임엔 타입이 지워진다 → `is`는 `Box<*>`만, 정확한 타입 검사는 `reified`로.**
+
+---
+
+<a id="q12"></a>
+## Q12. as 캐스트는 뭔데? (as / as? / is 스마트캐스트)
+- 📅 2026-07-12 · 🔗 섹션1 강의3 · 고급 섹션1 강의1
+
+**질문**
+> as 캐스트는 뭔데?
+
+**답변**
+`as` = **강제 타입 변환**(자바 `(Type) obj`). "이 값을 저 타입으로 취급하라"고 컴파일러에 강제.
+```kotlin
+val obj: Any = "hello"
+val s = obj as String     // "hello"
+val n = obj as Int        // 💥 ClassCastException (실제 String인데 Int로 강제)
+```
+`as`는 실패 시 런타임에 죽으므로 위험 → 형제 둘로 피한다.
+
+- **`as?` 안전 캐스트**: 실패하면 예외 대신 `null`.
+  ```kotlin
+  val n: Int? = obj as? Int        // null (안 터짐)
+  val len = (obj as? String)?.length ?: 0   // 실무 패턴
+  ```
+- **`is` + 스마트캐스트** (1순위 권장): 검사만 하면 블록 안에서 자동 캐스트.
+  ```kotlin
+  if (obj is String) println(obj.length)   // as 없이 바로 .length
+  ```
+
+**선택**: 타입 확인 후 사용 → `is`+스마트캐스트 / 실패 대비 → `as?`+`?:` / 100% 확신 → `as`(신중).
+
+**제네릭 연결(함정)**: 일반 `as`는 런타임 검사하지만, 제네릭 타입 인자는 소거돼 `as Box<Int>`는 **검사조차 안 함(unchecked)** → 캐스트 줄이 아니라 값 쓸 때 뒤늦게 터진다.
+한 줄: **`as`=강제(실패=예외), `as?`=안전(실패=null), `is`=검사+자동캐스트(최선).**
