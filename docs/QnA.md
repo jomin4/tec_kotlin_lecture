@@ -13,6 +13,7 @@
 - [Q7. enum은 주로 어떤 역할로 쓰이나?](#q7)
 - [Q8. val이 뭐였지? (val인데 배열 원소가 왜 바뀌나)](#q8)
 - [Q9. it은 뭐야?](#q9)
+- [Q10. 스코프 함수 5개 각각 언제 쓰나? (구체 사용법)](#q10)
 
 ---
 
@@ -204,3 +205,31 @@ list.filter { it > 0 }             // it = 지금 처리 중인 원소 하나
 3. **함정**: 람다가 중첩되면 바깥/안쪽 `it`이 충돌(가려짐) → 각 람다에 이름을 줘라.
 
 **실무 감각**: 원소를 한 번 단순하게 쓰면 `it`, 길거나·여러 번·중첩이면 이름. 가독성 우선.
+
+---
+
+<a id="q10"></a>
+## Q10. 스코프 함수 5개 각각 언제 쓰나? (구체 사용법)
+- 📅 2026-07-12 · 🔗 섹션8 강의3 · 🖼️ `diagrams/s08l03_scope-functions.svg`
+
+**질문**
+> 5객체 사용법을 좀더 구체적으로 설명해줘
+
+**답변**
+표준 라이브러리 원형이 근거다. `block:(T)->R`이면 `it`, `block:T.()->R`이면 `this`. 반환 `R`=람다결과, 반환 `T`=객체자신.
+```kotlin
+T.let(block:(T)->R):R       // it, 결과
+T.run(block:T.()->R):R      // this, 결과
+with(x:T, block:T.()->R):R  // this(인자), 결과
+T.apply(block:T.()->Unit):T // this, 객체자신
+T.also(block:(T)->Unit):T   // it, 객체자신
+```
+
+- **apply** (this, 객체반환) — 객체 **초기화/설정**. `StringBuilder().apply{ append(..) }`, DTO·Builder·Intent 세팅. 자바 "세터 나열" 대체.
+- **let** (it, 결과) — **null 안전**(`x?.let{}` = `if(x!=null){}`)·지역 변환. 블록 안 `it`은 non-null 스마트캐스트.
+- **also** (it, 객체반환) — 체이닝 중간 **로깅·검증**(값 안 바꿈). `it`이라 바깥 this 안 가림. `.also{ require(it.size==4) }`.
+- **run** (this, 결과) — 객체 멤버로 **결과 계산**. `Rect(3,4).run{ w*h }`. apply와 모양 같고 반환만 다름(객체 vs 결과).
+- **with** (this, 결과) — run의 문법 변형(`with(obj){}`). **단, `?.` 못 붙임** → nullable이면 with 말고 `obj?.run{}`. 그래서 실무 우선순위는 run < with 낮음.
+
+**3초 판단**: 객체 그대로 받아 쓰고 싶다 → 세팅이면 `apply`, 곁다리 로깅이면 `also`. 결과가 필요하다 → null안전이면 `?.let`, 멤버로 계산이면 `run`.
+한 줄: **초기화=apply · null안전=?.let · 로깅/검증=also · 값계산=run.**
