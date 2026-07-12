@@ -32,6 +32,7 @@
 | [s08l02_collection-functions.svg](s08l02_collection-functions.svg) | 컬렉션 함수형: filter/map/forEach 파이프라인, Java Stream 비교, any/all/groupBy, asSequence(lazy) | 섹션8 강의2 |
 | [s08l03_scope-functions.svg](s08l03_scope-functions.svg) | 스코프 함수: let/run/with/apply/also, it vs this·반환값 2축 | 섹션8 강의3 |
 | [s09l01_generics.svg](s09l01_generics.svg) | (고급)제네릭 기초: 타입 파라미터, 제네릭 클래스/함수, 타입 제약, 타입소거 | 고급 섹션1 강의1 |
+| [s09l02_variance.svg](s09l02_variance.svg) | (고급)변성: 무공변 기본, out 공변(생산자)/in 반공변(소비자), 자바 PECS 대응 | 고급 섹션1 강의2 |
 | [q03_kt-jar-pipeline.svg](q03_kt-jar-pipeline.svg) | .kt → .class → .jar → 실행 흐름 | QnA Q3 |
 | [q04_npe-safecall.svg](q04_npe-safecall.svg) | NPE: Java 죽음 vs Kotlin 안전호출 | QnA Q4 |
 | [q05_why-equals-hashcode-tostring.svg](q05_why-equals-hashcode-tostring.svg) | equals/hashCode/toString을 DTO에서 재정의하는 이유 | QnA Q5 |

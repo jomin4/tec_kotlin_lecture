@@ -80,6 +80,7 @@
 
 ### 고급편 진행 상황 (section09~)
 - ✅ 고급 섹션1(제네릭) 강의1: 제네릭 기초 (제네릭 클래스 `class Box<T>`, 제네릭 함수 `fun <T>`·확장함수, 타입 파라미터 2개 `<A,B>`, 타입 제약 `<T:Number>`=자바 extends, Any+캐스트 위험 대비, 타입소거 `is Box<*>`) — `section09/Lesson01.kt`
-- ⏭ 다음: 고급 섹션1 강의2 — **변성(variance)** (`out`=공변/`in`=반공변, 왜 `List<String>`을 `List<Any>`에 못 넣나)
+- ✅ 고급 섹션1(제네릭) 강의2: 변성 (기본=무공변 `MutableList`, 왜 막나=넣기 참사, `out T`=공변=생산자(반환만)=`List<out E>`·자바 `? extends`, `in T`=반공변=소비자(파라미터만)=자바 `? super`, PECS, declaration-site, `copy(List<out T>, MutableList<in T>)`) — `section09/Lesson02.kt`
+- ⏭ 다음: 고급 섹션1 강의3 — **`reified`와 star projection 마무리** 또는 고급 섹션2(**지연과 위임** `lazy`/`by`)로 진입
 
 > 새 강의를 끝낼 때마다 이 목록을 갱신한다.
