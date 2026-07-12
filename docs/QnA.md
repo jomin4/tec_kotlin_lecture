@@ -16,6 +16,7 @@
 - [Q10. 스코프 함수 5개 각각 언제 쓰나? (구체 사용법)](#q10)
 - [Q11. 왜 `is Box<Int>`는 안 되고 `is Box<*>`만 되나 (타입 소거)](#q11)
 - [Q12. as 캐스트는 뭔데? (as / as? / is 스마트캐스트)](#q12)
+- [Q13. `init`/`Regex`와 `check(::repo.isInitialized){}` 한 줄 뜯어보기](#q13)
 
 ---
 
@@ -300,3 +301,28 @@ val n = obj as Int        // 💥 ClassCastException (실제 String인데 Int로
 
 **제네릭 연결(함정)**: 일반 `as`는 런타임 검사하지만, 제네릭 타입 인자는 소거돼 `as Box<Int>`는 **검사조차 안 함(unchecked)** → 캐스트 줄이 아니라 값 쓸 때 뒤늦게 터진다.
 한 줄: **`as`=강제(실패=예외), `as?`=안전(실패=null), `is`=검사+자동캐스트(최선).**
+
+---
+
+<a id="q13"></a>
+## Q13. `init`/`Regex`와 `check(::repo.isInitialized){}` 한 줄 뜯어보기
+- 📅 2026-07-12 · 🔗 고급 섹션2 강의1 · 섹션4 강의1(init)
+
+**질문**
+> HeavyRegex 클래스 부분과 check(::repo.isInitialized){...} 이 부분이 이해가 안 돼.
+
+**답변**
+**Part 1 — HeavyRegex** (정규식을 감싼 얇은 껍데기)
+- `class HeavyRegex(pattern: String)` : 주 생성자로 패턴 문자열 받음.
+- `init { println(...) }` : 객체 생성 순간 실행(섹션4). "지금 무거운 작업 한다"는 로그 → lazy가 언제 처음 생성되는지 보여주는 장치.
+- `private val regex = Regex(pattern)` : 표준 `Regex(...)`로 패턴을 **컴파일**해 저장(이게 비싼 작업 → 그래서 lazy로 1회만).
+- `fun matches(s) = regex.matches(s)` : 실제 검사는 regex에 위임. `regex.matches("hong@corp.io")` → 전체 일치면 true.
+- 실행 순서: 생성 시 init(로그) → regex 컴파일, 위→아래.
+
+**Part 2 — `check(::repo.isInitialized) { "..." }`**
+1. `check(조건){메시지}` : 표준 사전조건 함수. 조건이 false면 `IllegalStateException(메시지)` 던짐. 자바 `if(!조건) throw new IllegalStateException(...)`. 메시지 람다는 실패 시에만 평가. (형제 `require`=인자 검증=IllegalArgumentException, `check`=상태 검증.)
+2. `::repo` : repo 프로퍼티를 값이 아니라 "참조"로 가리킴(`::`=참조 연산자, `::triple`과 같은 계열).
+3. `.isInitialized` : lateinit 프로퍼티 참조 전용. "값이 대입됐나?"를 true/false로.
+
+**왜 이렇게?** `lateinit var repo: UserStore`는 **non-null**이라 `repo == null` 비교 자체가 불가 → 초기화 여부 확인의 유일한 방법이 `::repo.isInitialized`.
+한 줄: **"repo 아직 주입 안 됐으면 즉시 명확한 예외로 실패시켜라"는 안전장치.**
