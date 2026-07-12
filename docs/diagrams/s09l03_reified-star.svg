@@ -1,0 +1,37 @@
+<svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>코틀린 제네릭 마무리: reified로 타입소거 우회, star projection <*></title>
+  <desc>inline+reified는 호출부에 실제 타입이 박혀 is T·T::class 가능. star projection <*>은 타입을 모를 때, 읽기는 Any?로 되지만 쓰기는 막힘.</desc>
+  <style>
+    .title{ font-size:19px; font-weight:700; }
+    .sub  { font-size:12.5px; }
+    .hdr  { font-size:14px; font-weight:700; }
+    .lbl  { font-size:12px; font-weight:600; }
+    .mono { font-family: ui-monospace,"Cascadia Code",monospace; font-size:11.5px; }
+    .monoS{ font-family: ui-monospace,"Cascadia Code",monospace; font-size:10.5px; }
+  </style>
+
+  <rect x="0" y="0" width="760" height="500" fill="#faf9f7"/>
+
+  <text x="30" y="34" class="title" fill="#1a1a1a">제네릭 마무리 — <tspan fill="#7c5cff">reified</tspan> &amp; <tspan fill="#2e9e5b">star projection</tspan></text>
+  <text x="30" y="54" class="sub" fill="#666">소거를 뚫는 열쇠(reified)와, 타입을 모를 때 쓰는 표현(&lt;*&gt;)</text>
+
+  <!-- reified -->
+  <rect x="30" y="72" width="700" height="176" rx="10" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="46" y="95" class="hdr" fill="#7c5cff">reified — inline 함수에서 T를 런타임까지 살린다</text>
+  <text x="46" y="120" class="monoS" fill="#c0392b">fun &lt;T&gt; filter(l: List&lt;Any&gt;) = l.filter { it is T }    // ❌ 일반 함수 → 소거로 불가</text>
+  <text x="46" y="142" class="monoS" fill="#2e9e5b">inline fun &lt;reified T&gt; filter(l: List&lt;Any&gt;) = l.filter { it is T }   // ✅ 가능</text>
+  <text x="46" y="170" class="lbl" fill="#1a1a1a">왜 inline이어야 하나?</text>
+  <text x="46" y="190" class="monoS" fill="#666">inline = 호출부에 본문이 복사됨 → T 자리에 "실제 타입"이 박힌다 → 소거될 T가 없음</text>
+  <text x="46" y="212" class="lbl" fill="#7c5cff">되는 것: it is T · T::class · T::class.java</text>
+  <text x="46" y="232" class="monoS" fill="#666">실무: JSON 역직렬화 gson.fromJson&lt;User&gt;() · 표준 filterIsInstance&lt;String&gt;()</text>
+
+  <!-- star projection -->
+  <rect x="30" y="262" width="700" height="164" rx="10" fill="#e9f7ef" stroke="#2e9e5b" stroke-width="1.5"/>
+  <text x="46" y="285" class="hdr" fill="#2e9e5b">star projection &lt;*&gt; — "타입이 정해졌지만 뭔진 모른다" (자바 &lt;?&gt;)</text>
+  <text x="46" y="310" class="monoS" fill="#1a1a1a">val boxes: List&lt;Box&lt;*&gt;&gt; = listOf(Box(1), Box("hi"), Box(3.14))</text>
+  <text x="46" y="336" class="monoS" fill="#2e9e5b">val v = box.get()      // ✅ 읽기 OK — 단 타입은 Any? (최대한 안전하게)</text>
+  <text x="46" y="356" class="monoS" fill="#c0392b">box.set("hi")          // ❌ 쓰기 불가 — 실제 T를 몰라 뭘 넣어도 위험</text>
+  <text x="46" y="382" class="lbl" fill="#1a1a1a">헷갈림 주의</text>
+  <text x="46" y="402" class="monoS" fill="#666">List&lt;Any?&gt; = 아무거나 섞어 담는 리스트(넣기 O)</text>
+  <text x="46" y="420" class="monoS" fill="#666">List&lt;*&gt;   = 구체 타입 하나로 만들어졌는데 그게 뭔지 모름(넣기 X)</text>
+</svg>
