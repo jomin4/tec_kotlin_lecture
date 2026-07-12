@@ -1,0 +1,64 @@
+<svg viewBox="0 0 760 470" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>자바 인터페이스와 코틀린 인터페이스 비교</title>
+  <desc>구현 선언, default 메서드, override, 프로퍼티 차이를 좌우로 비교</desc>
+  <style>
+    .title  { font-size: 19px; font-weight: 700; }
+    .sub    { font-size: 12.5px; }
+    .hdr    { font-size: 15px; font-weight: 700; }
+    .lbl    { font-size: 12.5px; font-weight: 600; }
+    .mono   { font-family: ui-monospace, "Cascadia Code", monospace; font-size: 12px; }
+  </style>
+
+  <!-- 밝은 배경 (어떤 뷰어에서도 읽히게) -->
+  <rect x="0" y="0" width="760" height="470" fill="#faf9f7"/>
+
+  <text x="30" y="34" class="title" fill="#1a1a1a">인터페이스: Java <tspan fill="#666">vs</tspan> Kotlin</text>
+  <text x="30" y="54" class="sub" fill="#666">키워드는 걷어내고, 규칙은 더 빡세게</text>
+
+  <!-- Java card -->
+  <rect x="30" y="72" width="340" height="118" rx="10" fill="#f5f0e8" stroke="#b8722c" stroke-width="1.5"/>
+  <text x="48" y="98" class="hdr" fill="#b8722c">Java</text>
+  <text x="48" y="122" class="mono" fill="#1a1a1a">interface Flyable {</text>
+  <text x="62" y="140" class="mono" fill="#666">int MAX = 1000;      <tspan fill="#b8722c">// 상수만</tspan></text>
+  <text x="62" y="158" class="mono" fill="#1a1a1a">void fly();</text>
+  <text x="62" y="176" class="mono" fill="#1a1a1a"><tspan fill="#b8722c">default</tspan> String desc(){..}</text>
+
+  <!-- Kotlin card -->
+  <rect x="390" y="72" width="340" height="118" rx="10" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="408" y="98" class="hdr" fill="#7c5cff">Kotlin</text>
+  <text x="408" y="122" class="mono" fill="#1a1a1a">interface Flyable {</text>
+  <text x="422" y="140" class="mono" fill="#666">val max: Int         <tspan fill="#7c5cff">// 프로퍼티 OK</tspan></text>
+  <text x="422" y="158" class="mono" fill="#1a1a1a">fun fly()</text>
+  <text x="422" y="176" class="mono" fill="#1a1a1a">fun desc(): String = ".."</text>
+
+  <!-- comparison rows -->
+  <rect x="30" y="212" width="700" height="30" rx="6" fill="#ffffff" stroke="#ddd" stroke-width="1"/>
+  <text x="46" y="231" class="lbl" fill="#666">구현 선언</text>
+  <text x="250" y="231" class="mono" fill="#b8722c">implements</text>
+  <text x="470" y="231" class="mono" fill="#7c5cff">:  (상속과 동일)</text>
+
+  <rect x="30" y="248" width="700" height="30" rx="6" fill="#ffffff" stroke="#ddd" stroke-width="1"/>
+  <text x="46" y="267" class="lbl" fill="#666">default 메서드</text>
+  <text x="250" y="267" class="mono" fill="#b8722c">default 키워드 필요</text>
+  <text x="470" y="267" class="mono" fill="#7c5cff">키워드 없이 몸통만</text>
+
+  <rect x="30" y="284" width="700" height="30" rx="6" fill="#ffffff" stroke="#ddd" stroke-width="1"/>
+  <text x="46" y="303" class="lbl" fill="#666">override</text>
+  <text x="250" y="303" class="mono" fill="#b8722c">@Override (선택)</text>
+  <text x="470" y="303" class="mono" fill="#7c5cff">override 키워드 필수</text>
+
+  <rect x="30" y="320" width="700" height="30" rx="6" fill="#ffffff" stroke="#ddd" stroke-width="1"/>
+  <text x="46" y="339" class="lbl" fill="#666">프로퍼티</text>
+  <text x="250" y="339" class="mono" fill="#b8722c">상수(static final)만</text>
+  <text x="470" y="339" class="mono" fill="#7c5cff">추상 프로퍼티 선언 가능</text>
+
+  <rect x="30" y="356" width="700" height="30" rx="6" fill="#ffffff" stroke="#ddd" stroke-width="1"/>
+  <text x="46" y="375" class="lbl" fill="#666">다중구현 충돌</text>
+  <text x="250" y="375" class="mono" fill="#b8722c">A.super.m()</text>
+  <text x="470" y="375" class="mono" fill="#7c5cff">super&lt;A&gt;.m()</text>
+
+  <!-- footnote -->
+  <rect x="30" y="404" width="700" height="46" rx="8" fill="#ffffff" stroke="#ddd" stroke-width="1"/>
+  <text x="46" y="424" class="lbl" fill="#7c5cff">핵심 제약</text>
+  <text x="46" y="441" class="mono" fill="#666">인터페이스는 backing field(저장공간)가 없다 → 상태 저장 X, get()으로 계산하거나 자식이 override</text>
+</svg>

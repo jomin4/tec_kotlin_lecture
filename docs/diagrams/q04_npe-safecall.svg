@@ -1,0 +1,33 @@
+<svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>같은 null 상황: Java는 NPE로 죽고, Kotlin은 안전호출로 살아남는다</title>
+  <desc>Java에서 null.length는 NullPointerException으로 프로그램이 중단되지만 Kotlin의 물음표점은 null을 반환하고 계속 실행된다</desc>
+  <style>
+    .box{fill:#f5f5f4;stroke:#d6d3d1;stroke-width:1.5;}
+    .t{fill:#1c1917;font-size:15px;font-weight:700;}
+    .m{fill:#78716c;font-size:12.5px;}
+    .code{fill:#292524;font-size:13.5px;font-family:ui-monospace,monospace;}
+    .danger{fill:#dc2626;font-weight:700;}
+    .safe{fill:#16a34a;font-weight:700;}
+  </style>
+  <rect x="0" y="0" width="720" height="300" fill="#faf9f7"/>
+
+  <rect class="box" x="20" y="20" width="330" height="250" rx="10"/>
+  <text class="t" x="40" y="52">Java</text>
+  <text class="code" x="40" y="86">String name = null;</text>
+  <text class="code" x="40" y="112">name.length();</text>
+  <text class="danger" x="40" y="152" font-size="20">X</text>
+  <text class="danger" x="70" y="150">NullPointerException</text>
+  <text class="m" x="40" y="180">프로그램이 그 자리에서</text>
+  <text class="m" x="40" y="200">죽음 (crash)</text>
+  <text class="m" x="40" y="240">실행 중 갑자기 터짐.</text>
+
+  <rect class="box" x="370" y="20" width="330" height="250" rx="10"/>
+  <text class="t" x="390" y="52">Kotlin</text>
+  <text class="code" x="390" y="86">val name: String? = null</text>
+  <text class="code" x="390" y="112">name<tspan class="safe">?.</tspan>length</text>
+  <text class="safe" x="390" y="152" font-size="20">O</text>
+  <text class="safe" x="420" y="150">결과: null</text>
+  <text class="m" x="390" y="180">실행 안 하고 null 반환,</text>
+  <text class="m" x="390" y="200">프로그램 계속 살아있음</text>
+  <text class="m" x="390" y="240">"NPE 없이" = 안 죽고 넘어감.</text>
+</svg>

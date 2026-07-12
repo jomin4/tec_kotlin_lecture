@@ -1,0 +1,150 @@
+# 📚 코틀린 학습 Q&A 모음
+
+학습하며 생긴 궁금증과 답변을 차곡차곡 정리하는 문서.
+새 질문은 아래에 계속 추가된다. (최신이 아래로)
+
+## 목차
+- [Q1. Windows에서 코틀린 실습 코드를 어떻게 실행하나?](#q1)
+- [Q2. 한글 출력이 계속 깨지는 이유는?](#q2)
+- [Q3. .kt / .class / out.jar 은 각각 어떻게 작동하나?](#q3)
+- [Q4. "NPE 없이" 라는 말이 무슨 뜻인가?](#q4)
+- [Q5. equals/hashCode/toString을 자바 DTO에서 왜 짰나?](#q5)
+- [Q6. 코틀린은 왜 enum에 class를 붙였나?](#q6)
+- [Q7. enum은 주로 어떤 역할로 쓰이나?](#q7)
+
+---
+
+<a id="q1"></a>
+## Q1. Windows에서 코틀린 실습 코드를 어떻게 실행하나?
+- 📅 2026-07-08 · 🔗 섹션1 강의1
+
+**질문**
+> 실습코드 window 환경에서 어떻게 실행해?
+
+**답변**
+코틀린도 JVM 언어라 **컴파일 → 실행** 2단계다.
+1. 컴파일: `kotlinc section01\Lesson01.kt -include-runtime -d out.jar`  → `.kt`를 `.jar`로
+2. 실행: `java -jar out.jar`
+
+편하게 하려고 헬퍼 스크립트를 만들어 둠:
+- PowerShell: `.\run.ps1 section01\Lesson01.kt`
+- Git Bash: `./run.sh section01/Lesson01.kt`
+
+주의: 파일명은 **ASCII**(한글 X). 실무에선 보통 IntelliJ의 ▶ 버튼이 이 과정을 자동으로 대신해준다.
+
+---
+
+<a id="q2"></a>
+## Q2. 한글 출력이 계속 깨지는 이유는?
+- 📅 2026-07-08 · 🔗 섹션1 강의1
+
+**질문**
+> 지금 한글 텍스트는 인코딩이 계속 깨지는데?
+
+**답변**
+**출력 인코딩과 터미널 읽기 인코딩의 미스매치** 때문.
+- Java는 UTF-8 바이트로 출력하는데, 한국어 Windows 콘솔 기본 코드페이지는 **949(CP949)** 라 UTF-8을 CP949로 잘못 해석 → `肄뷀?由?` 처럼 깨짐.
+- 해결: 터미널도 UTF-8로 맞추면 됨. 터미널에 `chcp 65001` 한 줄. `run.ps1`이 이걸 자동 적용하도록 수정함.
+- 영구 설정: PowerShell 프로필에 `[Console]::OutputEncoding = [System.Text.Encoding]::UTF8` 추가하거나, Windows 설정에서 "Unicode UTF-8 사용(Beta)" 체크.
+
+---
+
+<a id="q3"></a>
+## Q3. .kt / .class / out.jar 은 각각 어떻게 작동하나?
+- 📅 2026-07-08 · 🔗 섹션1 강의1 · (IntelliJ만 쓰다 날것의 파일을 처음 봄)
+
+**질문**
+> 이 캡처한 부분에서 .jar, .kt, out.jar은 어떻게 작동하는거야? 맨날 인텔리제이에서 세팅만 해놓다가 이런 형태는 처음봐서
+
+**답변**
+흐름: `Lesson01.kt` → (kotlinc) → `Lesson01Kt.class` → (묶기) → `out.jar` → (java) → 실행
+
+- **`.kt`** = 사람이 쓰는 원본 소스 코드(텍스트). 이것만 "진짜 내 코드", 나머지는 자동 생성물.
+- **`.class`** = `kotlinc`가 컴파일한 **바이트코드**. JVM만 읽음. 파일 밖 `main()`을 코틀린이 `파일명+Kt`(→`Lesson01Kt`) 클래스로 감싼다(자바는 모든 게 클래스 안에 있어야 하므로).
+- **`.jar`** = 사실상 **zip**. 안에 `.class` + 코틀린 표준 라이브러리 + `MANIFEST.MF`(설명서). `MANIFEST.MF`가 "main()은 Lesson01Kt에 있다"고 java에게 알려줘 `java -jar out.jar`로 바로 실행됨.
+- `-include-runtime` 때문에 코틀린 런타임 전체가 들어가 크기가 5.6MB. 덕분에 코틀린 미설치 PC에서도 java만 있으면 실행.
+- **IntelliJ**는 이 3단계를 ▶ 버튼 하나로 `build/`·`out/` 숨은 폴더에서 자동 처리했을 뿐, 원리는 동일.
+- `.class`·`.jar`는 언제든 재생성 가능한 산출물 → git에선 보통 `.gitignore`로 제외.
+
+---
+
+<a id="q4"></a>
+## Q4. "NPE 없이" 라는 말이 무슨 뜻인가?
+- 📅 2026-07-08 · 🔗 섹션1 강의2
+
+**질문**
+> NPE 없이 라는 말이 어떤 말이야?
+
+**답변**
+**NPE = NullPointerException**(널 포인터 예외). 자바에서 가장 흔한 런타임 에러.
+- 원인: `null`(값 없음)인 변수에 대고 `.length()` 같은 걸 호출할 때 터짐. "없는 사람한테 키 물어보는 격".
+- 무서운 점: **컴파일은 통과하고 실행 중에 갑자기** 터져서 앱이 죽음(crash).
+
+```java
+String name = null;
+name.length();   // 💥 NPE
+```
+
+코틀린의 안전호출 `?.`는 "왼쪽이 null이면 실행하지 말고 그냥 null 반환"이라, 자바였으면 NPE로 죽을 상황을 **죽지 않고 조용히 null 반환**하며 넘어간다.
+
+```kotlin
+val name: String? = null
+name?.length   // 결과: null (프로그램 안 죽음)
+```
+
+→ **"NPE 없이"** = "NullPointerException으로 프로그램이 뻗지 않고" 라는 뜻.
+
+---
+
+<a id="q5"></a>
+## Q5. equals/hashCode/toString을 자바 DTO에서 왜 짰나?
+- 📅 2026-07-10 · 🔗 섹션4 강의2 · 🖼️ `diagrams/q05_why-equals-hashcode-tostring.svg`
+
+**질문**
+> equals(), hashCode(), toString() 이런걸 왜 짰지? 기존 자바에서? dto에서 왜?
+
+**답변**
+`Object`가 주는 기본 구현은 전부 **주소(정체성) 기준**인데, DTO는 **값을 담는 그릇**이라 **내용 기준** 동작이 필요해서 재정의했다.
+- **toString()**: 재정의 안 하면 로그에 `Point@1b6d3586`(주소)만 찍혀 값을 못 봄 → `Point(x=1, y=2)`로 만들어 디버깅.
+- **equals()**: 기본은 주소 비교라 `new Point(1,2).equals(new Point(1,2))` → false. "내용이 같으면 같다"로 재정의해야 `list.contains()`, 값 비교가 정상 작동.
+- **hashCode()**: `HashMap`/`HashSet`은 ① hashCode로 버킷 찾고 ② equals로 확정. 그래서 **equals를 고치면 hashCode도 반드시 같이** 고쳐야 함(자바 계약). 안 그러면 "넣었는데 contains가 false"인 유령 버그.
+
+DTO는 실무에서 비교(equals)·컬렉션 담기(hashCode)·로깅(toString)을 매일 하므로 세 개가 필수. → 코틀린은 **`data class`**가 이 셋(+`copy`/`componentN`)을 자동 생성해 없애줌.
+
+---
+
+<a id="q6"></a>
+## Q6. 코틀린은 왜 enum에 class를 붙였나?
+- 📅 2026-07-12 · 🔗 섹션6 강의1
+
+**질문**
+> 코틀린은 왜 enum에 class를 붙였대?
+
+**답변**
+코틀린에서 **`enum`은 독립 키워드가 아니라 `class` 앞에 붙는 "수식어(modifier)"**이기 때문. 자바는 `enum`을 `class`/`interface`와 동급인 별개의 최상위 키워드로 만들었지만, 코틀린은 특별한 종류의 클래스를 전부 `수식어 + class` 한 틀로 통일했다(`data class`, `sealed class`, `annotation class`, `inner class` … 그리고 `enum class`).
+
+두 가지 이유:
+1. **문법 일관성(직교성)**: enum 전용 문법 규칙을 새로 만드는 대신, 클래스에 수식어를 조합하는 방식. 키워드를 안 늘린다.
+2. **정직한 이름**: enum은 컴파일되면 실제로 클래스가 되고, 각 상수(`KOREA` 등)는 그 클래스의 **인스턴스(객체)**다. 그래서 enum이 생성자·프로퍼티·메서드·상수별 추상함수 구현을 가질 수 있다. 자바 `enum Baz`는 "사실 클래스"임을 숨기고, 코틀린 `enum class Baz`는 문법에서 드러낸다.
+
+한 줄: **`enum`은 `class`를 대체하는 게 아니라 꾸미는 수식어이고, enum이 원래 클래스라는 사실을 이름에 정직하게 담은 것.**
+
+---
+
+<a id="q7"></a>
+## Q7. enum은 주로 어떤 역할로 쓰이나?
+- 📅 2026-07-12 · 🔗 섹션6 강의1
+
+**질문**
+> enum은 주로 어떤 역할로 쓰이는거야?
+
+**답변**
+**미리 정해진, 유한하고, 서로 배타적인 선택지 집합**을 표현할 때 쓴다. "이 값은 이 중 하나여야만 한다"를 컴파일러가 강제하게 만드는 도구. 실무 자리:
+1. **상태/종류 표현**: `OrderStatus`(주문상태), `UserRole`(등급), `PayMethod`(결제수단), 요일·방향 등 경우의 수가 딱 정해진 것.
+2. **문자열/정수 상수의 안전한 대체**: `String status = "PAID"`는 오타(`"PAdI"`)·잘못된 값이 컴파일 통과 후 런타임 버그. enum은 후보 밖 값을 아예 못 넣게 하고 IDE 자동완성 지원.
+3. **상수에 데이터 묶기**: 각 상수에 프로퍼티·메서드 부착(예: `Planet(mass, radius)` + `gravity()`, HTTP코드+메시지).
+4. **when과 짝지어 분기**: 상태별 처리를 when으로 짜면 상태 추가 시 빠뜨린 분기를 컴파일러가 전부 잡음(소진 검사).
+
+**경계(안 쓰는 경우)**: 후보가 런타임에 정해지거나 계속 느는 값(사용자 입력 도시명 등)은 enum 아님 → String/DB. 각 경우가 서로 다른 데이터 구조를 가지면 enum 대신 **sealed class**(enum=상수 집합, sealed=타입 집합).
+
+한 줄: **"정해진 몇 개 중 하나"인 값을 문자열/정수 대신 타입으로 못 박아, 잘못된 값·빠뜨린 분기를 컴파일러가 막게 하는 도구.**

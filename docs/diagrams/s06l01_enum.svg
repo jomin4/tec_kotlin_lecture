@@ -1,0 +1,55 @@
+<svg viewBox="0 0 760 450" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>자바 enum과 코틀린 enum class 비교, when 소진검사</title>
+  <desc>선언 문법 차이와, when 표현식이 모든 enum 상수를 강제 검사하는 이점</desc>
+  <style>
+    .title { font-size: 19px; font-weight: 700; }
+    .sub   { font-size: 12.5px; }
+    .hdr   { font-size: 15px; font-weight: 700; }
+    .lbl   { font-size: 12.5px; font-weight: 600; }
+    .mono  { font-family: ui-monospace, "Cascadia Code", monospace; font-size: 12px; }
+  </style>
+
+  <rect x="0" y="0" width="760" height="450" fill="#faf9f7"/>
+
+  <text x="30" y="34" class="title" fill="#1a1a1a">enum: Java <tspan fill="#666">vs</tspan> Kotlin</text>
+  <text x="30" y="54" class="sub" fill="#666">문법은 거의 같다 · 진짜 이득은 when과의 궁합</text>
+
+  <!-- Java card -->
+  <rect x="30" y="72" width="340" height="96" rx="10" fill="#f5f0e8" stroke="#b8722c" stroke-width="1.5"/>
+  <text x="48" y="96" class="hdr" fill="#b8722c">Java</text>
+  <text x="48" y="120" class="mono" fill="#1a1a1a">enum Country {</text>
+  <text x="62" y="138" class="mono" fill="#1a1a1a">KOREA("서울");</text>
+  <text x="62" y="156" class="mono" fill="#666">String getCapital(){..}  <tspan fill="#b8722c">// getter</tspan></text>
+
+  <!-- Kotlin card -->
+  <rect x="390" y="72" width="340" height="96" rx="10" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="408" y="96" class="hdr" fill="#7c5cff">Kotlin</text>
+  <text x="408" y="120" class="mono" fill="#1a1a1a">enum <tspan fill="#7c5cff">class</tspan> Country(</text>
+  <text x="422" y="138" class="mono" fill="#666">val capital: String) {  <tspan fill="#7c5cff">// 프로퍼티</tspan></text>
+  <text x="422" y="156" class="mono" fill="#1a1a1a">KOREA("서울");</text>
+
+  <!-- rows -->
+  <rect x="30" y="188" width="700" height="28" rx="6" fill="#fff" stroke="#ddd" stroke-width="1"/>
+  <text x="46" y="206" class="lbl" fill="#666">필드 접근</text>
+  <text x="250" y="206" class="mono" fill="#b8722c">c.getCapital()</text>
+  <text x="470" y="206" class="mono" fill="#7c5cff">c.capital</text>
+
+  <rect x="30" y="222" width="700" height="28" rx="6" fill="#fff" stroke="#ddd" stroke-width="1"/>
+  <text x="46" y="240" class="lbl" fill="#666">전체 목록</text>
+  <text x="250" y="240" class="mono" fill="#b8722c">values()</text>
+  <text x="470" y="240" class="mono" fill="#7c5cff">entries  (또는 values())</text>
+
+  <rect x="30" y="256" width="700" height="28" rx="6" fill="#fff" stroke="#ddd" stroke-width="1"/>
+  <text x="46" y="274" class="lbl" fill="#666">이름 / 순서</text>
+  <text x="250" y="274" class="mono" fill="#b8722c">name() / ordinal()</text>
+  <text x="470" y="274" class="mono" fill="#7c5cff">name / ordinal</text>
+
+  <!-- when highlight -->
+  <rect x="30" y="298" width="700" height="128" rx="10" fill="#e9f7ef" stroke="#2e9e5b" stroke-width="1.5"/>
+  <text x="46" y="322" class="hdr" fill="#1a1a1a">when 소진 검사 (exhaustive)</text>
+  <text x="46" y="345" class="mono" fill="#1a1a1a">val cap = when (c) {</text>
+  <text x="60" y="363" class="mono" fill="#666">KOREA -> "서울"; JAPAN -> "도쿄"; USA -> "워싱턴"</text>
+  <text x="46" y="381" class="mono" fill="#1a1a1a">}   <tspan fill="#666">// 모든 상수 다룸 → else 불필요</tspan></text>
+  <text x="46" y="405" class="lbl" fill="#1a1a1a">enum에 상수 추가 → 안 다룬 when은 <tspan fill="#7c5cff">컴파일 에러</tspan>로 잡힘</text>
+  <text x="46" y="421" class="mono" fill="#666">자바 switch: default 빼먹어도 조용히 통과 → 런타임 버그</text>
+</svg>

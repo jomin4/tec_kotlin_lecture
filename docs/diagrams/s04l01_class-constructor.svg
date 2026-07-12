@@ -1,0 +1,50 @@
+<svg viewBox="0 0 760 490" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>코틀린 클래스: 주 생성자와 프로퍼티로 보일러플레이트를 없앤다</title>
+  <desc>Java는 필드·생성자·getter·setter를 다 써야 하지만 Kotlin은 class Person(val name, var age) 한 줄로 전부 대체한다. init 블록과 커스텀 getter도 지원</desc>
+  <style>
+    .box{fill:#f5f5f4;stroke:#d6d3d1;stroke-width:1.5;}
+    .t{fill:#1c1917;font-size:14.5px;font-weight:700;}
+    .m{fill:#78716c;font-size:11.5px;}
+    .code{fill:#292524;font-size:12.5px;font-family:ui-monospace,monospace;}
+    .kt{fill:#7c3aed;font-weight:700;}
+    .j{fill:#2563eb;font-weight:700;}
+    .safe{fill:#16a34a;font-weight:700;}
+  </style>
+  <rect x="0" y="0" width="760" height="490" fill="#faf9f7"/>
+
+  <rect class="box" x="20" y="20" width="350" height="200" rx="10"/>
+  <text class="t j" x="38" y="46">Java — 30줄+</text>
+  <text class="code" x="38" y="72">class Person {</text>
+  <text class="code" x="38" y="94">  private String name;</text>
+  <text class="code" x="38" y="116">  private int age;</text>
+  <text class="code" x="38" y="138">  Person(String n, int a){..}</text>
+  <text class="code" x="38" y="160">  String getName(){..}</text>
+  <text class="code" x="38" y="182">  void setAge(int a){..}</text>
+  <text class="code" x="38" y="204">  ... }  // 지겨운 반복</text>
+
+  <rect class="box" x="390" y="20" width="350" height="200" rx="10"/>
+  <text class="t kt" x="408" y="46">Kotlin — 1줄</text>
+  <text class="code" x="408" y="80"><tspan class="kt">class</tspan> Person(</text>
+  <text class="code" x="408" y="104">  <tspan class="kt">val</tspan> name: String,</text>
+  <text class="code" x="408" y="128">  <tspan class="kt">var</tspan> age: Int</text>
+  <text class="code" x="408" y="152">)</text>
+  <text class="m safe" x="408" y="182">필드+생성자+getter/setter</text>
+  <text class="m safe" x="408" y="200">전부 포함! (주 생성자)</text>
+
+  <rect class="box" x="20" y="240" width="720" height="80" rx="10"/>
+  <text class="t" x="38" y="266">주 생성자 안의 val / var</text>
+  <text class="code" x="38" y="298"><tspan class="kt">val</tspan> name  →  읽기전용 프로퍼티 (getter만)      <tspan class="kt">var</tspan> age  →  읽기/쓰기 (getter+setter)</text>
+
+  <rect class="box" x="20" y="335" width="350" height="80" rx="10"/>
+  <text class="t" x="38" y="361">프로퍼티 접근</text>
+  <text class="code" x="38" y="391">person.age = 30   // setter 자동호출</text>
+  <text class="m" x="38" y="410">Java의 getAge()/setAge() 없이</text>
+
+  <rect class="box" x="390" y="335" width="350" height="80" rx="10"/>
+  <text class="t" x="408" y="361">init 블록 · 커스텀 getter</text>
+  <text class="code" x="408" y="391"><tspan class="kt">init</tspan> { require(age >= 0) }</text>
+  <text class="code" x="408" y="410"><tspan class="kt">val</tspan> isAdult <tspan class="kt">get()</tspan> = age >= 20</text>
+
+  <rect class="box" x="20" y="430" width="720" height="45" rx="10"/>
+  <text class="m" x="38" y="458">init = 생성 시점 실행(검증 등) · 커스텀 getter = 저장 대신 매번 계산해서 반환</text>
+</svg>

@@ -1,0 +1,53 @@
+<svg viewBox="0 0 760 470" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>enum과 sealed class 비교, when 소진검사와 스마트캐스트</title>
+  <desc>enum은 동일 구조 상수 집합, sealed는 서로 다른 데이터의 타입 집합. when에서 is로 스마트캐스트</desc>
+  <style>
+    .title{ font-size:19px; font-weight:700; }
+    .sub  { font-size:12.5px; }
+    .hdr  { font-size:14px; font-weight:700; }
+    .lbl  { font-size:12px; font-weight:600; }
+    .mono { font-family: ui-monospace,"Cascadia Code",monospace; font-size:11.5px; }
+  </style>
+
+  <rect x="0" y="0" width="760" height="470" fill="#faf9f7"/>
+
+  <text x="30" y="34" class="title" fill="#1a1a1a">sealed class = 서로 다른 데이터를 가진 <tspan fill="#7c5cff">타입 집합</tspan></text>
+  <text x="30" y="54" class="sub" fill="#666">enum이 "상수 집합"이라면, sealed는 "봉인된 타입 집합"</text>
+
+  <!-- enum side -->
+  <rect x="30" y="72" width="340" height="150" rx="10" fill="#f5f0e8" stroke="#b8722c" stroke-width="1.5"/>
+  <text x="48" y="95" class="hdr" fill="#b8722c">enum class Country</text>
+  <text x="48" y="116" class="lbl" fill="#666">모든 상수가 같은 구조 (capital, code)</text>
+  <rect x="48" y="128" width="130" height="26" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="60" y="145" class="mono" fill="#1a1a1a">KOREA(서울,KR)</text>
+  <rect x="188" y="128" width="130" height="26" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="200" y="145" class="mono" fill="#1a1a1a">JAPAN(도쿄,JP)</text>
+  <text x="48" y="180" class="lbl" fill="#b8722c">→ 값 하나 = 인스턴스 하나</text>
+  <text x="48" y="200" class="lbl" fill="#666">요일 · 등급 · 결제수단 같은 고정 상수</text>
+
+  <!-- sealed side -->
+  <rect x="390" y="72" width="340" height="150" rx="10" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="408" y="95" class="hdr" fill="#7c5cff">sealed class Result</text>
+  <text x="408" y="116" class="lbl" fill="#666">경우마다 데이터 구조가 다름</text>
+  <rect x="408" y="128" width="304" height="24" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="418" y="144" class="mono" fill="#1a1a1a">Success(val data: String)</text>
+  <rect x="408" y="156" width="304" height="24" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="418" y="172" class="mono" fill="#1a1a1a">Failure(val message: String, code: Int)</text>
+  <rect x="408" y="184" width="304" height="24" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="418" y="200" class="mono" fill="#1a1a1a">object Loading      // 데이터 없음</text>
+
+  <!-- when block -->
+  <rect x="30" y="240" width="700" height="150" rx="10" fill="#e9f7ef" stroke="#2e9e5b" stroke-width="1.5"/>
+  <text x="46" y="264" class="hdr" fill="#1a1a1a">when + is → 소진검사 &amp; 스마트캐스트</text>
+  <text x="46" y="288" class="mono" fill="#1a1a1a">val msg = when (result) {</text>
+  <text x="60" y="308" class="mono" fill="#666">is Result.Success -> result.data          <tspan fill="#7c5cff">// String으로 자동 캐스트</tspan></text>
+  <text x="60" y="326" class="mono" fill="#666">is Result.Failure -> "${result.code}: ${result.message}"</text>
+  <text x="60" y="344" class="mono" fill="#666">Result.Loading    -> "로딩중"</text>
+  <text x="46" y="364" class="mono" fill="#1a1a1a">}   <tspan fill="#666">// 모든 하위타입 처리 → else 불필요</tspan></text>
+  <text x="46" y="383" class="lbl" fill="#7c5cff">새 하위타입 추가 → 빠뜨린 when이 컴파일 에러</text>
+
+  <!-- footnote -->
+  <rect x="30" y="404" width="700" height="46" rx="8" fill="#fff" stroke="#ccc"/>
+  <text x="46" y="424" class="lbl" fill="#7c5cff">봉인(sealed)의 뜻</text>
+  <text x="46" y="441" class="mono" fill="#666">하위 타입은 같은 패키지/모듈 안으로 제한 → 컴파일러가 "전부 다 안다" → 소진검사 가능</text>
+</svg>

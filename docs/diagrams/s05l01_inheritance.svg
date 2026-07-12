@@ -1,0 +1,43 @@
+<svg viewBox="0 0 760 490" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>코틀린 상속: 기본 final, open/override 필수, 추상클래스</title>
+  <desc>자바는 클래스가 기본 상속가능이지만 코틀린은 기본 final이라 open을 붙여야 상속된다. override는 필수 키워드이고 추상 멤버는 자동 open이다</desc>
+  <style>
+    .box{fill:#f5f5f4;stroke:#d6d3d1;stroke-width:1.5;}
+    .t{fill:#1c1917;font-size:14.5px;font-weight:700;}
+    .m{fill:#78716c;font-size:11.5px;}
+    .code{fill:#292524;font-size:12.5px;font-family:ui-monospace,monospace;}
+    .kt{fill:#7c3aed;font-weight:700;}
+    .j{fill:#2563eb;font-weight:700;}
+    .danger{fill:#dc2626;font-weight:700;}
+    .safe{fill:#16a34a;font-weight:700;}
+  </style>
+  <rect x="0" y="0" width="760" height="490" fill="#faf9f7"/>
+
+  <rect class="box" x="20" y="20" width="350" height="150" rx="10"/>
+  <text class="t j" x="38" y="46">Java — 기본 상속 가능</text>
+  <text class="code" x="38" y="76">class Animal { }</text>
+  <text class="code" x="38" y="100">class Dog extends Animal</text>
+  <text class="safe" x="38" y="122">→ 그냥 됨</text>
+  <text class="m" x="38" y="150">막으려면 final을 명시</text>
+
+  <rect class="box" x="390" y="20" width="350" height="150" rx="10"/>
+  <text class="t kt" x="408" y="46">Kotlin — 기본 final</text>
+  <text class="code" x="408" y="76">class Animal        <tspan class="danger">// final</tspan></text>
+  <text class="code" x="408" y="100">class Dog : Animal()  <tspan class="danger">X</tspan></text>
+  <text class="code safe" x="408" y="124"><tspan class="kt">open</tspan> class Animal  →  <tspan class="safe">OK</tspan></text>
+  <text class="m" x="408" y="150">상속 허용하려면 open 명시</text>
+
+  <rect class="box" x="20" y="185" width="720" height="120" rx="10"/>
+  <text class="t" x="38" y="211">override는 '필수' 키워드 (자바 @Override는 선택이었음)</text>
+  <text class="code" x="38" y="243">부모: <tspan class="kt">open fun</tspan> sound() = "..."      // open 있어야 재정의 허용</text>
+  <text class="code" x="38" y="271">자식: <tspan class="kt">override fun</tspan> sound() = "멍멍"   // override 필수</text>
+  <text class="m" x="38" y="296">상속 표기: extends → :(콜론)   ·   부모 생성자: : Animal() 괄호로 호출</text>
+
+  <rect class="box" x="20" y="320" width="720" height="160" rx="10"/>
+  <text class="t" x="38" y="346">추상 클래스 (abstract) — 자바와 거의 동일</text>
+  <text class="code" x="38" y="378"><tspan class="kt">abstract class</tspan> Animal(<tspan class="kt">val</tspan> name: String) {</text>
+  <text class="code" x="38" y="404">    <tspan class="kt">abstract fun</tspan> sound(): String    // 몸통 없음 → 자식이 반드시 구현</text>
+  <text class="code" x="38" y="430">    <tspan class="kt">fun</tspan> breathe() = "$name 숨쉼"      // 일반 함수는 그대로 물려줌</text>
+  <text class="code" x="38" y="456">}</text>
+  <text class="m safe" x="38" y="475">abstract 멤버는 자동 open → 자식이 override로 구현</text>
+</svg>

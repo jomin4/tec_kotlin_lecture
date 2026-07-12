@@ -1,0 +1,55 @@
+<svg viewBox="0 0 760 470" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>코틀린 타입 다루기: 명시적 형변환, is/as/스마트캐스트, Any/Unit/Nothing</title>
+  <desc>Java의 암시적 형변환과 달리 Kotlin은 toLong 등 명시적 변환이 필요하고, is로 확인하면 스마트캐스트가 적용된다</desc>
+  <style>
+    .box{fill:#f5f5f4;stroke:#d6d3d1;stroke-width:1.5;}
+    .t{fill:#1c1917;font-size:14.5px;font-weight:700;}
+    .m{fill:#78716c;font-size:11.5px;}
+    .code{fill:#292524;font-size:12.5px;font-family:ui-monospace,monospace;}
+    .kt{fill:#7c3aed;font-weight:700;}
+    .safe{fill:#16a34a;font-weight:700;}
+    .danger{fill:#dc2626;font-weight:700;}
+  </style>
+  <rect x="0" y="0" width="760" height="470" fill="#faf9f7"/>
+
+  <rect class="box" x="20" y="20" width="350" height="130" rx="10"/>
+  <text class="t" x="38" y="46">① 형변환: 자동 변환 없음</text>
+  <text class="code" x="38" y="74">Java:  long l = i;        <tspan class="safe">자동 OK</tspan></text>
+  <text class="code" x="38" y="98">Kotlin: val l: Long = i   <tspan class="danger">에러!</tspan></text>
+  <text class="code" x="38" y="122">        val l = i.<tspan class="kt">toLong()</tspan>   <tspan class="safe">OK</tspan></text>
+  <text class="m" x="38" y="142">→ .toInt() .toDouble() 처럼 명시적으로</text>
+
+  <rect class="box" x="390" y="20" width="350" height="130" rx="10"/>
+  <text class="t" x="408" y="46">② 타입 확인·캐스팅</text>
+  <text class="code" x="408" y="74"><tspan class="kt">is</tspan>  = instanceof (타입 확인)</text>
+  <text class="code" x="408" y="98"><tspan class="kt">as</tspan>  = (String)obj (강제 캐스팅)</text>
+  <text class="code" x="408" y="122"><tspan class="kt">as?</tspan> = 안전 캐스팅 (실패시 <tspan class="safe">null</tspan>)</text>
+  <text class="m" x="408" y="142">→ as는 실패시 예외, as?는 null 반환</text>
+
+  <rect class="box" x="20" y="170" width="720" height="130" rx="10"/>
+  <text class="t" x="38" y="196">③ 스마트 캐스트 — is로 확인하면 그 블록 안에선 자동 캐스팅</text>
+  <text class="code" x="38" y="228">Java:   if (obj instanceof String) { String s = (String)obj; s.length(); }</text>
+  <text class="code" x="38" y="256">Kotlin: <tspan class="kt">if</tspan> (obj <tspan class="kt">is</tspan> String) { obj.length }   // 캐스팅 생략! obj가 이미 String</text>
+  <text class="m" x="38" y="284">→ 컴파일러가 "이 블록에선 String이 확실"하다고 알아서 캐스팅해줌</text>
+
+  <rect class="box" x="20" y="320" width="230" height="130" rx="10"/>
+  <text class="t kt" x="38" y="348">Any</text>
+  <text class="m" x="38" y="372">= Java의 Object</text>
+  <text class="m" x="38" y="392">모든 타입의</text>
+  <text class="m" x="38" y="410">최상위 부모</text>
+  <text class="code" x="38" y="436">val x: Any = 1</text>
+
+  <rect class="box" x="265" y="320" width="230" height="130" rx="10"/>
+  <text class="t kt" x="283" y="348">Unit</text>
+  <text class="m" x="283" y="372">= Java의 void</text>
+  <text class="m" x="283" y="392">반환값 없음.</text>
+  <text class="m" x="283" y="410">(단 진짜 타입임)</text>
+  <text class="code" x="283" y="436">fun f(): Unit {}</text>
+
+  <rect class="box" x="510" y="320" width="230" height="130" rx="10"/>
+  <text class="t kt" x="528" y="348">Nothing</text>
+  <text class="m" x="528" y="372">자바에 없는 개념</text>
+  <text class="m" x="528" y="392">절대 정상 반환 안 됨</text>
+  <text class="m" x="528" y="410">(항상 예외/무한루프)</text>
+  <text class="code" x="528" y="436">throw ... 전용</text>
+</svg>

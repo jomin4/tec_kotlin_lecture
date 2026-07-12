@@ -1,0 +1,48 @@
+<svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>equals/hashCode/toString을 DTO에서 재정의하는 이유</title>
+  <desc>기본 Object는 주소 기준이라 DTO의 값 기준 동작(디버깅 출력, 내용 비교, 해시 자료구조 검색)이 깨진다. 세 메서드를 재정의해야 정상 작동한다</desc>
+  <style>
+    .box{fill:#f5f5f4;stroke:#d6d3d1;stroke-width:1.5;}
+    .t{fill:#1c1917;font-size:14.5px;font-weight:700;}
+    .m{fill:#78716c;font-size:11px;}
+    .code{fill:#292524;font-size:11.5px;font-family:ui-monospace,monospace;}
+    .danger{fill:#dc2626;font-weight:700;}
+    .safe{fill:#16a34a;font-weight:700;}
+    .kt{fill:#7c3aed;font-weight:700;}
+  </style>
+  <rect x="0" y="0" width="760" height="400" fill="#faf9f7"/>
+  <text class="t" x="20" y="30" font-size="16">기본 Object는 '주소' 기준 → DTO는 '값' 기준이 필요 → 그래서 재정의</text>
+
+  <rect class="box" x="20" y="50" width="230" height="150" rx="10"/>
+  <text class="t kt" x="38" y="78">toString()</text>
+  <text class="m" x="38" y="100">용도: 디버깅·로깅</text>
+  <text class="code danger" x="38" y="128">기본: Point@1b6d35</text>
+  <text class="m" x="38" y="148">값이 안 보임</text>
+  <text class="code safe" x="38" y="176">재정의: Point(x=1, y=2)</text>
+  <text class="m" x="38" y="194">한눈에 내용 확인</text>
+
+  <rect class="box" x="265" y="50" width="230" height="150" rx="10"/>
+  <text class="t kt" x="283" y="78">equals()</text>
+  <text class="m" x="283" y="100">용도: 내용이 같은가?</text>
+  <text class="code danger" x="283" y="128">기본: (1,2)==(1,2)</text>
+  <text class="danger" x="283" y="148">→ false (주소 비교)</text>
+  <text class="code safe" x="283" y="176">재정의: x,y 같으면</text>
+  <text class="safe" x="283" y="194">→ true (값 비교)</text>
+
+  <rect class="box" x="510" y="50" width="230" height="150" rx="10"/>
+  <text class="t kt" x="528" y="78">hashCode()</text>
+  <text class="m" x="528" y="100">용도: HashMap/Set 검색</text>
+  <text class="code danger" x="528" y="128">기본: set.contains</text>
+  <text class="danger" x="528" y="148">→ 넣어도 못 찾음</text>
+  <text class="code safe" x="528" y="176">재정의: 값으로 버킷</text>
+  <text class="safe" x="528" y="194">→ 정상 검색</text>
+
+  <rect class="box" x="20" y="220" width="720" height="80" rx="10"/>
+  <text class="t" x="38" y="248">equals ↔ hashCode 는 '한 쌍' (자바의 계약)</text>
+  <text class="m" x="38" y="274">해시 자료구조는 ① hashCode로 버킷 찾고 → ② equals로 확정. 그래서 equals 고치면</text>
+  <text class="m" x="38" y="292">hashCode도 반드시 같이 고쳐야 함. 안 그러면 "넣었는데 없다"는 유령 버그 발생.</text>
+
+  <rect class="box" x="20" y="315" width="720" height="65" rx="10"/>
+  <text class="t safe" x="38" y="343">코틀린 결론</text>
+  <text class="code" x="38" y="368"><tspan class="kt">data class</tspan> Point(<tspan class="kt">val</tspan> x: Int, <tspan class="kt">val</tspan> y: Int)   →  이 세 개(+copy)를 컴파일러가 자동 생성</text>
+</svg>

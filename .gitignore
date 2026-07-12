@@ -1,0 +1,15 @@
+# 컴파일 산출물 (kotlinc -include-runtime -d 결과물) — 소스 아님
+*.jar
+*.class
+out/
+
+# OS / 에디터
+.DS_Store
+Thumbs.db
+.idea/
+*.iml
+.vscode/
+
+# 임시
+*.log
+*.tmp

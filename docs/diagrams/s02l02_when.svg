@@ -1,0 +1,43 @@
+<svg viewBox="0 0 760 470" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>코틀린 when: 자바 switch의 강화판</title>
+  <desc>Java switch는 break 강제, 상수만, 값 반환 불가인 반면 Kotlin when은 break 불필요, 표현식, 범위/타입/조건 분기가 모두 가능</desc>
+  <style>
+    .box{fill:#f5f5f4;stroke:#d6d3d1;stroke-width:1.5;}
+    .t{fill:#1c1917;font-size:14.5px;font-weight:700;}
+    .m{fill:#78716c;font-size:11.5px;}
+    .code{fill:#292524;font-size:12.5px;font-family:ui-monospace,monospace;}
+    .kt{fill:#7c3aed;font-weight:700;}
+    .j{fill:#2563eb;font-weight:700;}
+    .safe{fill:#16a34a;font-weight:700;}
+    .danger{fill:#dc2626;font-weight:700;}
+  </style>
+  <rect x="0" y="0" width="760" height="470" fill="#faf9f7"/>
+
+  <rect class="box" x="20" y="20" width="350" height="150" rx="10"/>
+  <text class="t j" x="38" y="46">Java switch</text>
+  <text class="code" x="38" y="74">switch (day) {</text>
+  <text class="code" x="38" y="96">  case 1: case 2:</text>
+  <text class="code" x="38" y="118">    ... <tspan class="danger">break;</tspan>  // 필수!</text>
+  <text class="code" x="38" y="140">  default: ...</text>
+  <text class="code" x="38" y="162">}  // 값 반환 못함</text>
+
+  <rect class="box" x="390" y="20" width="350" height="150" rx="10"/>
+  <text class="t kt" x="408" y="46">Kotlin when</text>
+  <text class="code" x="408" y="74"><tspan class="kt">val</tspan> type = <tspan class="kt">when</tspan> (day) {</text>
+  <text class="code" x="408" y="96">  1, 2 -> "주중"</text>
+  <text class="code" x="408" y="118">  6, 7 -> "주말"   <tspan class="safe">// break X</tspan></text>
+  <text class="code" x="408" y="140">  <tspan class="kt">else</tspan> -> "몰라"</text>
+  <text class="code" x="408" y="162">}  <tspan class="safe">// 값 반환 O (표현식)</tspan></text>
+
+  <rect class="box" x="20" y="190" width="720" height="150" rx="10"/>
+  <text class="t" x="38" y="216">when의 분기 조건엔 '뭐든' 올 수 있다</text>
+  <text class="code" x="38" y="248">1, 2, 3 -> ...          // 여러 값 (콤마)</text>
+  <text class="code" x="38" y="274"><tspan class="kt">in</tspan> 1..9 -> "한 자리"    // 범위 (switch는 불가!)</text>
+  <text class="code" x="38" y="300"><tspan class="kt">is</tspan> String -> ...        // 타입 (switch는 불가!)</text>
+  <text class="code" x="38" y="326">x > 100 -> ...          // 임의 조건 (switch는 불가!)</text>
+
+  <rect class="box" x="20" y="360" width="720" height="90" rx="10"/>
+  <text class="t" x="38" y="386">인자 없는 when — if/else if 사슬을 더 깔끔하게</text>
+  <text class="code" x="38" y="416"><tspan class="kt">when</tspan> {  score >= 90 -> "A";  score >= 80 -> "B";  <tspan class="kt">else</tspan> -> "F"  }</text>
+  <text class="m" x="38" y="438">→ when 옆 괄호를 비우면 각 분기에 boolean 조건을 직접 쓸 수 있다</text>
+</svg>
