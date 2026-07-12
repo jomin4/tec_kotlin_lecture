@@ -35,6 +35,7 @@
 | [s09l02_variance.svg](s09l02_variance.svg) | (고급)변성: 무공변 기본, out 공변(생산자)/in 반공변(소비자), 자바 PECS 대응 | 고급 섹션1 강의2 |
 | [s09l03_reified-star.svg](s09l03_reified-star.svg) | (고급)제네릭 마무리: reified로 소거 우회, star projection `<*>` | 고급 섹션1 강의3 |
 | [s10l01_lazy.svg](s10l01_lazy.svg) | (고급)지연 초기화: by lazy(처음 접근 시 계산·캐시), lateinit(나중 대입) | 고급 섹션2 강의1 |
+| [s10l01b_lazy-value-flow.svg](s10l01b_lazy-value-flow.svg) | (고급)lazy/lateinit 실행 타임라인 + signup 값 처리 파이프라인 | 고급 섹션2 강의1 보충 |
 | [q03_kt-jar-pipeline.svg](q03_kt-jar-pipeline.svg) | .kt → .class → .jar → 실행 흐름 | QnA Q3 |
 | [q04_npe-safecall.svg](q04_npe-safecall.svg) | NPE: Java 죽음 vs Kotlin 안전호출 | QnA Q4 |
 | [q05_why-equals-hashcode-tostring.svg](q05_why-equals-hashcode-tostring.svg) | equals/hashCode/toString을 DTO에서 재정의하는 이유 | QnA Q5 |

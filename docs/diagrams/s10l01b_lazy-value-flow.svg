@@ -1,0 +1,110 @@
+<svg viewBox="0 0 820 660" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>lazy/lateinit 실행 타임라인: 값이 들어와 상태가 바뀌고 처리되는 흐름</title>
+  <desc>SignupService 실행을 단계별로 추적. emailChecker(lazy)는 첫 signup에서 최초 생성 후 재사용, repo(lateinit)는 wire에서 주입. signup 내부 값 처리 파이프라인도 표시.</desc>
+  <style>
+    .title{ font-size:19px; font-weight:700; }
+    .sub  { font-size:12px; }
+    .hdr  { font-size:12.5px; font-weight:700; }
+    .lbl  { font-size:11px; font-weight:600; }
+    .mono { font-family: ui-monospace,"Cascadia Code",monospace; font-size:10.5px; }
+    .monoS{ font-family: ui-monospace,"Cascadia Code",monospace; font-size:9.5px; }
+  </style>
+
+  <rect x="0" y="0" width="820" height="660" fill="#faf9f7"/>
+
+  <text x="30" y="32" class="title" fill="#1a1a1a">값이 들어와 <tspan fill="#7c5cff">상태가 바뀌는</tspan> 실행 타임라인</text>
+  <text x="30" y="51" class="sub" fill="#666">emailChecker(lazy) = 첫 signup에 최초 생성→이후 재사용 · repo(lateinit) = wire에서 주입</text>
+
+  <!-- column headers -->
+  <rect x="30" y="64" width="300" height="26" rx="5" fill="#eee"/>
+  <text x="40" y="82" class="hdr" fill="#1a1a1a">① 실행 코드 (main)</text>
+  <rect x="336" y="64" width="150" height="26" rx="5" fill="#efeaff"/>
+  <text x="346" y="82" class="hdr" fill="#7c5cff">② emailChecker (lazy)</text>
+  <rect x="492" y="64" width="130" height="26" rx="5" fill="#e9f7ef"/>
+  <text x="502" y="82" class="hdr" fill="#2e9e5b">③ repo (lateinit)</text>
+  <rect x="628" y="64" width="162" height="26" rx="5" fill="#eee"/>
+  <text x="638" y="82" class="hdr" fill="#1a1a1a">④ 반환값</text>
+
+  <!-- row 1 -->
+  <text x="40"  y="112" class="mono" fill="#1a1a1a">SignupService()</text>
+  <rect x="336" y="98" width="150" height="26" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="346" y="115" class="monoS" fill="#999">미생성 (계산 안 함)</text>
+  <rect x="492" y="98" width="130" height="26" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="502" y="115" class="monoS" fill="#999">미주입 (비어있음)</text>
+  <text x="638" y="115" class="monoS" fill="#999">—</text>
+
+  <!-- row 2 -->
+  <text x="40"  y="150" class="mono" fill="#1a1a1a">wire(UserStore())</text>
+  <rect x="336" y="136" width="150" height="26" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="346" y="153" class="monoS" fill="#999">미생성</text>
+  <rect x="492" y="136" width="130" height="26" rx="5" fill="#e9f7ef" stroke="#2e9e5b"/>
+  <text x="502" y="153" class="monoS" fill="#2e9e5b">✅ 주입됨 = UserStore</text>
+  <text x="638" y="153" class="monoS" fill="#999">—</text>
+
+  <!-- row 3 -->
+  <text x="40"  y="188" class="mono" fill="#1a1a1a">signup("hong@corp.io")</text>
+  <rect x="336" y="174" width="150" height="26" rx="5" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="346" y="191" class="monoS" fill="#7c5cff">🔨 최초 생성! (1회)</text>
+  <rect x="492" y="174" width="130" height="26" rx="5" fill="#e9f7ef" stroke="#2e9e5b"/>
+  <text x="502" y="191" class="monoS" fill="#2e9e5b">주입됨 · add → 1명</text>
+  <rect x="628" y="174" width="162" height="26" rx="5" fill="#fff" stroke="#2e9e5b"/>
+  <text x="636" y="191" class="monoS" fill="#2e9e5b">가입 완료 (총 1명)</text>
+
+  <!-- row 4 -->
+  <text x="40"  y="226" class="mono" fill="#1a1a1a">signup("bad-email")</text>
+  <rect x="336" y="212" width="150" height="26" rx="5" fill="#f5f0e8" stroke="#b8722c"/>
+  <text x="346" y="229" class="monoS" fill="#b8722c">♻ 재사용 (생성 X)</text>
+  <rect x="492" y="212" width="130" height="26" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="502" y="229" class="monoS" fill="#999">add 안 함 (거부)</text>
+  <rect x="628" y="212" width="162" height="26" rx="5" fill="#fff" stroke="#c0392b"/>
+  <text x="636" y="229" class="monoS" fill="#c0392b">거부: 형식 오류</text>
+
+  <!-- row 5 -->
+  <text x="40"  y="264" class="mono" fill="#1a1a1a">signup("kim@corp.io")</text>
+  <rect x="336" y="250" width="150" height="26" rx="5" fill="#f5f0e8" stroke="#b8722c"/>
+  <text x="346" y="267" class="monoS" fill="#b8722c">♻ 재사용</text>
+  <rect x="492" y="250" width="130" height="26" rx="5" fill="#e9f7ef" stroke="#2e9e5b"/>
+  <text x="502" y="267" class="monoS" fill="#2e9e5b">주입됨 · add → 2명</text>
+  <rect x="628" y="250" width="162" height="26" rx="5" fill="#fff" stroke="#2e9e5b"/>
+  <text x="636" y="267" class="monoS" fill="#2e9e5b">가입 완료 (총 2명)</text>
+
+  <text x="40" y="298" class="lbl" fill="#7c5cff">핵심: 🔨 최초 생성은 3번째 줄(첫 signup)에 딱 1번 — 생성 시점이 아니라 "처음 쓸 때"</text>
+
+  <!-- pipeline -->
+  <rect x="30" y="316" width="760" height="316" rx="10" fill="#fff" stroke="#ccc"/>
+  <text x="46" y="340" class="hdr" fill="#1a1a1a">signup("hong@corp.io") 내부 — 값이 처리되는 파이프라인</text>
+
+  <!-- step boxes -->
+  <rect x="300" y="356" width="220" height="34" rx="6" fill="#eee"/>
+  <text x="410" y="378" class="mono" fill="#1a1a1a" text-anchor="middle">email = "hong@corp.io"</text>
+  <path d="M410 390 L410 410" stroke="#888" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <rect x="250" y="412" width="320" height="38" rx="6" fill="#e9f7ef" stroke="#2e9e5b"/>
+  <text x="410" y="430" class="monoS" fill="#1a1a1a" text-anchor="middle">check(::repo.isInitialized)  → true</text>
+  <text x="410" y="444" class="monoS" fill="#2e9e5b" text-anchor="middle">(주입 안 됐으면 여기서 예외로 중단)</text>
+  <path d="M410 450 L410 470" stroke="#888" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <rect x="250" y="472" width="320" height="38" rx="6" fill="#efeaff" stroke="#7c5cff"/>
+  <text x="410" y="490" class="monoS" fill="#1a1a1a" text-anchor="middle">emailChecker.matches("hong@corp.io") → true</text>
+  <text x="410" y="504" class="monoS" fill="#7c5cff" text-anchor="middle">(첫 호출이면 여기서 HeavyRegex 최초 생성)</text>
+  <path d="M410 510 L410 530" stroke="#888" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <rect x="250" y="532" width="320" height="34" rx="6" fill="#e9f7ef" stroke="#2e9e5b"/>
+  <text x="410" y="554" class="monoS" fill="#1a1a1a" text-anchor="middle">repo.add("hong@corp.io")  → count() = 1</text>
+  <path d="M410 566 L410 586" stroke="#888" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <rect x="230" y="588" width="360" height="34" rx="6" fill="#1a1a1a"/>
+  <text x="410" y="610" class="mono" fill="#fff" text-anchor="middle">return "가입 완료: hong@corp.io (총 1명)"</text>
+
+  <!-- side note: bad-email branch -->
+  <text x="600" y="440" class="lbl" fill="#c0392b">"bad-email" 이면</text>
+  <text x="600" y="458" class="monoS" fill="#666">matches → false</text>
+  <text x="600" y="474" class="monoS" fill="#c0392b">→ "거부" 반환하고</text>
+  <text x="600" y="490" class="monoS" fill="#c0392b">   add 안 함</text>
+
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#888"/>
+    </marker>
+  </defs>
+</svg>
