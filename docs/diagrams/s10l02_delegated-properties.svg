@@ -1,0 +1,72 @@
+<svg viewBox="0 0 780 520" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>코틀린 위임 프로퍼티: by로 get/set을 위임, getValue/setValue 계약, 표준 위임들</title>
+  <desc>by는 프로퍼티의 get/set을 다른 객체에 위임. 위임 객체는 getValue/setValue를 구현. lazy/observable/vetoable/by map 등 표준 위임.</desc>
+  <style>
+    .title{ font-size:19px; font-weight:700; }
+    .sub  { font-size:12px; }
+    .hdr  { font-size:14px; font-weight:700; }
+    .lbl  { font-size:12px; font-weight:600; }
+    .mono { font-family: ui-monospace,"Cascadia Code",monospace; font-size:11.5px; }
+    .monoS{ font-family: ui-monospace,"Cascadia Code",monospace; font-size:10.5px; }
+  </style>
+
+  <rect x="0" y="0" width="780" height="520" fill="#faf9f7"/>
+
+  <text x="30" y="34" class="title" fill="#1a1a1a">위임 프로퍼티 = <tspan fill="#7c5cff">by</tspan> 로 get/set을 다른 객체에 맡긴다</text>
+  <text x="30" y="54" class="sub" fill="#666">by lazy의 by가 바로 이것 — lazy는 "위임"이라는 일반 문법의 한 사례였다</text>
+
+  <!-- flow -->
+  <rect x="30" y="72" width="720" height="120" rx="10" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="46" y="95" class="hdr" fill="#7c5cff">동작: 프로퍼티 접근 → 위임 객체의 함수 호출</text>
+  <text x="46" y="118" class="mono" fill="#1a1a1a">val x: String by Delegate()</text>
+
+  <rect x="46" y="132" width="150" height="30" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="60" y="152" class="monoS" fill="#1a1a1a">x 를 읽음</text>
+  <path d="M200 147 L250 147" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="256" y="132" width="230" height="30" rx="5" fill="#fff" stroke="#7c5cff"/>
+  <text x="270" y="152" class="monoS" fill="#7c5cff">Delegate.getValue(...) 호출</text>
+  <path d="M490 147 L540 147" stroke="#2e9e5b" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="546" y="132" width="180" height="30" rx="5" fill="#fff" stroke="#2e9e5b"/>
+  <text x="560" y="152" class="monoS" fill="#2e9e5b">그 반환값이 x의 값</text>
+  <text x="46" y="184" class="monoS" fill="#666">var면 x = ... 쓸 때 setValue(...) 가 대신 호출됨</text>
+
+  <!-- contract -->
+  <rect x="30" y="204" width="360" height="118" rx="10" fill="#e9f7ef" stroke="#2e9e5b" stroke-width="1.5"/>
+  <text x="46" y="227" class="hdr" fill="#2e9e5b">위임 객체의 계약</text>
+  <text x="46" y="250" class="monoS" fill="#1a1a1a">operator fun getValue(</text>
+  <text x="60" y="266" class="monoS" fill="#666">ref, prop): T          // 읽을 때</text>
+  <text x="46" y="288" class="monoS" fill="#1a1a1a">operator fun setValue(</text>
+  <text x="60" y="304" class="monoS" fill="#666">ref, prop, value)      // 쓸 때(var)</text>
+
+  <!-- java compare -->
+  <rect x="410" y="204" width="340" height="118" rx="10" fill="#f5f0e8" stroke="#b8722c" stroke-width="1.5"/>
+  <text x="426" y="227" class="hdr" fill="#b8722c">자바엔 없다</text>
+  <text x="426" y="250" class="monoS" fill="#666">getter/setter마다 공통 로직을</text>
+  <text x="426" y="266" class="monoS" fill="#666">복붙해야 함 (로깅·검증·캐싱…)</text>
+  <text x="426" y="292" class="monoS" fill="#b8722c">코틀린: 그 로직을 위임 객체로</text>
+  <text x="426" y="308" class="monoS" fill="#b8722c">분리 → by 한 단어로 재사용</text>
+
+  <!-- standard delegates -->
+  <rect x="30" y="334" width="720" height="168" rx="10" fill="#fff" stroke="#ccc"/>
+  <text x="46" y="357" class="hdr" fill="#1a1a1a">표준 위임 (실무 단골)</text>
+
+  <text x="46" y="382" class="mono" fill="#7c5cff">by lazy { }</text>
+  <text x="240" y="382" class="monoS" fill="#666">처음 접근 시 계산 후 캐시 (이미 배움)</text>
+
+  <text x="46" y="408" class="mono" fill="#2e9e5b">Delegates.observable(init) { p, old, new -> }</text>
+  <text x="440" y="408" class="monoS" fill="#666">값이 바뀔 때마다 콜백(로깅)</text>
+
+  <text x="46" y="434" class="mono" fill="#b8722c">Delegates.vetoable(init) { p, old, new -> Bool }</text>
+  <text x="440" y="434" class="monoS" fill="#666">false 반환 시 변경 거부(롤백)</text>
+
+  <text x="46" y="460" class="mono" fill="#7c5cff">by map</text>
+  <text x="240" y="460" class="monoS" fill="#666">프로퍼티 값을 Map에서 꺼냄 (설정·JSON 매핑)</text>
+
+  <text x="46" y="486" class="lbl" fill="#7c5cff">공통 로직(지연·관찰·검증·매핑)을 프로퍼티에 "붙이는" 재사용 메커니즘</text>
+
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#888"/>
+    </marker>
+  </defs>
+</svg>
