@@ -14,6 +14,7 @@
 - [Q8. val이 뭐였지? (val인데 배열 원소가 왜 바뀌나)](#q8)
 - [Q9. it은 뭐야?](#q9)
 - [Q10. 스코프 함수 5개 각각 언제 쓰나? (구체 사용법)](#q10)
+- [Q11. 왜 `is Box<Int>`는 안 되고 `is Box<*>`만 되나 (타입 소거)](#q11)
 
 ---
 
@@ -233,3 +234,35 @@ T.also(block:(T)->Unit):T   // it, 객체자신
 
 **3초 판단**: 객체 그대로 받아 쓰고 싶다 → 세팅이면 `apply`, 곁다리 로깅이면 `also`. 결과가 필요하다 → null안전이면 `?.let`, 멤버로 계산이면 `run`.
 한 줄: **초기화=apply · null안전=?.let · 로깅/검증=also · 값계산=run.**
+
+---
+
+<a id="q11"></a>
+## Q11. 왜 `is Box<Int>`는 안 되고 `is Box<*>`만 되나 (타입 소거)
+- 📅 2026-07-12 · 🔗 고급 섹션1 강의1 · 🖼️ `diagrams/s09l01_generics.svg` · 💻 `section09/TypeErasureDemo.kt`
+
+**질문**
+> `b is Box<Int>` ❌ / `b is Box<*>` ✅ 이 부분 구체적으로
+
+**답변**
+**타입 소거**: 컴파일이 끝나면 `<T>` 정보가 바이트코드에서 지워진다. `Box<Int>`·`Box<String>`은 런타임엔 그냥 같은 `Box` 한 클래스다.
+```kotlin
+intBox::class == strBox::class   // true (같은 클래스)
+```
+- **왜**: 자바가 제네릭을 Java 5에 뒤늦게 넣으며 기존 코드와 하위 호환을 위해 "컴파일 때만 쓰고 지운다"로 타협. 코틀린은 JVM 위라 그대로 상속.
+- **`is Box<Int>` ❌**: `is`(instanceof)는 런타임 검사인데, 그때 Int 정보가 이미 없음 → 컴파일 에러 `Cannot check for instance of erased type`.
+- **`is Box<*>` ✅**: `*`(star projection ≈ 자바 `Box<?>`)는 "T가 뭐든 껍데기가 Box이기만 하면 참" → 런타임에도 검사 가능.
+
+**실무 함정 — `as`는 검사를 안 한다(unchecked)**:
+```kotlin
+val wrong = strBox as Box<Int>   // 경고만 뜨고 통과! (T 미검사)
+// wrong.value + 1                // 💥 여기 와서야 ClassCastException
+```
+캐스트한 줄이 아니라 값을 쓰는 순간 터져서 디버깅이 고약 → 제네릭 `as` 캐스트는 의심하라.
+
+**우회 = `reified`**(inline 함수 한정): 원소 객체의 실제 타입은 살아있어 검사 가능.
+```kotlin
+inline fun <reified T> Box<*>.holds(): Boolean = value is T
+Box(42).holds<Int>()    // true
+```
+한 줄: **런타임엔 타입이 지워진다 → `is`는 `Box<*>`만, 정확한 타입 검사는 `reified`로.**
