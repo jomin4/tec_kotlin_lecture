@@ -1,0 +1,75 @@
+<svg viewBox="0 0 760 540" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>코틀린 컬렉션 함수형: filter/map/forEach 파이프라인, Java Stream 비교, eager vs sequence</title>
+  <desc>코틀린은 stream()/collect() 없이 리스트에 바로 filter/map. filter는 개수 줄고 map은 값 변환 forEach는 반환없음. 새 리스트 반환(원본 불변). 큰 데이터는 asSequence로 lazy.</desc>
+  <style>
+    .title{ font-size:19px; font-weight:700; }
+    .sub  { font-size:12.5px; }
+    .hdr  { font-size:14px; font-weight:700; }
+    .lbl  { font-size:12px; font-weight:600; }
+    .mono { font-family: ui-monospace,"Cascadia Code",monospace; font-size:11.5px; }
+    .monoS{ font-family: ui-monospace,"Cascadia Code",monospace; font-size:10.5px; }
+  </style>
+
+  <rect x="0" y="0" width="760" height="540" fill="#faf9f7"/>
+
+  <text x="30" y="34" class="title" fill="#1a1a1a">컬렉션 함수형 처리 = <tspan fill="#2e9e5b">filter</tspan> · <tspan fill="#7c5cff">map</tspan> · <tspan fill="#b8722c">forEach</tspan></text>
+  <text x="30" y="54" class="sub" fill="#666">자바 Stream의 stream()·collect() 껍데기 없이, 리스트에 바로 체이닝</text>
+
+  <!-- java vs kotlin -->
+  <rect x="30" y="72" width="340" height="92" rx="10" fill="#f5f0e8" stroke="#b8722c" stroke-width="1.5"/>
+  <text x="48" y="94" class="hdr" fill="#b8722c">Java Stream</text>
+  <text x="48" y="116" class="monoS" fill="#666">list.stream()</text>
+  <text x="48" y="132" class="monoS" fill="#666">    .filter(...).map(...)</text>
+  <text x="48" y="150" class="monoS" fill="#c0392b">    .collect(toList())  // 다시 수거</text>
+
+  <rect x="390" y="72" width="340" height="92" rx="10" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="408" y="94" class="hdr" fill="#7c5cff">Kotlin</text>
+  <text x="408" y="116" class="monoS" fill="#1a1a1a">list.filter { ... }</text>
+  <text x="408" y="132" class="monoS" fill="#1a1a1a">    .map { ... }</text>
+  <text x="408" y="150" class="monoS" fill="#2e9e5b">// 바로 List 반환 (수거 불필요)</text>
+
+  <!-- pipeline -->
+  <rect x="30" y="180" width="700" height="132" rx="10" fill="#e9f7ef" stroke="#2e9e5b" stroke-width="1.5"/>
+  <text x="46" y="204" class="hdr" fill="#1a1a1a">파이프라인 — 원소가 단계를 통과한다</text>
+
+  <rect x="50" y="222" width="150" height="30" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="60" y="242" class="mono" fill="#1a1a1a">[1,2,3,4,5]</text>
+  <text x="210" y="242" class="monoS" fill="#2e9e5b">filter{it%2==0}</text>
+  <path d="M290 237 L322 237" stroke="#2e9e5b" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="330" y="222" width="90" height="30" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="342" y="242" class="mono" fill="#1a1a1a">[2,4]</text>
+  <text x="430" y="242" class="monoS" fill="#7c5cff">map{it*10}</text>
+  <path d="M498 237 L530 237" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="538" y="222" width="120" height="30" rx="5" fill="#fff" stroke="#ccc"/>
+  <text x="550" y="242" class="mono" fill="#1a1a1a">[20,40]</text>
+
+  <text x="50" y="278" class="lbl" fill="#2e9e5b">filter: 개수 줄어듦</text>
+  <text x="250" y="278" class="lbl" fill="#7c5cff">map: 개수 그대로, 값 변환</text>
+  <text x="540" y="278" class="lbl" fill="#b8722c">forEach: 출력(반환X)</text>
+  <text x="50" y="300" class="monoS" fill="#c0392b">⚠️ filter/map은 "새 리스트"를 반환 → 결과를 변수로 받아야 씀 (원본 불변)</text>
+
+  <!-- 자주 쓰는 함수 -->
+  <rect x="30" y="328" width="700" height="118" rx="10" fill="#fff" stroke="#ccc"/>
+  <text x="46" y="350" class="hdr" fill="#1a1a1a">자주 쓰는 동료들</text>
+  <text x="46" y="374" class="monoS" fill="#666">any{} / all{} / none{}   조건 존재·전체·전무 (Boolean)</text>
+  <text x="400" y="374" class="monoS" fill="#666">count{}          개수 세기</text>
+  <text x="46" y="396" class="monoS" fill="#666">find{} / firstOrNull{}   첫 매칭(없으면 null)</text>
+  <text x="400" y="396" class="monoS" fill="#666">sumOf{} / maxByOrNull{}   합계·최대</text>
+  <text x="46" y="418" class="monoS" fill="#666">sortedBy{}       기준으로 정렬</text>
+  <text x="400" y="418" class="monoS" fill="#666">groupBy{}        키별로 묶어 Map</text>
+  <text x="46" y="438" class="monoS" fill="#666">mapIndexed{i,v-> } 인덱스와 함께 변환</text>
+  <text x="400" y="438" class="monoS" fill="#666">joinToString()   문자열로 합치기</text>
+
+  <!-- eager vs lazy -->
+  <rect x="30" y="462" width="700" height="62" rx="10" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="46" y="484" class="hdr" fill="#1a1a1a">eager vs lazy</text>
+  <text x="46" y="506" class="monoS" fill="#666">기본 filter/map = 단계마다 새 리스트(eager).  데이터 크고 단계 많으면 → </text>
+  <text x="540" y="506" class="mono" fill="#7c5cff">.asSequence()</text>
+  <text x="46" y="520" class="monoS" fill="#666">asSequence() = 자바 Stream처럼 원소 하나가 파이프 전체를 통과(lazy) → 중간 리스트 안 만듦</text>
+
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#888"/>
+    </marker>
+  </defs>
+</svg>
