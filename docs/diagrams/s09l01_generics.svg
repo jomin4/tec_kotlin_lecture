@@ -1,0 +1,62 @@
+<svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>코틀린 제네릭 기초: 타입을 파라미터로, 제네릭 클래스/함수, 타입 제약(upper bound)</title>
+  <desc>제네릭은 타입을 변수처럼 파라미터화. Any+캐스트의 런타임 위험을 컴파일 타임 안정성으로 바꾼다. class Box<T>, fun <T>, 제약 T:Number.</desc>
+  <style>
+    .title{ font-size:19px; font-weight:700; }
+    .sub  { font-size:12.5px; }
+    .hdr  { font-size:14px; font-weight:700; }
+    .lbl  { font-size:12px; font-weight:600; }
+    .mono { font-family: ui-monospace,"Cascadia Code",monospace; font-size:11.5px; }
+    .monoS{ font-family: ui-monospace,"Cascadia Code",monospace; font-size:10.5px; }
+  </style>
+
+  <rect x="0" y="0" width="760" height="500" fill="#faf9f7"/>
+
+  <text x="30" y="34" class="title" fill="#1a1a1a">제네릭 = 타입을 <tspan fill="#7c5cff">파라미터</tspan>로 (값 대신 "타입"을 나중에 정한다)</text>
+  <text x="30" y="54" class="sub" fill="#666">캐스트 없이 타입 안정성 확보 · 자바와 문법 거의 동일(고급편 시작점)</text>
+
+  <!-- 제네릭 없을 때 -->
+  <rect x="30" y="72" width="340" height="120" rx="10" fill="#f5f0e8" stroke="#b8722c" stroke-width="1.5"/>
+  <text x="48" y="95" class="hdr" fill="#b8722c">제네릭 없이 (Any + 캐스트)</text>
+  <text x="48" y="117" class="monoS" fill="#1a1a1a">class Box(val value: Any)</text>
+  <text x="48" y="137" class="monoS" fill="#666">val s = box.value as String   // 캐스트</text>
+  <text x="48" y="159" class="monoS" fill="#c0392b">잘못된 타입 넣어도 컴파일 통과</text>
+  <text x="48" y="178" class="monoS" fill="#c0392b">→ 런타임 ClassCastException 💥</text>
+
+  <!-- 제네릭 있을 때 -->
+  <rect x="390" y="72" width="340" height="120" rx="10" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="408" y="95" class="hdr" fill="#7c5cff">제네릭 (Box&lt;T&gt;)</text>
+  <text x="408" y="117" class="monoS" fill="#1a1a1a">class Box&lt;T&gt;(val value: T)</text>
+  <text x="408" y="137" class="monoS" fill="#666">val s: String = box.get()   // 캐스트 X</text>
+  <text x="408" y="159" class="monoS" fill="#2e9e5b">틀린 타입은 컴파일에서 차단</text>
+  <text x="408" y="178" class="monoS" fill="#2e9e5b">→ 런타임 안전 ✅</text>
+
+  <!-- 제네릭 클래스 -->
+  <rect x="30" y="208" width="340" height="112" rx="10" fill="#e9f7ef" stroke="#2e9e5b" stroke-width="1.5"/>
+  <text x="48" y="231" class="hdr" fill="#2e9e5b">제네릭 클래스</text>
+  <text x="48" y="254" class="mono" fill="#1a1a1a">class Box&lt;T&gt;(val value: T)</text>
+  <text x="48" y="276" class="monoS" fill="#666">Box(42)       → Box&lt;Int&gt; (추론)</text>
+  <text x="48" y="294" class="monoS" fill="#666">Box("hi")     → Box&lt;String&gt;</text>
+  <text x="48" y="313" class="monoS" fill="#7c5cff">T = 타입 파라미터(관례). 여러 개면 &lt;K, V&gt;</text>
+
+  <!-- 제네릭 함수 -->
+  <rect x="390" y="208" width="340" height="112" rx="10" fill="#e9f7ef" stroke="#2e9e5b" stroke-width="1.5"/>
+  <text x="408" y="231" class="hdr" fill="#2e9e5b">제네릭 함수</text>
+  <text x="408" y="254" class="mono" fill="#1a1a1a">fun &lt;T&gt; firstOf(l: List&lt;T&gt;): T</text>
+  <text x="408" y="276" class="monoS" fill="#666">fun 뒤에 &lt;T&gt; 를 먼저 선언</text>
+  <text x="408" y="294" class="monoS" fill="#666">firstOf(listOf("a","b")) → "a"</text>
+  <text x="408" y="313" class="monoS" fill="#7c5cff">확장함수도: fun &lt;T&gt; List&lt;T&gt;.last(): T</text>
+
+  <!-- upper bound -->
+  <rect x="30" y="336" width="700" height="76" rx="10" fill="#fff" stroke="#ccc"/>
+  <text x="46" y="359" class="hdr" fill="#1a1a1a">타입 제약 (upper bound) — 아무 타입이나 X, 특정 타입의 하위만</text>
+  <text x="46" y="383" class="mono" fill="#7c5cff">fun &lt;T : Number&gt; sum(l: List&lt;T&gt;): Double</text>
+  <text x="440" y="383" class="monoS" fill="#666">자바 &lt;T extends Number&gt; 와 동일</text>
+  <text x="46" y="403" class="monoS" fill="#666">T는 Number의 하위(Int/Double/Long..)만 허용 → sum(listOf("a"))는 컴파일 에러</text>
+
+  <!-- 함정 -->
+  <rect x="30" y="424" width="700" height="60" rx="10" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="46" y="446" class="hdr" fill="#1a1a1a">함정: 타입 소거(type erasure)</text>
+  <text x="46" y="468" class="monoS" fill="#666">런타임엔 &lt;T&gt; 정보가 지워진다(자바와 동일). Box&lt;Int&gt;와 Box&lt;String&gt;은 런타임에 그냥 Box.</text>
+  <text x="46" y="480" class="monoS" fill="#c0392b">그래서 x is Box&lt;Int&gt; 불가 → x is Box&lt;*&gt; 만 가능 (reified는 고급편 뒤에서)</text>
+</svg>

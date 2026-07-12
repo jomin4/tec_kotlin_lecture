@@ -47,6 +47,14 @@
 7. 배열 / 컬렉션 (List/Set/Map, 널 가능 컬렉션)
 8. 함수형 (람다, filter/map, 스코프 함수 let/run/with/apply/also)
 
+## 커리큘럼 순서 — 고급편 (인프런 「코틀린 고급편」, 최태현)
+> 입문 완주 후 이어가는 심화 트랙. 폴더는 `section09`부터 이어 붙인다(고급 섹션1=section09 …).
+9. 제네릭 (타입 파라미터, 제네릭 클래스/함수, 타입 제약, 변성 in/out, 타입소거·star projection)
+10. 지연과 위임 (`lazy`, `by` 위임 프로퍼티, `lateinit`, 위임 패턴 `by`)
+11. 복잡한 함수형 프로그래밍 (고차함수 심화, 인라인 함수, `reified`, 시퀀스, 함수형 조합)
+12. DSL (수신객체 지정 람다, 빌더 DSL, `@DslMarker`)
+13. 어노테이션과 리플렉션 (`annotation class`, `KClass`, 리플렉션 API, 메타프로그래밍)
+
 ## 진행 상황
 - ✅ 섹션1 강의1: 변수 (val/var) — `section01/Lesson01.kt`
 - ✅ 섹션1 강의2: null 다루기 (`?`, `?.`, `?:`, `!!`, `?.let`) — `section01/Lesson02.kt`
@@ -69,4 +77,9 @@
 - ✅ 섹션8 강의2: 컬렉션 함수형 처리 (`stream()`/`collect()` 없이 바로 `filter`(개수↓)/`map`(값변환)/`forEach`(반환X), 새 리스트 반환·원본불변, 체이닝, `any`/`all`/`none`/`count`/`sumOf`/`find`/`sortedBy`/`groupBy`, `asSequence()`로 lazy) — `section08/Lesson02.kt`
 - ✅ 섹션8 강의3: 스코프 함수 (`let`/`run`/`with`/`apply`/`also`, 2축=객체참조 `it`(let/also)vs`this`(run/with/apply)·반환 람다결과(let/run/with)vs객체자신(apply/also), `apply`=초기화·`?.let`=null안전·`also`=부수효과, 자바 빌더/임시변수 대체) — `section08/Lesson03.kt`  → **섹션8 완료 · 커리큘럼 완주 🎉**
 > 커리큘럼 8섹션 전 강의 완료. 추가 요청 시 심화(제네릭·코루틴·DSL 등)로 확장하거나 복습·리팩터링 진행.
+
+### 고급편 진행 상황 (section09~)
+- ✅ 고급 섹션1(제네릭) 강의1: 제네릭 기초 (제네릭 클래스 `class Box<T>`, 제네릭 함수 `fun <T>`·확장함수, 타입 파라미터 2개 `<A,B>`, 타입 제약 `<T:Number>`=자바 extends, Any+캐스트 위험 대비, 타입소거 `is Box<*>`) — `section09/Lesson01.kt`
+- ⏭ 다음: 고급 섹션1 강의2 — **변성(variance)** (`out`=공변/`in`=반공변, 왜 `List<String>`을 `List<Any>`에 못 넣나)
+
 > 새 강의를 끝낼 때마다 이 목록을 갱신한다.
