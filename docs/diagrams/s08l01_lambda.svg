@@ -1,0 +1,59 @@
+<svg viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>코틀린 람다: 함수를 값으로, 함수타입 문법, it, 트레일링 람다, 함수 참조</title>
+  <desc>코틀린은 함수가 값이다. (Int)->Int 함수타입, { x -> x*2 } 람다, 파라미터 1개면 it, 마지막 인자 람다는 괄호 밖(트레일링), ::name 함수참조.</desc>
+  <style>
+    .title{ font-size:19px; font-weight:700; }
+    .sub  { font-size:12.5px; }
+    .hdr  { font-size:14px; font-weight:700; }
+    .lbl  { font-size:12px; font-weight:600; }
+    .mono { font-family: ui-monospace,"Cascadia Code",monospace; font-size:11.5px; }
+    .monoS{ font-family: ui-monospace,"Cascadia Code",monospace; font-size:10.5px; }
+  </style>
+
+  <rect x="0" y="0" width="760" height="520" fill="#faf9f7"/>
+
+  <text x="30" y="34" class="title" fill="#1a1a1a">람다 = 함수를 <tspan fill="#7c5cff">값처럼</tspan> 다루기</text>
+  <text x="30" y="54" class="sub" fill="#666">숫자를 변수에 담듯, 함수를 변수에 담고 · 인자로 넘기고 · 리턴한다</text>
+
+  <!-- Java vs Kotlin -->
+  <rect x="30" y="72" width="340" height="104" rx="10" fill="#f5f0e8" stroke="#b8722c" stroke-width="1.5"/>
+  <text x="48" y="95" class="hdr" fill="#b8722c">Java — 함수형 인터페이스 껍데기 필요</text>
+  <text x="48" y="118" class="monoS" fill="#1a1a1a">Function&lt;Integer,Integer&gt; dbl</text>
+  <text x="48" y="136" class="monoS" fill="#1a1a1a">    = x -&gt; x * 2;</text>
+  <text x="48" y="160" class="monoS" fill="#c0392b">dbl.apply(3);   // .apply()로 호출</text>
+
+  <rect x="390" y="72" width="340" height="104" rx="10" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="408" y="95" class="hdr" fill="#7c5cff">Kotlin — 함수 그 자체가 값</text>
+  <text x="408" y="118" class="monoS" fill="#1a1a1a">val dbl: (Int) -&gt; Int = { x -&gt; x * 2 }</text>
+  <text x="408" y="142" class="monoS" fill="#2e9e5b">dbl(3)   // 변수를 함수처럼 바로 호출 → 6</text>
+  <text x="408" y="164" class="monoS" fill="#666">뒤에선 Function1&lt;Int,Int&gt; 로 컴파일</text>
+
+  <!-- anatomy -->
+  <rect x="30" y="192" width="700" height="110" rx="10" fill="#e9f7ef" stroke="#2e9e5b" stroke-width="1.5"/>
+  <text x="46" y="216" class="hdr" fill="#1a1a1a">문법 해부</text>
+
+  <text x="46" y="244" class="mono" fill="#7c5cff">(Int, Int) -> Int</text>
+  <text x="230" y="244" class="lbl" fill="#666">함수 타입 = ( 파라미터 타입들 ) -&gt; 반환 타입</text>
+  <text x="46" y="264" class="monoS" fill="#666">() -&gt; Unit  =  인자 없음 · 반환 없음 (자바 void)</text>
+
+  <text x="46" y="290" class="mono" fill="#b8722c">{ x, y -> x + y }</text>
+  <text x="230" y="290" class="lbl" fill="#666">람다 = { 파라미터 -&gt; 본문 } · <tspan fill="#c0392b">마지막 줄이 반환값</tspan>(return 없음)</text>
+
+  <!-- shortcuts -->
+  <rect x="30" y="318" width="340" height="86" rx="10" fill="#fff" stroke="#ccc"/>
+  <text x="46" y="340" class="hdr" fill="#7c5cff">it — 파라미터 1개면 이름 생략</text>
+  <text x="46" y="362" class="monoS" fill="#666">{ x -&gt; x * 2 }</text>
+  <text x="200" y="362" class="monoS" fill="#1a1a1a">→  { it * 2 }</text>
+  <text x="46" y="384" class="monoS" fill="#666">파라미터가 2개 이상이면 it 못 씀(이름 필수)</text>
+
+  <rect x="390" y="318" width="340" height="86" rx="10" fill="#fff" stroke="#ccc"/>
+  <text x="408" y="340" class="hdr" fill="#7c5cff">트레일링 람다 — 마지막 인자면 괄호 밖</text>
+  <text x="408" y="362" class="monoS" fill="#666">list.filter({ it &gt; 0 })</text>
+  <text x="408" y="384" class="monoS" fill="#1a1a1a">→  list.filter { it &gt; 0 }</text>
+
+  <!-- higher order + ref -->
+  <rect x="30" y="420" width="700" height="82" rx="10" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="46" y="442" class="hdr" fill="#1a1a1a">고차 함수 &amp; 함수 참조(::)</text>
+  <text x="46" y="464" class="monoS" fill="#1a1a1a">fun apply(x: Int, op: (Int)->Int) = op(x)   // 함수를 파라미터로 받는 함수 = 고차함수</text>
+  <text x="46" y="484" class="monoS" fill="#666">apply(3) { it * 2 }  → 6      ·      기존 함수 넘길 땐  ::함수이름  (예: list.map(::square))</text>
+</svg>

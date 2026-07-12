@@ -65,5 +65,6 @@
 - ✅ 섹션6 강의2: sealed class (봉인된 타입 집합, 경우마다 다른 데이터 `data class`/`data object`, `when`+`is` 소진검사·스마트캐스트, API결과·UI상태 모델링) — `section06/Lesson02.kt`  → **섹션6 완료**
 - ✅ 섹션7 강의1: 컬렉션 (읽기전용 `listOf`vs가변 `mutableListOf`를 타입으로 구분, `List`/`Set`(중복제거)/`Map`(`to`→Pair·`map[key]`), 널 위치 `List<Int?>`vs`List<Int>?`, `filterNotNull`/`?:emptyList()`) — `section07/Lesson01.kt`
 - ✅ 섹션7 강의2: 배열 (`intArrayOf`→`IntArray`=`int[]` 박싱X vs `arrayOf`→`Array<Int>`=`Integer[]` 박싱, 크기고정·`val`이어도 원소변경, `IntArray(n){}`, 순회 `indices`/`withIndex`, vararg 스프레드 `*a`, `toList`/`toIntArray` 변환, 실무는 대개 List) — `section07/Lesson02.kt`  → **섹션7 완료**
-- ⏭ 다음: 섹션8 강의1 — **람다** (함수를 값으로, `{ x -> ... }`, 자바 람다/함수형인터페이스 비교) → 이후 `filter`/`map`, 스코프 함수
+- ✅ 섹션8 강의1: 람다 (함수가 값=first-class, 함수타입 `(Int)->Int`·`()->Unit`, 람다 `{x->본문}`·마지막줄=반환, `invoke`, `it`(파라미터1개), 트레일링 람다, 고차함수(함수를 파라미터/반환), 함수참조 `::triple`, 뒤에선 `Function1`로 컴파일) — `section08/Lesson01.kt`
+- ⏭ 다음: 섹션8 강의2 — **컬렉션 함수형 처리** (`filter`/`map`/`forEach`, 트레일링 람다 실전) → 이후 스코프 함수 `let/run/with/apply/also`
 > 새 강의를 끝낼 때마다 이 목록을 갱신한다.
