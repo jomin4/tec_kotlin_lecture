@@ -1,0 +1,67 @@
+<svg viewBox="0 0 760 540" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>코틀린 스코프 함수 let/run/with/apply/also — it vs this, 반환값 2축 정리</title>
+  <desc>스코프 함수 5형제를 2축으로 정리. 객체 참조 it(let/also) vs this(run/with/apply), 반환 람다결과(let/run/with) vs 객체자신(apply/also).</desc>
+  <style>
+    .title{ font-size:19px; font-weight:700; }
+    .sub  { font-size:12.5px; }
+    .hdr  { font-size:14px; font-weight:700; }
+    .lbl  { font-size:12px; font-weight:600; }
+    .cell { font-size:15px; font-weight:700; }
+    .mono { font-family: ui-monospace,"Cascadia Code",monospace; font-size:11.5px; }
+    .monoS{ font-family: ui-monospace,"Cascadia Code",monospace; font-size:10.5px; }
+  </style>
+
+  <rect x="0" y="0" width="760" height="540" fill="#faf9f7"/>
+
+  <text x="30" y="34" class="title" fill="#1a1a1a">스코프 함수 5형제 — <tspan fill="#7c5cff">2축</tspan>으로 끝낸다</text>
+  <text x="30" y="54" class="sub" fill="#666">① 객체를 뭐로 부르나(it vs this)  ② 뭘 돌려주나(람다 결과 vs 객체 자신)</text>
+
+  <!-- 2x2 matrix -->
+  <!-- column headers -->
+  <text x="300" y="90" class="hdr" fill="#b8722c" text-anchor="middle">객체 참조 = it</text>
+  <text x="540" y="90" class="hdr" fill="#2e9e5b" text-anchor="middle">객체 참조 = this</text>
+  <!-- row labels -->
+  <text x="150" y="150" class="hdr" fill="#7c5cff" text-anchor="middle">반환:</text>
+  <text x="150" y="168" class="hdr" fill="#7c5cff" text-anchor="middle">람다 결과</text>
+  <text x="150" y="270" class="hdr" fill="#c0392b" text-anchor="middle">반환:</text>
+  <text x="150" y="288" class="hdr" fill="#c0392b" text-anchor="middle">객체 자신</text>
+
+  <!-- cell: let (it, 람다결과) -->
+  <rect x="210" y="106" width="180" height="96" rx="10" fill="#f5f0e8" stroke="#b8722c" stroke-width="1.5"/>
+  <text x="300" y="140" class="cell" fill="#b8722c" text-anchor="middle">let</text>
+  <text x="300" y="162" class="monoS" fill="#666" text-anchor="middle">it · 결과 반환</text>
+  <text x="300" y="184" class="monoS" fill="#1a1a1a" text-anchor="middle">null체크 ?.let</text>
+
+  <!-- cell: run/with (this, 람다결과) -->
+  <rect x="450" y="106" width="180" height="96" rx="10" fill="#e9f7ef" stroke="#2e9e5b" stroke-width="1.5"/>
+  <text x="540" y="140" class="cell" fill="#2e9e5b" text-anchor="middle">run · with</text>
+  <text x="540" y="162" class="monoS" fill="#666" text-anchor="middle">this · 결과 반환</text>
+  <text x="540" y="184" class="monoS" fill="#1a1a1a" text-anchor="middle">작업 후 값 계산</text>
+
+  <!-- cell: also (it, 객체자신) -->
+  <rect x="210" y="216" width="180" height="96" rx="10" fill="#f5f0e8" stroke="#b8722c" stroke-width="1.5"/>
+  <text x="300" y="250" class="cell" fill="#b8722c" text-anchor="middle">also</text>
+  <text x="300" y="272" class="monoS" fill="#666" text-anchor="middle">it · 객체 반환</text>
+  <text x="300" y="294" class="monoS" fill="#1a1a1a" text-anchor="middle">로깅·검증 끼우기</text>
+
+  <!-- cell: apply (this, 객체자신) -->
+  <rect x="450" y="216" width="180" height="96" rx="10" fill="#e9f7ef" stroke="#2e9e5b" stroke-width="1.5"/>
+  <text x="540" y="250" class="cell" fill="#2e9e5b" text-anchor="middle">apply</text>
+  <text x="540" y="272" class="monoS" fill="#666" text-anchor="middle">this · 객체 반환</text>
+  <text x="540" y="294" class="monoS" fill="#1a1a1a" text-anchor="middle">객체 초기화/설정</text>
+
+  <!-- examples -->
+  <rect x="30" y="330" width="700" height="192" rx="10" fill="#fff" stroke="#ccc"/>
+  <text x="46" y="354" class="hdr" fill="#1a1a1a">실전 예</text>
+
+  <text x="46" y="380" class="lbl" fill="#b8722c">apply — 설정하고 객체를 그대로 돌려받음 (빌더 대체)</text>
+  <text x="60" y="399" class="monoS" fill="#666">val p = Person().apply { name = "홍길동"; age = 30 }   // this 생략, p에 Person 담김</text>
+
+  <text x="46" y="424" class="lbl" fill="#b8722c">let — null 아닐 때만 실행 + 변환</text>
+  <text x="60" y="443" class="monoS" fill="#666">name?.let { println(it.length) }        // it = name (null이면 통째 skip)</text>
+
+  <text x="46" y="468" class="lbl" fill="#b8722c">also — 흐름 안 끊고 중간에 부수효과</text>
+  <text x="60" y="487" class="monoS" fill="#666">numbers.filter{it&gt;0}.also{ println("걸러진 개수 ${it.size}") }.map{it*10}</text>
+
+  <text x="46" y="510" class="monoS" fill="#7c5cff">헷갈리면: 객체 돌려받아 체이닝 → apply(this)/also(it) · null안전 → ?.let · 값 계산 → run/with</text>
+</svg>

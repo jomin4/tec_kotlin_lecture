@@ -67,5 +67,6 @@
 - ✅ 섹션7 강의2: 배열 (`intArrayOf`→`IntArray`=`int[]` 박싱X vs `arrayOf`→`Array<Int>`=`Integer[]` 박싱, 크기고정·`val`이어도 원소변경, `IntArray(n){}`, 순회 `indices`/`withIndex`, vararg 스프레드 `*a`, `toList`/`toIntArray` 변환, 실무는 대개 List) — `section07/Lesson02.kt`  → **섹션7 완료**
 - ✅ 섹션8 강의1: 람다 (함수가 값=first-class, 함수타입 `(Int)->Int`·`()->Unit`, 람다 `{x->본문}`·마지막줄=반환, `invoke`, `it`(파라미터1개), 트레일링 람다, 고차함수(함수를 파라미터/반환), 함수참조 `::triple`, 뒤에선 `Function1`로 컴파일) — `section08/Lesson01.kt`
 - ✅ 섹션8 강의2: 컬렉션 함수형 처리 (`stream()`/`collect()` 없이 바로 `filter`(개수↓)/`map`(값변환)/`forEach`(반환X), 새 리스트 반환·원본불변, 체이닝, `any`/`all`/`none`/`count`/`sumOf`/`find`/`sortedBy`/`groupBy`, `asSequence()`로 lazy) — `section08/Lesson02.kt`
-- ⏭ 다음: 섹션8 강의3 — **스코프 함수** (`let`/`run`/`with`/`apply`/`also`, 수신객체·반환값 차이) → 마지막 강의
+- ✅ 섹션8 강의3: 스코프 함수 (`let`/`run`/`with`/`apply`/`also`, 2축=객체참조 `it`(let/also)vs`this`(run/with/apply)·반환 람다결과(let/run/with)vs객체자신(apply/also), `apply`=초기화·`?.let`=null안전·`also`=부수효과, 자바 빌더/임시변수 대체) — `section08/Lesson03.kt`  → **섹션8 완료 · 커리큘럼 완주 🎉**
+> 커리큘럼 8섹션 전 강의 완료. 추가 요청 시 심화(제네릭·코루틴·DSL 등)로 확장하거나 복습·리팩터링 진행.
 > 새 강의를 끝낼 때마다 이 목록을 갱신한다.
