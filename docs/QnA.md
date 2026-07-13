@@ -18,6 +18,7 @@
 - [Q12. as 캐스트는 뭔데? (as / as? / is 스마트캐스트)](#q12)
 - [Q13. `init`/`Regex`와 `check(::repo.isInitialized){}` 한 줄 뜯어보기](#q13)
 - [Q14. 생성자 주입만 썼는데 lazy/lateinit이 왜 필요 없었나?](#q14)
+- [Q15. inline은 실제로 뭐가 달라지나? (역컴파일로 본 본문 복사·non-local return·crossinline)](#q15)
 
 ---
 
@@ -357,3 +358,41 @@ class OrderService(private val repository: OrderRepository) { ... }  // val, 만
 
 **lazy는 주입과 무관**: 비싼 계산을 처음 쓸 때까지 미루는 최적화(로거·무거운 파생값). 안 써도 그만.
 한 줄: **생성자 주입=val=완성 → lateinit 불필요. lateinit은 생성자 주입이 불가능할 때의 탈출구.**
+
+---
+
+<a id="q15"></a>
+## Q15. inline은 실제로 뭐가 달라지나? (역컴파일로 본 본문 복사·non-local return·crossinline)
+- 📅 2026-07-12 · 🔗 고급 섹션3 강의1 · 🖼️ `diagrams/s11l01_inline.svg`
+
+**질문**
+> inline 이 부분 좀 더 구체적으로 설명해줘.
+
+**답변**
+**일반 고차함수 → 컴파일하면 객체가 생긴다** (자바로 역컴파일):
+```java
+public static int measure(Function0<Integer> block) { return block.invoke(); }  // ② 가상 호출
+public static void main() {
+    measure(new Function0<Integer>() { public Integer invoke(){ return 42; } }); // ① 객체 생성
+}
+```
+비용 둘: ① 람다가 Function0 익명클래스로 되고 인스턴스 생성 ② invoke() 가상 호출. 반복문서 누적.
+
+**inline 붙이면 → 함수도 객체도 사라진다**:
+```java
+public static void main() { int r = 40 + 2; }   // 람다 본문이 그대로 박힘, 객체·호출 0
+```
+"본문이 복사된다"의 실체. (캡처 없는 람다는 싱글턴이지만, `{x+it}`처럼 캡처하면 호출마다 객체 생성 → inline이 이것도 제거.)
+
+**non-local return** — forEach가 inline이라 본문이 바깥 함수로 펼쳐짐:
+```kotlin
+fun firstEven(nums: List<Int>): Int? {
+    for (it in nums) { if (it%2==0) return it }   // return이 물리적으로 firstEven 안 → firstEven 종료
+    return null
+}
+```
+비-inline 람다면 이 return은 "어느 함수?" 모호 → 컴파일 에러.
+
+**crossinline** — 람다를 다른 맥락(Runnable)에 넣을 때: `Runnable { action() }`처럼 action이 run() 안으로 복사되면, 나중/다른 스레드 실행 시 non-local return이 위험 → crossinline이 "inline은 하되 non-local return 금지"로 막음.
+
+한 줄: **inline = Function 객체 생성 + invoke() 가상호출을 본문 복붙으로 제거 → reified·non-local return이 공짜로 따라옴. 대가는 바이트코드 팽창(작은 함수에만).**
