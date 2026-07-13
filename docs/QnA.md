@@ -19,6 +19,7 @@
 - [Q13. `init`/`Regex`와 `check(::repo.isInitialized){}` 한 줄 뜯어보기](#q13)
 - [Q14. 생성자 주입만 썼는데 lazy/lateinit이 왜 필요 없었나?](#q14)
 - [Q15. inline은 실제로 뭐가 달라지나? (역컴파일로 본 본문 복사·non-local return·crossinline)](#q15)
+- [Q16. `block: () -> Int` — 함수를 파라미터로 받는 문법 뜯어보기](#q16)
 
 ---
 
@@ -396,3 +397,34 @@ fun firstEven(nums: List<Int>): Int? {
 **crossinline** — 람다를 다른 맥락(Runnable)에 넣을 때: `Runnable { action() }`처럼 action이 run() 안으로 복사되면, 나중/다른 스레드 실행 시 non-local return이 위험 → crossinline이 "inline은 하되 non-local return 금지"로 막음.
 
 한 줄: **inline = Function 객체 생성 + invoke() 가상호출을 본문 복붙으로 제거 → reified·non-local return이 공짜로 따라옴. 대가는 바이트코드 팽창(작은 함수에만).**
+
+---
+
+<a id="q16"></a>
+## Q16. `block: () -> Int` — 함수를 파라미터로 받는 문법 뜯어보기
+- 📅 2026-07-12 · 🔗 고급 섹션3 강의1 · 섹션8 강의1(함수타입)
+
+**질문**
+> measure(block: () -> Int): Int 이 부분 구체적으로
+
+**답변**
+`fun measure(block: () -> Int): Int` 세 조각:
+- `block` = 파라미터 **이름**
+- `() -> Int` = 그 파라미터의 **타입 = 함수**("인자 없이 호출하면 Int 주는 함수"). 값이 아니라 함수를 받는다.
+- 끝 `: Int` = measure 자신의 반환 타입
+
+**함수 타입 해부**: `(파라미터 타입들) -> 반환타입`.
+- `() -> Int` 없이받고 Int / `(Int) -> Int` / `(String,Int) -> Boolean` / `() -> Unit`(void)
+
+**안에서**: `block()`으로 넘어온 함수를 실행(=`block.invoke()`).
+```kotlin
+fun measure(block: () -> Int): Int { val r = block(); return r }
+```
+**밖에서**: 람다를 넘김.
+```kotlin
+measure({ 40 + 2 })   // { 40 + 2 } 가 () -> Int
+measure { 40 + 2 }    // 트레일링 람다
+```
+**자바 대응**: 함수타입이 없어 함수형 인터페이스 필요 — `() -> Int` ↔ `Supplier<Integer>`(호출 `block.get()`), `(Int)->Int` ↔ `Function`, `(String,Int)->Boolean` ↔ `BiFunction`. 코틀린은 `() -> Int` 하나로 통일.
+
+핵심: measure는 "무슨 계산인지" 모른 채 껍데기만 주고, 실제 계산은 호출부가 람다로 꽂는다 = 고차함수. inline은 이때 그 람다가 객체로 안 만들어지게 함.
