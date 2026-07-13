@@ -100,6 +100,7 @@
 - ✅ 고급 섹션3(복잡한 함수형) 강의1: 인라인 함수 (`inline`=함수·람다 본문을 호출부에 복사→람다 객체(Function1) 생성·호출 오버헤드 제거, 표준 filter/map/let 다 inline, 열어주는 것=`reified`(T 살아있음)·non-local return(람다 속 return이 바깥함수 종료), `noinline`(특정 람다 제외)/`crossinline`(non-local return 금지), 큰 함수엔 지양) — `section11/Lesson01.kt`
 - ✅ 고급 섹션3(복잡한 함수형) 강의2: 시퀀스 (`asSequence()`로 lazy 전환, 컬렉션=eager(단계마다 새 리스트·가로 처리) vs 시퀀스=lazy(원소별 세로 처리·중간 리스트 0), 중간 연산(filter/map→시퀀스 반환·실행X) vs 최종 연산(first/toList/count→여기서 실행), 최종연산 없으면 계산 안 함, first/take 조기종료, 대용량·일부만 필요 시 이득) — `section11/Lesson02.kt`
 - ✅ 고급 섹션3(복잡한 함수형) 강의3: 함수 합성 (함수도 값→조합 가능, `andThen`(f먼저 g나중=`g(f(x))`)/`compose`(g먼저 f나중=`f(g(x))`) 직접 만듦=확장함수+고차함수+함수반환+infix, 파이프라인 `trim andThen lower andThen exclaim`, 부분 적용 `multiplier(2)`=설정 고정한 함수 반환) — `section11/Lesson03.kt`  → **고급 섹션3(복잡한 함수형) 완료**
-- ⏭ 다음: 고급 섹션4(DSL) 강의1 — **수신객체 지정 람다** (`T.() -> R`, 빌더 DSL의 기초)
+- ✅ 고급 섹션4(DSL) 강의1: 수신객체 지정 람다 (`T.() -> R`=객체가 `this`로 들어감 vs `(T)->R`=`it`, 람다 안 접두어 없이 멤버 호출, `apply`의 정체, 호출부 `obj.block()`, 미니 DSL `menu { item(...) }`=this=Menu) — `section12/Lesson01.kt`
+- ⏭ 다음: 고급 섹션4(DSL) 강의2 — **빌더 DSL 심화** (중첩 빌더, `@DslMarker`로 스코프 안전)
 
 > 새 강의를 끝낼 때마다 이 목록을 갱신한다.

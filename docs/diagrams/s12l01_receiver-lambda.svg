@@ -1,0 +1,48 @@
+<svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>수신객체 지정 람다: (T)->Unit은 it, T.()->Unit은 this</title>
+  <desc>객체가 람다에 파라미터(it)로 들어가는 일반 람다 vs 수신객체(this)로 들어가는 T.()->Unit. this라 접두어 없이 함수 호출 → DSL의 토대.</desc>
+  <style>
+    .mono{ font-family: ui-monospace,"Cascadia Code",monospace; }
+    .src { font-size:11px; } .h{ font-size:13px; font-weight:700; } .m{ font-size:11.5px; } .s{ font-size:10.5px; }
+  </style>
+  <rect x="0" y="0" width="720" height="380" fill="#faf9f7"/>
+
+  <text x="24" y="26" class="mono src" fill="#888">section12 / Lesson01.kt</text>
+  <text x="24" y="46" class="h" fill="#1a1a1a" font-size="16">수신객체 지정 람다 — .() 가 it 을 this 로</text>
+  <text x="24" y="64" class="s" fill="#888">시각화 대상: 객체가 람다에 파라미터(it)로 들어가나, 수신객체(this)로 들어가나</text>
+
+  <!-- 일반 람다 (it) -->
+  <rect x="24" y="80" width="672" height="118" rx="10" fill="#fff" stroke="#e2ddd4"/>
+  <rect x="24" y="80" width="672" height="26" rx="10" fill="#f5f0e8"/>
+  <text x="36" y="98" class="mono s" fill="#a5641f">block: (StringBuilder) -&gt; Unit    // 일반 람다</text>
+  <rect x="40" y="128" width="130" height="40" rx="9" fill="#fff" stroke="#ccc"/>
+  <text x="105" y="152" class="mono m" fill="#1a1a1a" text-anchor="middle">StringBuilder</text>
+  <text x="205" y="143" class="s" fill="#a5641f" text-anchor="middle">파라미터</text>
+  <line x1="175" y1="148" x2="245" y2="148" stroke="#a5641f" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ao)"/>
+  <rect x="255" y="122" width="230" height="52" rx="9" fill="#f6efe4" stroke="#a5641f" stroke-width="1.4"/>
+  <text x="268" y="140" class="s" fill="#a5641f">람다 안</text>
+  <text x="268" y="160" class="mono m" fill="#a5641f" font-weight="700">it.append("hi")</text>
+
+  <!-- 수신객체 람다 (this) -->
+  <rect x="24" y="210" width="672" height="118" rx="10" fill="#fff" stroke="#e2ddd4"/>
+  <rect x="24" y="210" width="672" height="26" rx="10" fill="#efeaff"/>
+  <text x="36" y="228" class="mono s" fill="#6d4bff">block: StringBuilder.() -&gt; Unit    // 수신객체 지정</text>
+  <rect x="40" y="258" width="130" height="40" rx="9" fill="#fff" stroke="#ccc"/>
+  <text x="105" y="282" class="mono m" fill="#1a1a1a" text-anchor="middle">StringBuilder</text>
+  <text x="205" y="273" class="s" fill="#6d4bff" text-anchor="middle">this</text>
+  <line x1="175" y1="278" x2="245" y2="278" stroke="#6d4bff" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ap)"/>
+  <rect x="255" y="252" width="300" height="52" rx="9" fill="#efeaff" stroke="#6d4bff" stroke-width="1.4"/>
+  <text x="268" y="270" class="s" fill="#6d4bff">람다 안 · this = StringBuilder</text>
+  <text x="268" y="290" class="mono m" fill="#1f8a4c" font-weight="700">append("hi")  <tspan fill="#1f8a4c">← 접두어 사라짐</tspan></text>
+
+  <!-- DSL note -->
+  <text x="580" y="270" class="s" fill="#6d4bff" font-weight="700">그래서 → DSL</text>
+  <text x="580" y="288" class="mono s" fill="#666">menu { item(...) }</text>
+
+  <text x="24" y="352" class="mono s" fill="#888">(T) -&gt; R  ⟶  it        T.() -&gt; R  ⟶  this</text>
+
+  <defs>
+    <marker id="ao" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#a5641f"/></marker>
+    <marker id="ap" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#6d4bff"/></marker>
+  </defs>
+</svg>
