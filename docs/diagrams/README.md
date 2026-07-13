@@ -39,7 +39,8 @@
 | [s10l02_delegated-properties.svg](s10l02_delegated-properties.svg) | (고급)위임 프로퍼티: by로 get/set 위임, getValue/setValue, observable/vetoable/by map | 고급 섹션2 강의2 |
 | [s11l01_inline.svg](s11l01_inline.svg) | (고급)인라인 함수: 람다 객체 오버헤드 제거, reified·non-local return, noinline/crossinline | 고급 섹션3 강의1 |
 | [s11l01b_lambda-to-object.svg](s11l01b_lambda-to-object.svg) | (고급)람다→Function0 객체 변환 5단계 + inline이 건너뛰는 지점 | 고급 섹션3 강의1 보충 |
-| [s11l02_sequence.svg](s11l02_sequence.svg) | (고급)시퀀스: eager 컬렉션 vs lazy 시퀀스, 가로/세로 처리, 중간/최종 연산 | 고급 섹션3 강의2 |
+| [s11l02_sequence.svg](s11l02_sequence.svg) | (고급)시퀀스: eager 컬렉션 vs lazy 시퀀스, 가로/세로 처리, 중간/최종 연산 | 고급 섹션3 강의2 · [📱Artifact](https://claude.ai/code/artifact/5c462aa9-c1d7-4dc0-90db-9328d9d394c3) |
+| [s11l03_function-composition.svg](s11l03_function-composition.svg) | (고급)함수 합성: andThen/compose, 파이프라인, 부분 적용 | 고급 섹션3 강의3 · [📱Artifact](https://claude.ai/code/artifact/b88e24ad-82c1-41dd-b0cf-976f50dfeeee) |
 | [q03_kt-jar-pipeline.svg](q03_kt-jar-pipeline.svg) | .kt → .class → .jar → 실행 흐름 | QnA Q3 |
 | [q04_npe-safecall.svg](q04_npe-safecall.svg) | NPE: Java 죽음 vs Kotlin 안전호출 | QnA Q4 |
 | [q05_why-equals-hashcode-tostring.svg](q05_why-equals-hashcode-tostring.svg) | equals/hashCode/toString을 DTO에서 재정의하는 이유 | QnA Q5 |

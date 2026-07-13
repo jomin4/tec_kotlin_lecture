@@ -1,0 +1,78 @@
+<svg viewBox="0 0 780 500" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>코틀린 함수 합성: andThen/compose, 함수를 이어붙여 새 함수, 파이프라인</title>
+  <desc>함수도 값이라 조합 가능. andThen은 f먼저 g나중 g(f(x)), compose는 g먼저 f나중 f(g(x)). 작은 함수를 이어 파이프라인 구성.</desc>
+  <style>
+    .title{ font-size:19px; font-weight:700; }
+    .sub  { font-size:12px; }
+    .hdr  { font-size:13.5px; font-weight:700; }
+    .lbl  { font-size:11.5px; font-weight:600; }
+    .mono { font-family: ui-monospace,"Cascadia Code",monospace; font-size:11px; }
+    .monoS{ font-family: ui-monospace,"Cascadia Code",monospace; font-size:10px; }
+  </style>
+
+  <rect x="0" y="0" width="780" height="500" fill="#faf9f7"/>
+
+  <text x="30" y="32" class="title" fill="#1a1a1a">함수 합성 = 함수를 <tspan fill="#7c5cff">이어붙여</tspan> 새 함수 만들기</text>
+  <text x="30" y="51" class="sub" fill="#666">함수도 값 → 함수+함수 = 또 다른 함수. 자바 Function.andThen/compose를 코틀린은 직접 만든다</text>
+
+  <!-- andThen -->
+  <rect x="30" y="66" width="360" height="150" rx="10" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="46" y="86" class="hdr" fill="#7c5cff">andThen — f 먼저, g 나중</text>
+  <text x="46" y="104" class="mono" fill="#666">g(f(x))</text>
+  <rect x="46" y="118" width="70" height="30" rx="6" fill="#fff" stroke="#ccc"/>
+  <text x="81" y="138" class="mono" fill="#1a1a1a" text-anchor="middle">5</text>
+  <path d="M118 133 L150 133" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="152" y="118" width="86" height="30" rx="6" fill="#fff" stroke="#7c5cff"/>
+  <text x="195" y="138" class="monoS" fill="#1a1a1a" text-anchor="middle">plus2 (+2)</text>
+  <path d="M240 133 L272 133" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="274" y="118" width="86" height="30" rx="6" fill="#fff" stroke="#7c5cff"/>
+  <text x="317" y="138" class="monoS" fill="#1a1a1a" text-anchor="middle">times3 (×3)</text>
+  <text x="46" y="176" class="mono" fill="#2e9e5b">plus2 andThen times3  →  (5+2)*3 = 21</text>
+  <text x="46" y="200" class="monoS" fill="#666">순서: 왼쪽 함수부터 실행 (읽는 순서대로)</text>
+
+  <!-- compose -->
+  <rect x="410" y="66" width="340" height="150" rx="10" fill="#e9f7ef" stroke="#2e9e5b" stroke-width="1.5"/>
+  <text x="426" y="86" class="hdr" fill="#2e9e5b">compose — g 먼저, f 나중</text>
+  <text x="426" y="104" class="mono" fill="#666">f(g(x))</text>
+  <rect x="426" y="118" width="60" height="30" rx="6" fill="#fff" stroke="#ccc"/>
+  <text x="456" y="138" class="mono" fill="#1a1a1a" text-anchor="middle">5</text>
+  <path d="M488 133 L516 133" stroke="#2e9e5b" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="518" y="118" width="84" height="30" rx="6" fill="#fff" stroke="#2e9e5b"/>
+  <text x="560" y="138" class="monoS" fill="#1a1a1a" text-anchor="middle">times3 (×3)</text>
+  <path d="M604 133 L632 133" stroke="#2e9e5b" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="634" y="118" width="80" height="30" rx="6" fill="#fff" stroke="#2e9e5b"/>
+  <text x="674" y="138" class="monoS" fill="#1a1a1a" text-anchor="middle">plus2 (+2)</text>
+  <text x="426" y="176" class="mono" fill="#b8722c">plus2 compose times3  →  (5*3)+2 = 17</text>
+  <text x="426" y="200" class="monoS" fill="#666">순서: 오른쪽 함수부터 실행 (안쪽부터)</text>
+
+  <!-- how it's built -->
+  <rect x="30" y="232" width="720" height="96" rx="10" fill="#fff" stroke="#ccc"/>
+  <text x="46" y="253" class="hdr" fill="#1a1a1a">직접 만드는 법 — 지금까지 배운 게 다 들어있다</text>
+  <text x="46" y="277" class="mono" fill="#1a1a1a">infix fun &lt;A,B,C&gt; ((A)-&gt;B).andThen(next: (B)-&gt;C): (A)-&gt;C = { a -&gt; next(this(a)) }</text>
+  <text x="46" y="300" class="monoS" fill="#7c5cff">확장함수(함수타입에 붙임) · 고차함수(함수를 받음) · 함수 반환({a->}) · this=첫 함수 호출</text>
+  <text x="46" y="318" class="monoS" fill="#666">infix 라서 a andThen b 처럼 중위 표기 가능</text>
+
+  <!-- pipeline -->
+  <rect x="30" y="344" width="720" height="130" rx="10" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="46" y="365" class="hdr" fill="#1a1a1a">실전: 작은 함수들을 조립 → 파이프라인</text>
+  <text x="46" y="388" class="mono" fill="#1a1a1a">val process = trim andThen lower andThen exclaim</text>
+  <rect x="46" y="402" width="150" height="28" rx="6" fill="#fff" stroke="#ccc"/>
+  <text x="121" y="420" class="monoS" fill="#1a1a1a" text-anchor="middle">"  HELLO  "</text>
+  <path d="M198 416 L224 416" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="226" y="402" width="110" height="28" rx="6" fill="#fff" stroke="#7c5cff"/>
+  <text x="281" y="420" class="monoS" fill="#1a1a1a" text-anchor="middle">trim → "HELLO"</text>
+  <path d="M338 416 L364 416" stroke="#7c5cff" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="366" y="402" width="120" height="28" rx="6" fill="#fff" stroke="#7c5cff"/>
+  <text x="426" y="420" class="monoS" fill="#1a1a1a" text-anchor="middle">lower → "hello"</text>
+  <path d="M488 416 L514 416" stroke="#2e9e5b" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="516" y="402" width="140" height="28" rx="6" fill="#fff" stroke="#2e9e5b"/>
+  <text x="586" y="420" class="monoS" fill="#1a1a1a" text-anchor="middle">exclaim → "hello!"</text>
+  <text x="46" y="452" class="monoS" fill="#666">각 단계가 작고 독립적 → 테스트·재사용·재조합 쉬움 (함수형의 힘)</text>
+  <text x="46" y="468" class="lbl" fill="#7c5cff">부분 적용: multiplier(2) → 설정을 고정한 새 함수를 반환 (double)</text>
+
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#888"/>
+    </marker>
+  </defs>
+</svg>
