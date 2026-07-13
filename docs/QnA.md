@@ -22,6 +22,7 @@
 - [Q16. `block: () -> Int` — 함수를 파라미터로 받는 문법 뜯어보기](#q16)
 - [Q17. 람다가 객체(Function0)로 바뀌는 "마법"의 정체](#q17)
 - [Q18. `StringBuilder.() -> Unit` 에서 `->` 와 `.()` 를 어떻게 해석하나](#q18)
+- [Q19. DSL은 주로 HTML/CSS 작성할 때 쓰나?](#q19)
 
 ---
 
@@ -491,3 +492,34 @@ StringBuilder . ()      -> Unit
 전체 번역: "block은 매개변수. 타입은 함수인데 StringBuilder를 this로 갖고, 인자 없고, 반환 없음." → 호출은 `sb.block()`, 블록 안에선 `this.append` → `append`(접두어 생략).
 
 한 줄: **`->`는 그대로, `.()` 앞 타입 = "람다 안에서 this가 될 객체" (이번에 추가된 유일한 조각).**
+
+---
+
+<a id="q19"></a>
+## Q19. DSL은 주로 HTML/CSS 작성할 때 쓰나?
+- 📅 2026-07-13 · 🔗 고급 섹션4 강의2
+
+**질문**
+> dsl은 주로 css,html 코드 작성할 때 많이 사용하는 건가?
+
+**답변**
+아니다. **HTML은 중첩이 직관적이라 쓴 대표 "예시"**일 뿐. DSL의 본진은 마크업이 아니라 **설정·빌더**다. 그리고 이미 매일 쓰고 있다 — `build.gradle.kts`.
+
+```kotlin
+dependencies {                  // this = DependencyHandler
+    implementation("...")       // menu { item(...) } 와 똑같은 구조
+}
+```
+
+실무 DSL:
+- **Gradle** `dependencies { }` `plugins { }` — 빌드 설정
+- **Spring Security** `http { authorizeHttpRequests { authorize(...) } }`
+- **Spring 라우팅** `router { GET("/x"){} }`
+- **Ktor** `routing { get("/"){} }` — 서버 라우팅
+- **Kotest** `describe("x"){ it("..."){} }` — 테스트
+- **Exposed** `Users.select { age greater 18 }` — SQL
+- **코루틴** `launch { }` `coroutineScope { }`
+- **kotlinx.html** `html { body { } }` — 이건 실제 마크업(한 경우)
+
+언제 쓰나: **구조적·중첩된 설정/조립을 코드인데 선언적으로 읽기 좋게** 표현할 때. (설정·빌더·테스트 명세·라우팅)
+한 줄: **DSL ≠ HTML/CSS 전용. 빌드/프레임워크 설정·빌더 API가 주 무대이고, build.gradle.kts가 그 증거.**
