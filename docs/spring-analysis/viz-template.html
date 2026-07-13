@@ -1,16 +1,9 @@
 <title>Spring 분석 시각화 — 컴포넌트 템플릿 킷</title>
 <!--
-  ========================================================================
   재사용 시각화 템플릿 킷 (Spring 분석 트랙 공용)
-  사용법: 이 <style> 블록을 그대로 복사 → 아래 컴포넌트 중 필요한 것만 골라 조립.
-  절대 규칙: "설명 텍스트를 박스로 감싸기" 금지. 각 유형의 다이어그램 문법을 쓴다.
-  - 생명주기/단계  → .tl  (수직 타임라인, 확장점 마커)
-  - 호출 흐름/AOP  → .seq (lifeline 3레인 + 메시지 화살표)
-  - 프록시         → .proxy (target을 감싼 shell, 가로채기)
-  - DI 관계        → .graph (노드 + 방향 엣지)
-  - 마법→원리 결론 → .map  (🪄사용법 / 🔧내부처리 / 🧩미니버전 3열)
-  공통: .vh(헤더), .code(코드 앵커). visible-by-default + 테마 대응 필수.
-  ========================================================================
+  이 <style> 복사 → 컴포넌트만 골라 조립. 텍스트 박스 나열 금지.
+  .tl=타임라인(생명주기) · .seq=시퀀스(호출흐름) · .proxy=프록시래핑 · .graph=DI · .map=마법→원리
+  visible-by-default + 테마대응 필수. 렌더 텍스트는 역할 구분용 라벨만(최소).
 -->
 <style>
   :root{
@@ -37,88 +30,77 @@
   }
   *{box-sizing:border-box} body{margin:0}
   .wrap{font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-    background:var(--bg); color:var(--ink); min-height:100vh; padding:28px 16px 56px; -webkit-text-size-adjust:100%}
+    background:var(--bg); color:var(--ink); min-height:100vh; padding:26px 16px 52px; -webkit-text-size-adjust:100%}
   .col{max-width:680px; margin:0 auto}
   .mono{font-family:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace}
+  .kit-label{font-size:10.5px; font-weight:800; letter-spacing:.06em; color:var(--muted); margin:26px 0 8px; border-top:1px solid var(--line); padding-top:16px; font-family:ui-monospace,monospace}
 
-  /* ── 갤러리 라벨(템플릿 문서용, 실제 도표엔 미사용) ── */
-  .kit-label{font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--a); margin:34px 0 4px; border-top:1px solid var(--line); padding-top:20px}
-  .kit-note{font-size:11.5px; color:var(--muted); margin:0 0 14px; line-height:1.5}
-
-  /* ══ 공통: 헤더 ══ */
-  .vh-src{font-size:11.5px; letter-spacing:.05em; color:var(--muted); margin:0 0 6px; font-family:ui-monospace,monospace}
-  .vh-title{font-size:20px; font-weight:800; letter-spacing:-.01em; margin:0 0 4px; text-wrap:balance}
-  .vh-q{font-size:12.5px; color:var(--muted); margin:0 0 14px} .vh-q b{color:var(--a); font-weight:700}
-  .vh-legend{display:flex; gap:14px; flex-wrap:wrap; font-size:11.5px; color:var(--muted); margin-bottom:6px}
+  /* 헤더 */
+  .vh-src{font-size:11.5px; color:var(--muted); margin:0 0 6px; font-family:ui-monospace,monospace}
+  .vh-title{font-size:19px; font-weight:800; letter-spacing:-.01em; margin:0 0 10px}
+  .vh-legend{display:flex; gap:14px; flex-wrap:wrap; font-size:11.5px; color:var(--muted)}
   .vh-legend i{width:10px; height:10px; border-radius:3px; display:inline-block; margin-right:5px; vertical-align:middle}
 
-  /* ══ 공통: 코드 앵커 ══ */
-  .code{background:var(--code-bg); color:var(--code-ink); border-radius:10px; padding:11px 13px; font-size:12.5px;
-    line-height:1.6; overflow-x:auto; white-space:nowrap; font-family:ui-monospace,monospace}
+  /* 코드 앵커 */
+  .code{background:var(--code-bg); color:var(--code-ink); border-radius:10px; padding:10px 13px; font-size:12.5px;
+    line-height:1.5; overflow-x:auto; white-space:nowrap; font-family:ui-monospace,monospace}
   .anno{color:var(--d); font-weight:800; background:var(--d-w); border-radius:4px; padding:0 3px}
   .kw{color:var(--a); font-weight:700}
 
-  /* ══ 유형 1: 수직 타임라인 (생명주기·단계) ══ */
+  /* 타임라인 */
   .tl{list-style:none; margin:0; padding:0 0 0 6px; position:relative}
   .tl::before{content:""; position:absolute; left:12px; top:8px; bottom:8px; width:2px; background:var(--line)}
-  .tl-step{position:relative; padding:0 0 16px 34px; min-height:26px}
+  .tl-step{position:relative; padding:0 0 15px 34px; min-height:22px}
   .tl-step:last-child{padding-bottom:0}
-  .tl-dot{position:absolute; left:5px; top:2px; width:15px; height:15px; border-radius:50%; background:var(--surface); border:3px solid var(--muted)}
+  .tl-dot{position:absolute; left:5px; top:1px; width:15px; height:15px; border-radius:50%; background:var(--surface); border:3px solid var(--muted)}
   .tl-body{font-size:13.5px; font-weight:600}
-  .tl-sub{font-size:11.5px; color:var(--muted); margin-top:2px}
   .tl-hook .tl-dot{border-color:var(--a); box-shadow:0 0 0 4px var(--a-w)}
   .tl-hook .tl-body{color:var(--a)}
-  .tl-tag{font-size:10px; font-weight:800; letter-spacing:.04em; background:var(--a-w); color:var(--a); border-radius:999px; padding:2px 8px; margin-left:6px; font-family:ui-monospace,monospace}
+  .tl-tag{font-size:10px; font-weight:800; background:var(--a-w); color:var(--a); border-radius:999px; padding:2px 7px; margin-left:6px; font-family:ui-monospace,monospace}
 
-  /* ══ 유형 2: 시퀀스 (lifeline 최대 3레인 + 메시지) ══ */
+  /* 시퀀스 (lifeline 3레인) */
   .seq{border:1px solid var(--line); border-radius:12px; overflow:hidden}
   .seq-head{display:grid; grid-template-columns:repeat(3,1fr); background:var(--surface-2); border-bottom:1px solid var(--line)}
-  .seq-head span{text-align:center; padding:9px 4px; font-size:11.5px; font-weight:800; font-family:ui-monospace,monospace; border-right:1px dashed var(--line)}
+  .seq-head span{text-align:center; padding:8px 4px; font-size:11.5px; font-weight:800; font-family:ui-monospace,monospace; border-right:1px dashed var(--line)}
   .seq-head span:last-child{border-right:0}
   .seq-lane1{color:var(--a)} .seq-lane2{color:var(--b)} .seq-lane3{color:var(--c)}
-  .seq-body{position:relative; padding:6px 0}
-  .seq-body::before,.seq-body::after,.seq-line{content:""} /* lifelines drawn via bg */
-  .seq-body{background:
+  .seq-body{position:relative; padding:6px 0; background:
      linear-gradient(var(--line),var(--line)) calc(100%/6) 0/1px 100% no-repeat,
-     linear-gradient(var(--line),var(--line)) calc(50%) 0/1px 100% no-repeat,
+     linear-gradient(var(--line),var(--line)) 50% 0/1px 100% no-repeat,
      linear-gradient(var(--line),var(--line)) calc(500%/6) 0/1px 100% no-repeat}
-  .seq-msg{display:flex; align-items:center; gap:6px; padding:7px 12px; font-size:11.5px; font-family:ui-monospace,monospace}
-  .seq-msg .m{flex:1; height:0; border-top:2px solid var(--a); position:relative}
+  .seq-msg{display:flex; align-items:center; gap:6px; padding:6px 12px; font-size:11.5px; font-family:ui-monospace,monospace}
+  .seq-msg .m{flex:1; height:0; border-top:2px solid var(--a)}
   .seq-msg .m.ret{border-top-style:dashed; border-color:var(--muted)}
-  .seq-msg .lbl{position:relative; background:var(--surface); padding:0 6px; color:var(--ink); white-space:nowrap}
+  .seq-msg .lbl{background:var(--surface); padding:0 6px; white-space:nowrap}
   .seq-msg .arw{color:var(--a); font-weight:800} .seq-msg .arw.ret{color:var(--muted)}
 
-  /* ══ 유형 3: 프록시 래핑도 ══ */
+  /* 프록시 래핑 */
   .proxy{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
   .proxy-caller{border:1px solid var(--line); background:var(--surface); border-radius:10px; padding:10px 12px; font-size:12.5px; font-weight:700; font-family:ui-monospace,monospace}
   .proxy-arrow{color:var(--a); font-weight:800; font-size:15px}
-  .proxy-shell{flex:1; min-width:200px; border:2px solid var(--a); background:var(--a-w); border-radius:14px; padding:12px}
-  .proxy-shell .plabel{font-size:11px; font-weight:800; color:var(--a); font-family:ui-monospace,monospace; margin-bottom:8px}
-  .proxy-advice{font-size:11px; color:var(--muted); font-family:ui-monospace,monospace; margin:5px 0}
-  .proxy-target{border:1.5px solid var(--b); background:var(--surface); border-radius:10px; padding:10px 12px; font-size:12.5px; font-weight:700; font-family:ui-monospace,monospace; color:var(--b); text-align:center}
+  .proxy-shell{flex:1; min-width:200px; border:2px solid var(--a); background:var(--a-w); border-radius:14px; padding:11px}
+  .proxy-shell .plabel{font-size:11px; font-weight:800; color:var(--a); font-family:ui-monospace,monospace; margin-bottom:7px}
+  .proxy-advice{font-size:11px; color:var(--muted); font-family:ui-monospace,monospace; margin:4px 0}
+  .proxy-target{border:1.5px solid var(--b); background:var(--surface); border-radius:10px; padding:9px 12px; font-size:12.5px; font-weight:700; font-family:ui-monospace,monospace; color:var(--b); text-align:center}
 
-  /* ══ 유형 4: 의존성 그래프 (노드 + 방향 엣지, 선형) ══ */
+  /* 의존성 그래프 */
   .graph{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
   .node{border:1.5px solid var(--line); background:var(--surface); border-radius:10px; padding:9px 12px; font-size:12.5px; font-weight:700; font-family:ui-monospace,monospace}
   .node.bean{border-color:var(--a); color:var(--a)} .node.dep{border-color:var(--b); color:var(--b)}
   .edge{display:flex; flex-direction:column; align-items:center; color:var(--muted); font-size:10px; font-family:ui-monospace,monospace}
   .edge .bar{width:36px; border-top:2px solid var(--muted)} .edge .lbl2{margin-bottom:1px}
 
-  /* ══ 유형 5: 마법→원리 대응표 ══ */
+  /* 마법→원리 대응표 */
   .map{border:1px solid var(--line); border-radius:12px; overflow:hidden}
   .map-row{display:grid; grid-template-columns:1fr 1.3fr 1fr; font-size:12px; border-bottom:1px solid var(--line)}
   .map-row:last-child{border-bottom:0}
-  .map-row.h{background:var(--surface-2); font-weight:800; font-size:11px; letter-spacing:.03em}
-  .map-cell{padding:10px 11px; border-right:1px dashed var(--line); font-family:ui-monospace,monospace; line-height:1.5; overflow-x:auto}
+  .map-row.h{background:var(--surface-2); font-weight:800; font-size:11px}
+  .map-cell{padding:9px 11px; border-right:1px dashed var(--line); font-family:ui-monospace,monospace; line-height:1.4; overflow-x:auto}
   .map-cell:last-child{border-right:0}
   .map .use{color:var(--a)} .map .fw{color:var(--b)} .map .mini{color:var(--muted)}
 
-  /* ══ 공통: 진입/화살표/노트 ══ */
-  .flowdot{color:var(--muted); font-size:15px; text-align:center; padding:5px 0}
-  .foot{margin-top:20px; padding:12px 14px; border:1px dashed var(--a); border-radius:12px; background:var(--a-w); font-size:12px; line-height:1.55}
-  .foot b{color:var(--a)}
+  .flowdot{color:var(--muted); font-size:15px; text-align:center; padding:4px 0}
 
-  /* ══ 애니메이션: 순수 장식 (visible-by-default) ══ */
   .reveal{}
   @media (prefers-reduced-motion: no-preference){
     .reveal{animation:pop .5s ease both}
@@ -129,74 +111,58 @@
 
 <div class="wrap"><div class="col">
 
-  <p class="vh-src mono">docs/spring-analysis/viz-template.html</p>
-  <h1 class="vh-title">시각화 컴포넌트 킷 — 조립해서 쓴다</h1>
-  <p class="vh-q">🎯 규칙: <b>텍스트를 박스로 감싸지 말고, 유형별 다이어그램 문법을 조립</b></p>
-
-  <!-- ═══════════ 헤더 컴포넌트 ═══════════ -->
-  <p class="kit-label">① 헤더 (.vh-*)</p>
-  <p class="kit-note">모든 도표 상단. 코드 앵커 + 제목 + 🎯분석질문 + (선택)범례.</p>
+  <p class="vh-src mono">viz-template.html</p>
+  <h1 class="vh-title">시각화 컴포넌트 킷</h1>
   <div class="vh-legend"><span><i style="background:var(--a)"></i>사용자</span><span><i style="background:var(--b)"></i>프레임워크</span></div>
 
-  <!-- ═══════════ 코드 앵커 ═══════════ -->
-  <p class="kit-label">② 코드 앵커 (.code)</p>
-  <div class="code reveal">field.<span class="anno">getAnnotation</span>(NotBlank::class.java)  <span class="kw">// spring-core</span></div>
+  <p class="kit-label">헤더 .vh · 코드앵커 .code</p>
+  <div class="code reveal">field.<span class="anno">getAnnotation</span>(NotBlank::class.java)</div>
 
-  <!-- ═══════════ 유형1: 타임라인 ═══════════ -->
-  <p class="kit-label">③ 생명주기 타임라인 (.tl) — 단계/부팅</p>
-  <p class="kit-note">시간이 위→아래. 확장점(BPP 등)은 .tl-hook 으로 강조.</p>
+  <p class="kit-label">.tl — 생명주기 타임라인</p>
   <ol class="tl reveal">
-    <li class="tl-step"><span class="tl-dot"></span><div class="tl-body">인스턴스화</div><div class="tl-sub">생성자 호출</div></li>
-    <li class="tl-step"><span class="tl-dot"></span><div class="tl-body">의존성 주입</div><div class="tl-sub">@Autowired</div></li>
-    <li class="tl-step tl-hook"><span class="tl-dot"></span><div class="tl-body">BeanPostProcessor.before<span class="tl-tag">확장점</span></div></li>
-    <li class="tl-step"><span class="tl-dot"></span><div class="tl-body">초기화</div><div class="tl-sub">@PostConstruct</div></li>
-    <li class="tl-step tl-hook"><span class="tl-dot"></span><div class="tl-body">BeanPostProcessor.after<span class="tl-tag">프록시 여기</span></div></li>
-    <li class="tl-step"><span class="tl-dot"></span><div class="tl-body">사용 준비 완료</div></li>
+    <li class="tl-step"><span class="tl-dot"></span><div class="tl-body">인스턴스화</div></li>
+    <li class="tl-step"><span class="tl-dot"></span><div class="tl-body">주입</div></li>
+    <li class="tl-step tl-hook"><span class="tl-dot"></span><div class="tl-body">BPP.before<span class="tl-tag">확장점</span></div></li>
+    <li class="tl-step"><span class="tl-dot"></span><div class="tl-body">init</div></li>
+    <li class="tl-step tl-hook"><span class="tl-dot"></span><div class="tl-body">BPP.after<span class="tl-tag">프록시</span></div></li>
+    <li class="tl-step"><span class="tl-dot"></span><div class="tl-body">완료</div></li>
   </ol>
 
-  <!-- ═══════════ 유형2: 시퀀스 ═══════════ -->
-  <p class="kit-label">④ 시퀀스 (.seq) — 호출 흐름/AOP (최대 3레인)</p>
-  <p class="kit-note">세로 lifeline + 가로 메시지. 실선=호출, 점선=반환.</p>
+  <p class="kit-label">.seq — 시퀀스 (호출 흐름)</p>
   <div class="seq reveal">
     <div class="seq-head"><span class="seq-lane1">Caller</span><span class="seq-lane2">Proxy</span><span class="seq-lane3">Target</span></div>
     <div class="seq-body">
-      <div class="seq-msg"><span class="lbl">place()</span><span class="m"></span><span class="arw">▶</span></div>
-      <div class="seq-msg"><span class="lbl">begin tx</span><span class="m"></span><span class="arw">▶</span></div>
-      <div class="seq-msg"><span class="lbl">실제 로직</span><span class="m ret"></span><span class="arw ret">◀</span></div>
+      <div class="seq-msg"><span class="lbl">call</span><span class="m"></span><span class="arw">▶</span></div>
+      <div class="seq-msg"><span class="lbl">begin</span><span class="m"></span><span class="arw">▶</span></div>
+      <div class="seq-msg"><span class="lbl">return</span><span class="m ret"></span><span class="arw ret">◀</span></div>
       <div class="seq-msg"><span class="lbl">commit</span><span class="m ret"></span><span class="arw ret">◀</span></div>
     </div>
   </div>
 
-  <!-- ═══════════ 유형3: 프록시 래핑 ═══════════ -->
-  <p class="kit-label">⑤ 프록시 래핑도 (.proxy) — @Transactional 등</p>
-  <p class="kit-note">호출이 shell(프록시)을 통과해 target에 도달. advice가 in/out에서 감쌈.</p>
+  <p class="kit-label">.proxy — 프록시 래핑</p>
   <div class="proxy reveal">
     <span class="proxy-caller">Caller</span>
     <span class="proxy-arrow">▶</span>
     <div class="proxy-shell">
       <div class="plabel">Proxy</div>
-      <div class="proxy-advice">▽ begin transaction</div>
-      <div class="proxy-target">Target Bean · 실제 메서드</div>
-      <div class="proxy-advice">△ commit / rollback</div>
+      <div class="proxy-advice">▽ begin</div>
+      <div class="proxy-target">Target</div>
+      <div class="proxy-advice">△ commit</div>
     </div>
   </div>
 
-  <!-- ═══════════ 유형4: 의존성 그래프 ═══════════ -->
-  <p class="kit-label">⑥ 의존성 그래프 (.graph) — DI 관계</p>
+  <p class="kit-label">.graph — 의존성</p>
   <div class="graph reveal">
-    <span class="node bean">OrderService</span>
-    <span class="edge"><span class="lbl2">injects</span><span class="bar"></span>▶</span>
-    <span class="node dep">OrderRepository</span>
+    <span class="node bean">Service</span>
+    <span class="edge"><span class="lbl2">inject</span><span class="bar"></span>▶</span>
+    <span class="node dep">Repository</span>
   </div>
 
-  <!-- ═══════════ 유형5: 마법→원리 대응표 ═══════════ -->
-  <p class="kit-label">⑦ 마법→원리 대응표 (.map) — 매 강의 결론</p>
+  <p class="kit-label">.map — 마법→원리 대응표</p>
   <div class="map reveal">
-    <div class="map-row h"><div class="map-cell">🪄 사용법</div><div class="map-cell">🔧 내부 처리</div><div class="map-cell">🧩 미니버전</div></div>
-    <div class="map-row"><div class="map-cell use">@Autowired</div><div class="map-cell fw">AutowiredAnno...PostProcessor</div><div class="map-cell mini">getAnnotation</div></div>
-    <div class="map-row"><div class="map-cell use">"알아서 꽂힘"</div><div class="map-cell fw">InjectionMetadata.inject()→field.set</div><div class="map-cell mini">field.set(obj,v)</div></div>
+    <div class="map-row h"><div class="map-cell">🪄 사용법</div><div class="map-cell">🔧 내부</div><div class="map-cell">🧩 미니</div></div>
+    <div class="map-row"><div class="map-cell use">@Autowired</div><div class="map-cell fw">...PostProcessor</div><div class="map-cell mini">getAnnotation</div></div>
+    <div class="map-row"><div class="map-cell use">꽂힘</div><div class="map-cell fw">inject()→field.set</div><div class="map-cell mini">field.set</div></div>
   </div>
-
-  <div class="foot reveal">이 킷의 &lt;style&gt;을 복사 → 필요한 컴포넌트만 골라 조립. <b>텍스트 박스 나열 금지</b>, 유형별 문법으로.</div>
 
 </div></div>
