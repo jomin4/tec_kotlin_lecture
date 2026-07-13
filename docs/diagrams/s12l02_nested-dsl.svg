@@ -1,0 +1,46 @@
+<svg viewBox="0 0 640 440" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>중첩 빌더 DSL: 블록마다 this가 바뀜, @DslMarker 스코프 차단</title>
+  <desc>html { body { p() } } 중첩 DSL에서 각 블록마다 수신객체 this가 Html→Body→문단으로 갈아끼워짐. @DslMarker가 안쪽에서 바깥 this 호출을 막음.</desc>
+  <style>
+    .mono{ font-family: ui-monospace,"Cascadia Code",monospace; }
+    .src{ font-size:11px; } .h{ font-size:15px; font-weight:700; } .s{ font-size:10.5px; } .b{ font-size:11px; font-weight:800; }
+  </style>
+  <rect x="0" y="0" width="640" height="440" fill="#faf9f7"/>
+
+  <text x="22" y="24" class="mono src" fill="#888">section12 / Lesson02.kt</text>
+  <text x="22" y="44" class="h" fill="#1a1a1a">중첩 빌더 DSL — { } 마다 this가 바뀐다</text>
+  <text x="22" y="61" class="s" fill="#888">시각화 대상: 중첩 블록마다 수신객체(this)가 한 겹씩 갈아끼워지는 구조</text>
+
+  <!-- code anchor -->
+  <rect x="22" y="74" width="240" height="86" rx="8" fill="#f4f1ec"/>
+  <text x="34" y="94" class="mono s" fill="#6d4bff" font-weight="700">html {</text>
+  <text x="46" y="112" class="mono s" fill="#1f8a4c" font-weight="700">body {</text>
+  <text x="58" y="130" class="mono s" fill="#a5641f" font-weight="700">p("안녕하세요")</text>
+  <text x="46" y="148" class="mono s" fill="#1f8a4c">}</text>
+  <text x="34" y="160" class="mono s" fill="#6d4bff">}</text>
+
+  <!-- nested scopes -->
+  <rect x="286" y="74" width="332" height="150" rx="12" fill="#efeaff" stroke="#6d4bff" stroke-width="2"/>
+  <rect x="298" y="86" width="90" height="20" rx="10" fill="#6d4bff"/>
+  <text x="343" y="100" class="mono b" fill="#fff" text-anchor="middle">this = Html</text>
+  <text x="396" y="101" class="mono s" fill="#6d4bff">head{}  body{}</text>
+
+  <rect x="298" y="114" width="308" height="98" rx="10" fill="#e7f6ec" stroke="#1f8a4c" stroke-width="2"/>
+  <rect x="310" y="124" width="92" height="20" rx="10" fill="#1f8a4c"/>
+  <text x="356" y="138" class="mono b" fill="#fff" text-anchor="middle">this = Body</text>
+  <text x="410" y="139" class="mono s" fill="#1f8a4c">p("...")  p("...")</text>
+
+  <rect x="310" y="152" width="284" height="50" rx="9" fill="#f6efe4" stroke="#a5641f" stroke-width="1.6"/>
+  <rect x="322" y="161" width="86" height="20" rx="10" fill="#a5641f"/>
+  <text x="365" y="175" class="mono b" fill="#fff" text-anchor="middle">this = 문단</text>
+  <text x="416" y="176" class="mono s" fill="#a5641f">"안녕하세요"</text>
+
+  <!-- DslMarker -->
+  <rect x="22" y="240" width="596" height="86" rx="12" fill="#faf0ef" stroke="#c0392b" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <text x="36" y="264" class="mono b" fill="#c0392b">@DslMarker — 바깥 this로의 실수 접근 차단</text>
+  <text x="36" y="288" class="mono s" fill="#1a1a1a">body 스코프 안에서  <tspan fill="#c0392b" font-weight="700">body { }</tspan>  <tspan fill="#c0392b" font-weight="700">✕ 컴파일 에러</tspan></text>
+  <text x="36" y="308" class="s" fill="#666">중첩되면 바깥 Html의 body()도 보이는데, @DslMarker가 안쪽에서 바깥 this 호출을 막아 실수를 잡음</text>
+
+  <text x="22" y="356" class="mono s" fill="#888">각 함수가 다음 레벨의 T.()->Unit 을 받고 apply로 그 레벨 객체를 만들어 넘긴다</text>
+  <text x="22" y="374" class="mono s" fill="#888">fun html(block: Html.()->Unit) = Html().apply(block)</text>
+</svg>
