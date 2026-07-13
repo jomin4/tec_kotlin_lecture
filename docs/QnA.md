@@ -21,6 +21,7 @@
 - [Q15. inline은 실제로 뭐가 달라지나? (역컴파일로 본 본문 복사·non-local return·crossinline)](#q15)
 - [Q16. `block: () -> Int` — 함수를 파라미터로 받는 문법 뜯어보기](#q16)
 - [Q17. 람다가 객체(Function0)로 바뀌는 "마법"의 정체](#q17)
+- [Q18. `StringBuilder.() -> Unit` 에서 `->` 와 `.()` 를 어떻게 해석하나](#q18)
 
 ---
 
@@ -459,3 +460,34 @@ Function0<Integer> block = new Function0<Integer>() {
 
 대응표: 람다=Function0 객체 / 람다 본문=invoke() 몸통 / `block()`=`block.invoke()`.
 한 줄: **JVM이 함수를 몰라서 코틀린이 "invoke() 하나짜리 객체"로 몰래 포장한 것 — inline은 그 포장을 없앤다.**
+
+---
+
+<a id="q18"></a>
+## Q18. `StringBuilder.() -> Unit` 에서 `->` 와 `.()` 를 어떻게 해석하나
+- 📅 2026-07-13 · 🔗 고급 섹션4 강의1 · 📄 `notes/reading-function-types.md`
+
+**질문**
+> block: StringBuilder.() -> Unit 에서 -> 화살표 의미가 뭐지? 이 부분 어떻게 해석해?
+
+**답변**
+`->`의 의미는 **안 바뀐다**: 늘 "왼쪽=받는 것, 오른쪽=주는 것". 새로 붙은 건 `()` 앞의 `StringBuilder.` 부분.
+
+4조각 분해:
+```
+StringBuilder . ()      -> Unit
+  수신객체타입  ↑   파라미터(없음)   반환(Unit=void)
+              this로 삼겠다는 표시
+```
+- `StringBuilder.` = "이 람다 안에서 StringBuilder가 this다"(수신객체)
+- `()` = 인자 없음
+- `->` = 받아서 준다 (그대로)
+- `Unit` = 반환 없음
+
+비교:
+- `() -> Unit` : 안 받고 아무것도 안 줌
+- `StringBuilder.() -> Unit` : **StringBuilder를 this로 가지며** 안 받고 아무것도 안 줌
+
+전체 번역: "block은 매개변수. 타입은 함수인데 StringBuilder를 this로 갖고, 인자 없고, 반환 없음." → 호출은 `sb.block()`, 블록 안에선 `this.append` → `append`(접두어 생략).
+
+한 줄: **`->`는 그대로, `.()` 앞 타입 = "람다 안에서 this가 될 객체" (이번에 추가된 유일한 조각).**
