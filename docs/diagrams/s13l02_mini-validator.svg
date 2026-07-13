@@ -1,0 +1,51 @@
+<svg viewBox="0 0 640 400" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>미니 검증 프레임워크: 어노테이션 규칙을 리플렉션으로 읽어 검사 (@Valid 원리)</title>
+  <desc>필드마다 붙은 @NotBlank/@Min 규칙을 리플렉션으로 읽어 값을 검사한다. Form("",0)은 두 필드 위반, Form("홍길동",30)은 통과. Spring @Valid의 축소판.</desc>
+  <style>
+    .mono{ font-family: ui-monospace,"Cascadia Code",monospace; }
+    .src{ font-size:11px; } .h{ font-size:15px; font-weight:700; } .s{ font-size:10.5px; } .g{ font-size:10px; font-weight:800; }
+  </style>
+  <rect x="0" y="0" width="640" height="400" fill="#faf9f7"/>
+
+  <text x="22" y="24" class="mono src" fill="#888">section13 / Lesson02.kt</text>
+  <text x="22" y="44" class="h" fill="#1a1a1a">미니 검증 프레임워크 — @Valid의 원리</text>
+  <text x="22" y="61" class="s" fill="#888">시각화 대상: 필드마다 붙은 어노테이션(규칙)을 리플렉션으로 읽어 값을 검사</text>
+
+  <text x="22" y="86" class="mono g" fill="#888">FORM("", 0) — 실패</text>
+
+  <!-- fail row 1 -->
+  <rect x="22" y="94" width="596" height="34" rx="8" fill="#faf0ef" stroke="#c0392b" stroke-width="1.2"/>
+  <rect x="34" y="103" width="76" height="16" rx="8" fill="#efeaff"/>
+  <text x="72" y="115" class="mono s" fill="#6d4bff" text-anchor="middle">@NotBlank</text>
+  <text x="120" y="115" class="mono s" fill="#1a1a1a">name = ""</text>
+  <text x="330" y="115" class="mono s" fill="#c0392b" font-weight="700">✗ name: 비어있으면 안 됨</text>
+
+  <!-- fail row 2 -->
+  <rect x="22" y="134" width="596" height="34" rx="8" fill="#faf0ef" stroke="#c0392b" stroke-width="1.2"/>
+  <rect x="34" y="143" width="60" height="16" rx="8" fill="#efeaff"/>
+  <text x="64" y="155" class="mono s" fill="#6d4bff" text-anchor="middle">@Min(1)</text>
+  <text x="104" y="155" class="mono s" fill="#1a1a1a">age = 0</text>
+  <text x="330" y="155" class="mono s" fill="#c0392b" font-weight="700">✗ age: 1 이상이어야 함 (현재 0)</text>
+
+  <text x="22" y="192" class="mono g" fill="#888">FORM("홍길동", 30) — 통과</text>
+
+  <!-- pass row 1 -->
+  <rect x="22" y="200" width="596" height="34" rx="8" fill="#e7f6ec" stroke="#1f8a4c" stroke-width="1.2"/>
+  <rect x="34" y="209" width="76" height="16" rx="8" fill="#efeaff"/>
+  <text x="72" y="221" class="mono s" fill="#6d4bff" text-anchor="middle">@NotBlank</text>
+  <text x="120" y="221" class="mono s" fill="#1a1a1a">name = "홍길동"</text>
+  <text x="330" y="221" class="mono s" fill="#1f8a4c" font-weight="700">✓ 통과</text>
+
+  <!-- pass row 2 -->
+  <rect x="22" y="240" width="596" height="34" rx="8" fill="#e7f6ec" stroke="#1f8a4c" stroke-width="1.2"/>
+  <rect x="34" y="249" width="60" height="16" rx="8" fill="#efeaff"/>
+  <text x="64" y="261" class="mono s" fill="#6d4bff" text-anchor="middle">@Min(1)</text>
+  <text x="104" y="261" class="mono s" fill="#1a1a1a">age = 30</text>
+  <text x="330" y="261" class="mono s" fill="#1f8a4c" font-weight="700">✓ 통과 (30 ≥ 1)</text>
+
+  <!-- footer -->
+  <rect x="22" y="300" width="596" height="80" rx="10" fill="#efeaff" stroke="#6d4bff" stroke-width="1" stroke-dasharray="5 4"/>
+  <text x="38" y="322" class="s" fill="#6d4bff" font-weight="700">Spring @Valid · Bean Validation의 축소판</text>
+  <text x="38" y="342" class="s" fill="#666">규칙은 어노테이션으로 선언, 검사는 리플렉션으로 실행</text>
+  <text x="38" y="364" class="mono s" fill="#888">for (field in declaredFields) { getAnnotation → 규칙 검사 → 에러 수집 }</text>
+</svg>
