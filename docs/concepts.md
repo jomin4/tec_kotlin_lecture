@@ -64,7 +64,7 @@
 | **`filter`/`map`/`forEach` 체이닝** | 🔁 | 섹션8-2 |
 | `any`/`all`/`count`/`sortedBy`/`groupBy` | 🔁 | 섹션8-2 |
 | 스코프 함수 `let`/`run`/`with`/`apply`/`also` | 🔁 | 섹션8-3 |
-| `asSequence` (lazy 평가) | 🆕 | 섹션11-2 (예정) |
+| `asSequence` (lazy 평가), 중간/최종 연산 | 🆕 | 섹션11-2 |
 
 ## 고급편
 | 개념 | 상태 | 최초 등장 |

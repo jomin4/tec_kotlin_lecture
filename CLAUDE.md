@@ -91,6 +91,7 @@
 - ✅ 고급 섹션2(지연과 위임) 강의1: 지연 초기화 (`by lazy {}`=val·처음 접근 시 계산 후 캐시·기본 스레드안전, `lateinit var`=non-null var를 외부에서 나중 대입·접근 전 예외·`::x.isInitialized`, 내가계산=lazy/남이주입=lateinit) — `section10/Lesson01.kt`
 - ✅ 고급 섹션2(지연과 위임) 강의2: 위임 프로퍼티 (`by`=프로퍼티 get/set을 다른 객체에 위임, `by lazy`의 정체, 계약 `operator getValue`/`setValue`, 커스텀 위임, 표준 `Delegates.observable`(변경 콜백)/`vetoable`(변경 거부)/`by map`(맵에서 값)) — `section10/Lesson02.kt`  → **고급 섹션2(지연과 위임) 완료**
 - ✅ 고급 섹션3(복잡한 함수형) 강의1: 인라인 함수 (`inline`=함수·람다 본문을 호출부에 복사→람다 객체(Function1) 생성·호출 오버헤드 제거, 표준 filter/map/let 다 inline, 열어주는 것=`reified`(T 살아있음)·non-local return(람다 속 return이 바깥함수 종료), `noinline`(특정 람다 제외)/`crossinline`(non-local return 금지), 큰 함수엔 지양) — `section11/Lesson01.kt`
-- ⏭ 다음: 고급 섹션3 강의2 — **시퀀스(Sequence)** (`asSequence`, lazy 연산, 중간/최종 연산, 대용량에서 컬렉션 함수와 성능 차이)
+- ✅ 고급 섹션3(복잡한 함수형) 강의2: 시퀀스 (`asSequence()`로 lazy 전환, 컬렉션=eager(단계마다 새 리스트·가로 처리) vs 시퀀스=lazy(원소별 세로 처리·중간 리스트 0), 중간 연산(filter/map→시퀀스 반환·실행X) vs 최종 연산(first/toList/count→여기서 실행), 최종연산 없으면 계산 안 함, first/take 조기종료, 대용량·일부만 필요 시 이득) — `section11/Lesson02.kt`
+- ⏭ 다음: 고급 섹션3 강의3 — **함수형 조합/합성** (또는 고급 섹션4 **DSL** 진입)
 
 > 새 강의를 끝낼 때마다 이 목록을 갱신한다.

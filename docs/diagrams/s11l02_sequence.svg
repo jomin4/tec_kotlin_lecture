@@ -1,0 +1,61 @@
+<svg viewBox="0 0 780 540" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>코틀린 시퀀스: eager 컬렉션 vs lazy 시퀀스, 가로 vs 세로 처리, 중간/최종 연산</title>
+  <desc>컬렉션 filter/map은 단계마다 새 리스트(eager, 가로 처리). 시퀀스는 원소 하나가 파이프 전체를 통과(lazy, 세로 처리), 중간 리스트 없음, first/take면 조기 종료. 중간 연산은 시퀀스 반환, 최종 연산에서 실행.</desc>
+  <style>
+    .title{ font-size:19px; font-weight:700; }
+    .sub  { font-size:12px; }
+    .hdr  { font-size:13.5px; font-weight:700; }
+    .lbl  { font-size:11.5px; font-weight:600; }
+    .mono { font-family: ui-monospace,"Cascadia Code",monospace; font-size:11px; }
+    .monoS{ font-family: ui-monospace,"Cascadia Code",monospace; font-size:10px; }
+  </style>
+
+  <rect x="0" y="0" width="780" height="540" fill="#faf9f7"/>
+
+  <text x="30" y="32" class="title" fill="#1a1a1a">시퀀스 = <tspan fill="#7c5cff">lazy(지연)</tspan> 컬렉션 처리 (자바 Stream)</text>
+  <text x="30" y="51" class="sub" fill="#666">컬렉션 filter/map은 단계마다 새 리스트 생성(eager). 시퀀스는 중간 리스트 없이 원소별로 통과.</text>
+
+  <!-- collection eager -->
+  <rect x="30" y="66" width="360" height="180" rx="10" fill="#f5f0e8" stroke="#b8722c" stroke-width="1.5"/>
+  <text x="46" y="86" class="hdr" fill="#b8722c">컬렉션 (eager · 가로 처리)</text>
+  <text x="46" y="104" class="monoS" fill="#666">list.filter{}.map{}.first()</text>
+  <rect x="46" y="114" width="300" height="24" rx="4" fill="#fff" stroke="#ccc"/>
+  <text x="56" y="130" class="monoS" fill="#1a1a1a">filter → [50만짜리 새 리스트]</text>
+  <rect x="46" y="144" width="300" height="24" rx="4" fill="#fff" stroke="#ccc"/>
+  <text x="56" y="160" class="monoS" fill="#1a1a1a">map → [또 50만짜리 새 리스트]</text>
+  <rect x="46" y="174" width="300" height="24" rx="4" fill="#fff" stroke="#ccc"/>
+  <text x="56" y="190" class="monoS" fill="#1a1a1a">first → 그중 1개만 사용</text>
+  <text x="46" y="220" class="monoS" fill="#c0392b">1개 뽑자고 중간 리스트 2개(=100만) 생성</text>
+  <text x="46" y="238" class="monoS" fill="#c0392b">→ 낭비. 단계마다 전체를 훑음.</text>
+
+  <!-- sequence lazy -->
+  <rect x="410" y="66" width="340" height="180" rx="10" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="426" y="86" class="hdr" fill="#7c5cff">시퀀스 (lazy · 세로 처리)</text>
+  <text x="426" y="104" class="monoS" fill="#666">list.asSequence().filter{}.map{}.first()</text>
+  <text x="426" y="126" class="monoS" fill="#1a1a1a">원소 1 → filter → map → first? ✅ 멈춤</text>
+  <text x="426" y="146" class="monoS" fill="#999">원소 2,3... → 볼 필요도 없음</text>
+  <rect x="426" y="158" width="300" height="26" rx="4" fill="#fff" stroke="#7c5cff"/>
+  <text x="436" y="175" class="monoS" fill="#7c5cff">중간 리스트 0개 · 필요한 만큼만 계산</text>
+  <text x="426" y="204" class="monoS" fill="#2e9e5b">원소 하나가 파이프 전체를 통과</text>
+  <text x="426" y="222" class="monoS" fill="#2e9e5b">first/take면 조기 종료 → 대용량서 빠름</text>
+  <text x="426" y="240" class="monoS" fill="#666">= 자바 Stream 과 같은 방식</text>
+
+  <!-- intermediate vs terminal -->
+  <rect x="30" y="262" width="720" height="120" rx="10" fill="#e9f7ef" stroke="#2e9e5b" stroke-width="1.5"/>
+  <text x="46" y="282" class="hdr" fill="#1a1a1a">두 종류의 연산</text>
+  <text x="46" y="306" class="lbl" fill="#7c5cff">중간 연산 (intermediate)</text>
+  <text x="60" y="325" class="monoS" fill="#666">filter · map · take · sorted ...</text>
+  <text x="60" y="342" class="monoS" fill="#666">→ 또 다른 시퀀스 반환 · 실행 안 함(lazy)</text>
+  <text x="400" y="306" class="lbl" fill="#2e9e5b">최종 연산 (terminal)</text>
+  <text x="414" y="325" class="monoS" fill="#666">first · toList · count · sum · forEach ...</text>
+  <text x="414" y="342" class="monoS" fill="#666">→ 결과를 내며 이때 전체가 실행됨</text>
+  <text x="46" y="368" class="monoS" fill="#c0392b">⚠️ 최종 연산이 없으면 시퀀스는 아무것도 안 한다 (중간 연산만 걸면 계산 X)</text>
+
+  <!-- when to use -->
+  <rect x="30" y="398" width="720" height="118" rx="10" fill="#fff" stroke="#ccc"/>
+  <text x="46" y="420" class="hdr" fill="#1a1a1a">언제 뭘 쓰나</text>
+  <text x="46" y="444" class="lbl" fill="#b8722c">그냥 컬렉션 (filter/map)</text>
+  <text x="60" y="463" class="monoS" fill="#666">데이터 작음 · 어차피 전체 다 씀 · 간단함이 우선 → 대부분의 경우</text>
+  <text x="46" y="487" class="lbl" fill="#7c5cff">시퀀스 (asSequence)</text>
+  <text x="60" y="506" class="monoS" fill="#666">데이터 큼 · 연산 길게 체이닝 · first/take처럼 일부만 필요 → 이때 이득</text>
+</svg>
