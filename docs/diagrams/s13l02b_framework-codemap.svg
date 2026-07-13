@@ -1,0 +1,75 @@
+<svg viewBox="0 0 660 520" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>@Valid 프레임워크 코드 맵: 사용자 코드와 프레임워크 코드가 리플렉션으로 연결</title>
+  <desc>사용자가 붙인 @NotBlank를 프레임워크의 getAnnotation이 읽는 7단계 런타임 흐름. 둘 사이 직접 호출 없이 어노테이션(선언)과 리플렉션이 유일한 연결.</desc>
+  <style>
+    .mono{ font-family: ui-monospace,"Cascadia Code",monospace; }
+    .src{ font-size:11px; } .h{ font-size:15px; font-weight:700; } .s{ font-size:10px; } .z{ font-size:8.5px; font-weight:800; } .n{ font-size:11px; font-weight:800; }
+  </style>
+  <rect x="0" y="0" width="660" height="520" fill="#faf9f7"/>
+
+  <text x="22" y="24" class="mono src" fill="#888">section13 / Lesson02.kt</text>
+  <text x="22" y="43" class="h" fill="#1a1a1a">@Valid 프레임워크 — 사용자 코드 ↔ 우리 프레임워크</text>
+  <text x="22" y="59" class="s" fill="#888">따라갈 것: 사용자가 붙인 @NotBlank를, 프레임워크의 getAnnotation이 읽는 다리</text>
+
+  <!-- legend -->
+  <rect x="22" y="70" width="12" height="12" rx="3" fill="#6d4bff"/>
+  <text x="40" y="80" class="s" fill="#666">사용자 영역</text>
+  <rect x="120" y="70" width="12" height="12" rx="3" fill="#1f8a4c"/>
+  <text x="138" y="80" class="s" fill="#666">프레임워크 영역 (우리가 설계)</text>
+
+  <!-- steps -->
+  <!-- 1 user -->
+  <circle cx="34" cy="107" r="11" fill="#6d4bff"/><text x="34" y="111" class="mono n" fill="#fff" text-anchor="middle">1</text>
+  <rect x="52" y="94" width="586" height="30" rx="8" fill="#efeaff" stroke="#6d4bff" stroke-width="1"/>
+  <text x="64" y="106" class="mono z" fill="#6d4bff">사용자 · 규칙 선언</text>
+  <text x="64" y="119" class="mono s" fill="#1a1a1a">class SignupForm(<tspan fill="#c0392b" font-weight="700">@NotBlank</tspan> val name, <tspan fill="#c0392b" font-weight="700">@Min(1)</tspan> val age)</text>
+
+  <text x="44" y="138" class="mono s" fill="#999">↓</text>
+  <!-- 2 user -->
+  <circle cx="34" cy="153" r="11" fill="#6d4bff"/><text x="34" y="157" class="mono n" fill="#fff" text-anchor="middle">2</text>
+  <rect x="52" y="140" width="586" height="30" rx="8" fill="#efeaff" stroke="#6d4bff" stroke-width="1"/>
+  <text x="64" y="152" class="mono z" fill="#6d4bff">사용자 · 검증 요청</text>
+  <text x="64" y="165" class="mono s" fill="#1a1a1a">val form = SignupForm("", 0);  validate(form)</text>
+
+  <text x="44" y="184" class="mono s" fill="#999">↓  프레임워크로 진입</text>
+  <!-- 3 fw -->
+  <circle cx="34" cy="199" r="11" fill="#1f8a4c"/><text x="34" y="203" class="mono n" fill="#fff" text-anchor="middle">3</text>
+  <rect x="52" y="186" width="586" height="30" rx="8" fill="#e7f6ec" stroke="#1f8a4c" stroke-width="1"/>
+  <text x="64" y="198" class="mono z" fill="#1f8a4c">프레임워크 · 필드 순회</text>
+  <text x="64" y="211" class="mono s" fill="#1a1a1a">for (field in form.javaClass.declaredFields)</text>
+
+  <text x="44" y="230" class="mono s" fill="#999">↓</text>
+  <!-- 4 fw bridge -->
+  <circle cx="34" cy="245" r="11" fill="#1f8a4c"/><text x="34" y="249" class="mono n" fill="#fff" text-anchor="middle">4</text>
+  <rect x="52" y="232" width="586" height="30" rx="8" fill="#e7f6ec" stroke="#c0392b" stroke-width="1.6"/>
+  <text x="64" y="244" class="mono z" fill="#c0392b">프레임워크 · 규칙 읽기 (다리!)</text>
+  <text x="64" y="257" class="mono s" fill="#1a1a1a">field.getAnnotation(<tspan fill="#c0392b" font-weight="700">NotBlank</tspan>::class.java)  ← 1번의 그것</text>
+
+  <text x="44" y="276" class="mono s" fill="#999">↓</text>
+  <!-- 5 fw -->
+  <circle cx="34" cy="291" r="11" fill="#1f8a4c"/><text x="34" y="295" class="mono n" fill="#fff" text-anchor="middle">5</text>
+  <rect x="52" y="278" width="586" height="30" rx="8" fill="#e7f6ec" stroke="#1f8a4c" stroke-width="1"/>
+  <text x="64" y="290" class="mono z" fill="#1f8a4c">프레임워크 · 검사 &amp; 수집</text>
+  <text x="64" y="303" class="mono s" fill="#1a1a1a">if (value.isBlank()) errors.add("name: 비어있음")</text>
+
+  <text x="44" y="322" class="mono s" fill="#999">↓  사용자에게 반환</text>
+  <!-- 6 fw -->
+  <circle cx="34" cy="337" r="11" fill="#1f8a4c"/><text x="34" y="341" class="mono n" fill="#fff" text-anchor="middle">6</text>
+  <rect x="52" y="324" width="586" height="30" rx="8" fill="#e7f6ec" stroke="#1f8a4c" stroke-width="1"/>
+  <text x="64" y="336" class="mono z" fill="#1f8a4c">프레임워크 · 결과 반환</text>
+  <text x="64" y="349" class="mono s" fill="#1a1a1a">return errors   // [name: 비어있음, age: 1 이상 …]</text>
+
+  <text x="44" y="368" class="mono s" fill="#999">↓</text>
+  <!-- 7 user -->
+  <circle cx="34" cy="383" r="11" fill="#6d4bff"/><text x="34" y="387" class="mono n" fill="#fff" text-anchor="middle">7</text>
+  <rect x="52" y="370" width="586" height="30" rx="8" fill="#efeaff" stroke="#6d4bff" stroke-width="1"/>
+  <text x="64" y="382" class="mono z" fill="#6d4bff">사용자 · 분기</text>
+  <text x="64" y="395" class="mono s" fill="#1a1a1a">if (errors.isEmpty()) 저장  else  400 거부</text>
+
+  <!-- bridge callout -->
+  <rect x="22" y="416" width="616" height="84" rx="12" fill="#faf0ef" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="6 4"/>
+  <text x="38" y="438" class="s" fill="#c0392b" font-weight="700">🔗 연결의 핵심</text>
+  <text x="38" y="458" class="s" fill="#1a1a1a">1번(사용자 @NotBlank) = 4번(프레임워크 getAnnotation)이 읽는 것. 둘 사이 직접 호출 없음.</text>
+  <text x="38" y="476" class="s" fill="#1a1a1a">어노테이션(선언)이 유일한 연결 통로, 리플렉션이 그걸 읽어 잇는다.</text>
+  <text x="38" y="494" class="s" fill="#666">Spring: 2번 호출을 @Valid가, 7번 분기를 BindingResult가 대신 — 원리는 동일.</text>
+</svg>

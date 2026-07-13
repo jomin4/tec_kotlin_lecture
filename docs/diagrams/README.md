@@ -45,6 +45,7 @@
 | [s12l02_nested-dsl.svg](s12l02_nested-dsl.svg) | (고급)중첩 빌더 DSL: 블록마다 this 전환(Html→Body), @DslMarker 스코프 차단 | 고급 섹션4 강의2 · [📱Artifact](https://claude.ai/code/artifact/e424eb58-9bac-4e7c-b9e5-849fa373f4d7) |
 | [s13l01_annotation-reflection.svg](s13l01_annotation-reflection.svg) | (고급)어노테이션&리플렉션: @Label 런타임 생존→리플렉션 읽기→동작, 프레임워크 원리 | 고급 섹션5 강의1 · [📱Artifact](https://claude.ai/code/artifact/5c906a7a-a7d1-464d-b42d-50ab203f2fa7) |
 | [s13l02_mini-validator.svg](s13l02_mini-validator.svg) | (고급)미니 검증 프레임워크: @NotBlank/@Min 규칙을 리플렉션으로 검사, @Valid 원리 | 고급 섹션5 강의2 · [📱Artifact](https://claude.ai/code/artifact/8fe29d86-d6d0-4b79-9ecc-b64a5153f9ca) |
+| [s13l02b_framework-codemap.svg](s13l02b_framework-codemap.svg) | (고급)@Valid 프레임워크 코드 맵: 사용자 코드↔프레임워크가 어노테이션·리플렉션으로 연결되는 7단계 | 고급 섹션5 강의2 보충 · [📱Artifact](https://claude.ai/code/artifact/96cb6796-1752-487b-bd5a-a93a85205160) |
 | [q03_kt-jar-pipeline.svg](q03_kt-jar-pipeline.svg) | .kt → .class → .jar → 실행 흐름 | QnA Q3 |
 | [q04_npe-safecall.svg](q04_npe-safecall.svg) | NPE: Java 죽음 vs Kotlin 안전호출 | QnA Q4 |
 | [q05_why-equals-hashcode-tostring.svg](q05_why-equals-hashcode-tostring.svg) | equals/hashCode/toString을 DTO에서 재정의하는 이유 | QnA Q5 |
