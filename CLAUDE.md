@@ -109,7 +109,7 @@
 
 ### 심화 트랙: Spring 소스로 배우는 어노테이션·리플렉션 (2026-07-13 시작)
 > 계획 전문: `docs/spring-reflection-study-plan.md`. 분석 대상은 포크 레포 **`jomin4/opensource_spring`**(spring-framework 7.1.0-SNAPSHOT), 세션 클론 경로 `/workspace/opensource_spring`.
-> 진행 방식(소스 분석 전용 형식, 코틀린 학습과 다름 — 2026-07-13): ①헤더(🎯분석질문+📂대상`file:line`) ②문제정의(우리 코드 비교) ③진입점·호출경로 ④핵심코드 골든패스 줄단위 해부(모든 인용 `file:line`, 엣지케이스 접기) ⑤흐름 도표(모바일 Artifact+SVG) ⑥우리 미니버전 대조 ⑦직접 탐색과제(퀴즈 대신: Find Usages/Type Hierarchy/breakpoint) + 요약. **익사방지: 한 강의=한 질문=한 골든패스.** 학습 기록은 `tec_kotlin_lecture`에, 원본은 읽기용. (상세: `docs/spring-reflection-study-plan.md`)
+> 진행 방식(소스 분석 전용 형식, 코틀린 학습과 다름 — 2026-07-13). **척추 = 마법→원리**: "🪄내가 쓰는 사용법"으로 열고 "🔗사용법↔내부처리 대응표"로 닫는다(사용법이 추적 범위의 닻). 흐름: ①헤더(🎯질문+📂`file:line`) ②🪄사용자 관점(Kotlin Spring 실사용+마법 느낀 지점) ③문제정의 ④진입점·호출경로 ⑤🔧내부처리 골든패스 줄단위 해부(모든 인용 `file:line`, 엣지케이스 접기) ⑥흐름 도표(모바일 Artifact+SVG) ⑦🔗사용법↔내부처리 대응표(+🧩우리 미니버전 열) ⑧직접 탐색과제(Find Usages/Type Hierarchy/breakpoint) + 요약. **익사방지: 한 강의=한 질문=한 골든패스.** 학습 기록은 `tec_kotlin_lecture`에, 원본은 읽기용. (상세: `docs/spring-reflection-study-plan.md`)
 > 난이도 순: Phase0(준비)→1(리플렉션 유틸 `ReflectionUtils`/`AnnotationUtils`)→2(어노테이션 모델 `@AliasFor`/`MergedAnnotations`)→3(스캔·`@Autowired` DI)→4(`@Configuration`/`@Transactional` 프록시)→5(웹 `@RequestMapping`·`@Valid`).
 - ✅ 세팅: 포크 클론+세션 등록 완료, 핵심 클래스 경로 확인
 - ⏭ 다음: Phase 0-1 (Spring 모듈 구조 & 소스 탐색법)
