@@ -23,6 +23,7 @@
 - [Q17. 람다가 객체(Function0)로 바뀌는 "마법"의 정체](#q17)
 - [Q18. `StringBuilder.() -> Unit` 에서 `->` 와 `.()` 를 어떻게 해석하나](#q18)
 - [Q19. DSL은 주로 HTML/CSS 작성할 때 쓰나?](#q19)
+- [Q20. 어노테이션+리플렉션 코드 3층 해부 (@Retention/@field:/getAnnotation/get)](#q20)
 
 ---
 
@@ -523,3 +524,34 @@ dependencies {                  // this = DependencyHandler
 
 언제 쓰나: **구조적·중첩된 설정/조립을 코드인데 선언적으로 읽기 좋게** 표현할 때. (설정·빌더·테스트 명세·라우팅)
 한 줄: **DSL ≠ HTML/CSS 전용. 빌드/프레임워크 설정·빌더 API가 주 무대이고, build.gradle.kts가 그 증거.**
+
+---
+
+<a id="q20"></a>
+## Q20. 어노테이션+리플렉션 코드 3층 해부
+- 📅 2026-07-13 · 🔗 고급 섹션5 강의1 · 🖼️ `diagrams/s13l01_annotation-reflection.svg`
+
+**질문**
+> 어노테이션+리플렉션 코드 부분 좀 더 구체적으로 해부해줘.
+
+**답변**
+3층 구조: 정의 → 붙이기 → 읽기.
+
+**🅐 정의**
+- `annotation class Label(val text: String)` = 어노테이션 타입 생성(자바 @interface). `(val text)` = 값을 나르는 표식.
+- `@Retention(RUNTIME)` = 생존범위. SOURCE(컴파일시 버려짐)/BINARY(못 읽음)/**RUNTIME(실행 중 리플렉션 가능)**. 리플렉션엔 필수.
+- `@Target(FIELD)` = 붙일 수 있는 위치(필드).
+
+**🅑 붙이기**
+- `@field:Label("이름") val name` : `@field:`=use-site target. 프로퍼티는 필드/getter/파라미터로 쪼개지는데, 어노테이션을 **백킹 필드**에 달라는 지정. 자바 필드 리플렉션으로 읽으려면 필수(없으면 못 찾음).
+
+**🅒 읽기**
+- `user.javaClass` : 클래스 정보(java.lang.Class) 손잡이. (`::class.java`와 동일)
+- `clazz.declaredFields` : 선언된 필드들의 `Field` 배열 [name, age].
+- `field.isAccessible = true` : private 백킹필드 접근 제한 뚫기(자바 setAccessible).
+- `field.getAnnotation(Label::class.java)?.text ?: field.name` : @Label 있으면 text, 없으면 필드명(엘비스).
+- `field.get(user)` : 그 필드 값을 **user 객체에서** 꺼냄 → "홍길동".
+
+값 추적(name): field → getAnnotation=Label("이름") → .text="이름" → get(user)="홍길동" → 출력 `이름 = 홍길동`.
+
+핵심: 전부 **자바 리플렉션(java.lang.reflect) 그대로**. "Field 손잡이 얻고 → 어노테이션 물어보고 → 특정 객체에서 값 꺼내기" 3박자.
