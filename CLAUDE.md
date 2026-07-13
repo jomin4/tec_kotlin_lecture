@@ -107,4 +107,11 @@
 - ✅ 고급 섹션5(어노테이션과 리플렉션) 강의2: 리플렉션 실전 = 미니 검증 프레임워크 (`@NotBlank`/`@Min(value)` 규칙 어노테이션 선언, `validate()`가 리플렉션으로 필드 훑어 `isAnnotationPresent`/`getAnnotation`으로 규칙 읽고 값 검사→에러 수집, Spring `@Valid`/Bean Validation의 축소판) — `section13/Lesson02.kt`  → **고급 섹션5 완료 · 고급편 전 과정 완주 🎉🎉**
 > 인프런 코틀린 입문(8섹션) + 고급편(5섹션) 전 강의 완주. 추가 요청 시 복습·리팩터링·미니 프로젝트·코루틴 등으로 확장.
 
+### 심화 트랙: Spring 소스로 배우는 어노테이션·리플렉션 (2026-07-13 시작)
+> 계획 전문: `docs/spring-reflection-study-plan.md`. 분석 대상은 포크 레포 **`jomin4/opensource_spring`**(spring-framework 7.1.0-SNAPSHOT), 세션 클론 경로 `/workspace/opensource_spring`.
+> 진행 방식: 강의마다 개념(우리 코드 비교)→도표(흐름 집중·모바일 Artifact+SVG)→**실제 Spring 소스 줄단위 해부**→미니 재현 `.kt`→Q&A. 학습 기록은 `tec_kotlin_lecture`에, 원본은 읽기용.
+> 난이도 순: Phase0(준비)→1(리플렉션 유틸 `ReflectionUtils`/`AnnotationUtils`)→2(어노테이션 모델 `@AliasFor`/`MergedAnnotations`)→3(스캔·`@Autowired` DI)→4(`@Configuration`/`@Transactional` 프록시)→5(웹 `@RequestMapping`·`@Valid`).
+- ✅ 세팅: 포크 클론+세션 등록 완료, 핵심 클래스 경로 확인
+- ⏭ 다음: Phase 0-1 (Spring 모듈 구조 & 소스 탐색법)
+
 > 새 강의를 끝낼 때마다 이 목록을 갱신한다.
