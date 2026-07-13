@@ -29,7 +29,16 @@
 - 4-2 `@Transactional` → **프록시 래핑도** + **시퀀스**(caller→proxy→advice→target)
 - 5-1 `@RequestMapping` → **시퀀스**(DispatcherServlet→HandlerMapping→HandlerMethod)
 
-## 유지할 우리 스타일 (그 위에 얹기)
+## 시각 언어 = 김영한 스프링 입문 슬라이드 스타일 (2026-07-13, 사용자 제공 자료 기반)
+> 사용자가 제공한 김영한 「스프링 입문」 슬라이드(DI·AOP·웹MVC)에서 추출한 시각 언어를 표준으로. 킷: `viz-template.html`.
+- **컨테이너**: 검은 굵은 실선 박스 + 가운데 제목("스프링 컨테이너")
+- **빈**: 초록(`#2e7d32`) 라운드 박스·흰 글씨 (역할+이름 2줄 가능) | **프록시**: 주황(`#ef8a1a`) | **Aspect/인프라**: 검정 | **외부 액터**(브라우저·톰켓): 흰 박스+검은 테두리
+- **화살표**: 굵은 실선(호출) / 점선(AOP·특수) + 라벨 | **순번**: 크고 굵은 1·2·3
+- **끊김/미등록**: 빨강 ✕ · 점선 노드 | **그룹/프록시 경계**: 점선 박스
+- **레이아웃**: 좌→우 계층 흐름(Controller→Service→Repository)
+- 컴포넌트 클래스: `.jh-bean/.jh-proxy/.jh-infra/.jh-actor`, `.jh-container/.jh-group`, `.jh-arrow(.dash)/.jh-adown/.jh-step/.jh-x`, `.jh-row`
+
+## 유지할 우리 규칙 (그 위에 얹기)
 - 척추: 🪄사용법 → 🔗사용법↔내부처리 대응표
 - 모바일 Artifact + SVG 아카이브, 코드 앵커(`file:line`), 최소 텍스트·흐름 집중
 - **visible-by-default**(opacity:0 기본 금지), 애니메이션은 `prefers-reduced-motion:no-preference`에서만
