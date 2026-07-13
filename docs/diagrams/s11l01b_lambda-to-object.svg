@@ -1,0 +1,67 @@
+<svg viewBox="0 0 780 620" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>람다가 객체로 바뀌는 흐름: JVM엔 함수가 없어 Function0 객체로 포장, inline은 건너뜀</title>
+  <desc>measure{40+2}의 람다가 컴파일러에 의해 Function0 인터페이스를 구현한 객체로 포장되는 5단계. invoke() 안에 람다 본문이 들어감. inline이면 포장 없이 본문을 그 자리에 붙임.</desc>
+  <style>
+    .title{ font-size:19px; font-weight:700; }
+    .sub  { font-size:12px; }
+    .hdr  { font-size:13px; font-weight:700; }
+    .lbl  { font-size:11.5px; font-weight:600; }
+    .mono { font-family: ui-monospace,"Cascadia Code",monospace; font-size:11px; }
+    .monoS{ font-family: ui-monospace,"Cascadia Code",monospace; font-size:10px; }
+  </style>
+
+  <rect x="0" y="0" width="780" height="620" fill="#faf9f7"/>
+
+  <text x="30" y="32" class="title" fill="#1a1a1a">람다가 <tspan fill="#7c5cff">객체</tspan>로 바뀌는 흐름</text>
+  <text x="30" y="51" class="sub" fill="#666">핵심: JVM엔 "함수" 타입이 없다 → 오직 객체만. 그래서 람다를 객체로 포장한다(마법 X, 기계적 변환)</text>
+
+  <!-- step 1 -->
+  <rect x="30" y="66" width="720" height="44" rx="8" fill="#eee"/>
+  <text x="46" y="84" class="lbl" fill="#1a1a1a">① 내가 쓴 코드</text>
+  <text x="46" y="102" class="mono" fill="#1a1a1a">measure { 40 + 2 }</text>
+  <path d="M390 110 L390 126" stroke="#888" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <!-- step 2 -->
+  <rect x="30" y="128" width="720" height="50" rx="8" fill="#f5f0e8" stroke="#b8722c"/>
+  <text x="46" y="146" class="lbl" fill="#b8722c">② { 40 + 2 } 는 "이름 없는 함수"</text>
+  <text x="46" y="166" class="monoS" fill="#666">그런데 JVM은 이름 없는 함수를 저장 못 함 — 아는 건 "클래스와 메서드"뿐 → 객체에 담아야 한다</text>
+  <path d="M390 178 L390 194" stroke="#888" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <!-- step 3 -->
+  <rect x="30" y="196" width="720" height="66" rx="8" fill="#e9f7ef" stroke="#2e9e5b"/>
+  <text x="46" y="214" class="lbl" fill="#2e9e5b">③ () -> Int 의 진짜 정체 = 인터페이스</text>
+  <text x="46" y="234" class="mono" fill="#1a1a1a">interface Function0&lt;R&gt; { fun invoke(): R }</text>
+  <text x="46" y="254" class="monoS" fill="#666">() -> Int  ==  Function0&lt;Integer&gt;  (메서드는 invoke 하나)</text>
+  <path d="M390 262 L390 278" stroke="#888" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <!-- step 4 -->
+  <rect x="30" y="280" width="720" height="96" rx="8" fill="#efeaff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="46" y="298" class="lbl" fill="#7c5cff">④ 컴파일러가 람다를 이 인터페이스 구현 "객체"로 포장 ← 이게 그 "마법" 줄</text>
+  <text x="46" y="318" class="mono" fill="#1a1a1a">Function0&lt;Integer&gt; block = new Function0&lt;Integer&gt;() {</text>
+  <text x="66" y="338" class="mono" fill="#2e9e5b">public Integer invoke() { return 40 + 2; }   // 람다 본문이 invoke() 안으로</text>
+  <text x="46" y="358" class="mono" fill="#1a1a1a">};</text>
+  <text x="380" y="372" class="monoS" fill="#7c5cff">{ 40+2 } → "invoke() 부르면 42 주는 객체"</text>
+  <path d="M390 376 L390 392" stroke="#888" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <!-- step 5 -->
+  <rect x="30" y="394" width="720" height="66" rx="8" fill="#eee"/>
+  <text x="46" y="412" class="lbl" fill="#1a1a1a">⑤ measure(block) 실행 → 안에서 block() 은 사실 block.invoke()</text>
+  <text x="46" y="432" class="mono" fill="#1a1a1a">fun measure(block) { return block.invoke() }   // → 42</text>
+  <text x="46" y="452" class="monoS" fill="#c0392b">비용: 매 호출마다 ① new 객체 생성  + ② invoke() 호출</text>
+
+  <!-- inline contrast -->
+  <rect x="30" y="480" width="720" height="112" rx="10" fill="#fff" stroke="#7c5cff" stroke-width="1.5"/>
+  <text x="46" y="502" class="hdr" fill="#7c5cff">inline 이면? — ③④⑤ 포장을 통째로 건너뛴다</text>
+  <text x="46" y="524" class="mono" fill="#1a1a1a">inline fun measure(block: () -> Int) { return block() }</text>
+  <text x="46" y="546" class="mono" fill="#666">measure { 40 + 2 }</text>
+  <path d="M250 541 L300 541" stroke="#2e9e5b" stroke-width="1.5" marker-end="url(#ar)"/>
+  <text x="316" y="546" class="mono" fill="#2e9e5b">int r = 40 + 2;</text>
+  <text x="46" y="572" class="monoS" fill="#2e9e5b">→ Function0 객체 없음, invoke() 없음, measure 호출도 없음. 본문만 그 자리에 붙음.</text>
+  <text x="46" y="588" class="lbl" fill="#7c5cff">즉 inline = "포장하지 말고, 람다 코드를 호출한 자리에 그대로 펼쳐라"</text>
+
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 Z" fill="#888"/>
+    </marker>
+  </defs>
+</svg>

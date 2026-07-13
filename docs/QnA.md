@@ -20,6 +20,7 @@
 - [Q14. 생성자 주입만 썼는데 lazy/lateinit이 왜 필요 없었나?](#q14)
 - [Q15. inline은 실제로 뭐가 달라지나? (역컴파일로 본 본문 복사·non-local return·crossinline)](#q15)
 - [Q16. `block: () -> Int` — 함수를 파라미터로 받는 문법 뜯어보기](#q16)
+- [Q17. 람다가 객체(Function0)로 바뀌는 "마법"의 정체](#q17)
 
 ---
 
@@ -428,3 +429,33 @@ measure { 40 + 2 }    // 트레일링 람다
 **자바 대응**: 함수타입이 없어 함수형 인터페이스 필요 — `() -> Int` ↔ `Supplier<Integer>`(호출 `block.get()`), `(Int)->Int` ↔ `Function`, `(String,Int)->Boolean` ↔ `BiFunction`. 코틀린은 `() -> Int` 하나로 통일.
 
 핵심: measure는 "무슨 계산인지" 모른 채 껍데기만 주고, 실제 계산은 호출부가 람다로 꽂는다 = 고차함수. inline은 이때 그 람다가 객체로 안 만들어지게 함.
+
+---
+
+<a id="q17"></a>
+## Q17. 람다가 객체(Function0)로 바뀌는 "마법"의 정체
+- 📅 2026-07-13 · 🔗 고급 섹션3 강의1 · 🖼️ `diagrams/s11l01b_lambda-to-object.svg`
+
+**질문**
+> measure { 40 + 2 } 가 new Function0(){ invoke(){return 42} } 로 바뀌는 게 이해 안 돼. 흐름을 구체적으로.
+
+**답변**
+핵심 열쇠: **JVM엔 "함수" 타입이 없다. 오직 객체(클래스+메서드)만 있다.** 그래서 코틀린이 람다를 객체로 포장한다(마법 X, 기계적 변환).
+
+흐름 5단계:
+1. 내 코드: `measure { 40 + 2 }`
+2. `{ 40 + 2 }`는 이름 없는 함수인데, JVM은 이걸 저장 못 함 → 객체에 담아야 함.
+3. `() -> Int`의 정체 = 인터페이스 `Function0<R> { fun invoke(): R }` (메서드 invoke 하나).
+4. 컴파일러가 람다를 그 인터페이스 구현 객체로 포장 — 람다 본문이 invoke() 몸통이 됨:
+```java
+Function0<Integer> block = new Function0<Integer>() {
+    public Integer invoke() { return 40 + 2; }
+};
+```
+5. `measure(block)` 안의 `block()`은 사실 `block.invoke()` → 42.
+
+비용: 매 호출마다 ① 객체 new + ② invoke() 호출.
+`inline`이면 ③④⑤ 포장을 건너뛰고 `int r = 40 + 2;`만 남음(객체·호출 없음).
+
+대응표: 람다=Function0 객체 / 람다 본문=invoke() 몸통 / `block()`=`block.invoke()`.
+한 줄: **JVM이 함수를 몰라서 코틀린이 "invoke() 하나짜리 객체"로 몰래 포장한 것 — inline은 그 포장을 없앤다.**
