@@ -1,0 +1,48 @@
+<svg viewBox="0 0 640 430" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>어노테이션 &amp; 리플렉션: @Label이 런타임까지 생존해 리플렉션으로 읽혀 동작이 됨</title>
+  <desc>소스의 @field:Label이 @Retention(RUNTIME)로 런타임까지 살아남고, field.getAnnotation으로 읽혀 출력이 된다. Jackson/JPA/Spring의 원리.</desc>
+  <style>
+    .mono{ font-family: ui-monospace,"Cascadia Code",monospace; }
+    .src{ font-size:11px; } .h{ font-size:15px; font-weight:700; } .s{ font-size:10.5px; } .t{ font-size:9.5px; font-weight:800; }
+  </style>
+  <rect x="0" y="0" width="640" height="430" fill="#faf9f7"/>
+
+  <text x="22" y="24" class="mono src" fill="#888">section13 / Lesson01.kt</text>
+  <text x="22" y="44" class="h" fill="#1a1a1a">어노테이션 → 런타임 생존 → 리플렉션 → 동작</text>
+  <text x="22" y="61" class="s" fill="#888">시각화 대상: @Label 메타데이터가 실행 중에 읽혀 출력으로 바뀌는 흐름</text>
+
+  <!-- step 1 -->
+  <rect x="22" y="76" width="596" height="52" rx="10" fill="#efeaff" stroke="#6d4bff" stroke-width="1.5"/>
+  <rect x="22" y="76" width="4" height="52" fill="#6d4bff"/>
+  <text x="38" y="94" class="mono t" fill="#6d4bff">① 소스에 어노테이션</text>
+  <text x="38" y="116" class="mono s" fill="#1a1a1a"><tspan fill="#6d4bff" font-weight="700">@field:Label("이름")</tspan> val name: String</text>
+
+  <text x="320" y="144" class="mono s" fill="#888" text-anchor="middle">↓  @Retention(RUNTIME)</text>
+
+  <!-- step 2 -->
+  <rect x="22" y="152" width="596" height="52" rx="10" fill="#f6efe4" stroke="#a5641f" stroke-width="1.5"/>
+  <rect x="22" y="152" width="4" height="52" fill="#a5641f"/>
+  <text x="38" y="170" class="mono t" fill="#a5641f">② 런타임까지 생존</text>
+  <text x="38" y="192" class="mono s" fill="#1a1a1a">User("홍길동",…) 객체 + <tspan fill="#a5641f" font-weight="700">메타데이터[name→"이름"]</tspan></text>
+
+  <text x="320" y="220" class="mono s" fill="#888" text-anchor="middle">↓  reflection</text>
+
+  <!-- step 3 -->
+  <rect x="22" y="228" width="596" height="52" rx="10" fill="#e7f6ec" stroke="#1f8a4c" stroke-width="1.5"/>
+  <rect x="22" y="228" width="4" height="52" fill="#1f8a4c"/>
+  <text x="38" y="246" class="mono t" fill="#1f8a4c">③ 리플렉션으로 읽기</text>
+  <text x="38" y="268" class="mono s" fill="#1a1a1a">field.<tspan fill="#1f8a4c" font-weight="700">getAnnotation</tspan>(Label::class.java)?.text</text>
+
+  <text x="320" y="296" class="mono s" fill="#888" text-anchor="middle">↓</text>
+
+  <!-- step 4 -->
+  <rect x="22" y="304" width="596" height="46" rx="10" fill="#fff" stroke="#1a1a1a" stroke-width="1.4"/>
+  <rect x="22" y="304" width="4" height="46" fill="#1a1a1a"/>
+  <text x="38" y="322" class="mono t" fill="#666">④ 동작 결정 → 출력</text>
+  <text x="38" y="342" class="mono s" fill="#1a1a1a" font-weight="700">이름 = 홍길동</text>
+
+  <!-- footer -->
+  <rect x="22" y="364" width="596" height="48" rx="10" fill="#efeaff" stroke="#6d4bff" stroke-width="1" stroke-dasharray="5 4"/>
+  <text x="38" y="384" class="s" fill="#6d4bff" font-weight="700">이게 프레임워크의 정체</text>
+  <text x="38" y="402" class="s" fill="#666">Jackson(@JsonProperty→JSON) · JPA(@Column→SQL) · Spring(@Autowired→주입) 모두 이 패턴</text>
+</svg>

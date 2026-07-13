@@ -43,6 +43,7 @@
 | [s11l03_function-composition.svg](s11l03_function-composition.svg) | (고급)함수 합성: andThen/compose, 파이프라인, 부분 적용 | 고급 섹션3 강의3 · [📱Artifact](https://claude.ai/code/artifact/b88e24ad-82c1-41dd-b0cf-976f50dfeeee) |
 | [s12l01_receiver-lambda.svg](s12l01_receiver-lambda.svg) | (고급)수신객체 지정 람다: (T)->Unit=it vs T.()->Unit=this, DSL 토대 | 고급 섹션4 강의1 · [📱Artifact](https://claude.ai/code/artifact/65023259-e12a-42f2-b455-936c7b068a8b) |
 | [s12l02_nested-dsl.svg](s12l02_nested-dsl.svg) | (고급)중첩 빌더 DSL: 블록마다 this 전환(Html→Body), @DslMarker 스코프 차단 | 고급 섹션4 강의2 · [📱Artifact](https://claude.ai/code/artifact/e424eb58-9bac-4e7c-b9e5-849fa373f4d7) |
+| [s13l01_annotation-reflection.svg](s13l01_annotation-reflection.svg) | (고급)어노테이션&리플렉션: @Label 런타임 생존→리플렉션 읽기→동작, 프레임워크 원리 | 고급 섹션5 강의1 · [📱Artifact](https://claude.ai/code/artifact/5c906a7a-a7d1-464d-b42d-50ab203f2fa7) |
 | [q03_kt-jar-pipeline.svg](q03_kt-jar-pipeline.svg) | .kt → .class → .jar → 실행 흐름 | QnA Q3 |
 | [q04_npe-safecall.svg](q04_npe-safecall.svg) | NPE: Java 죽음 vs Kotlin 안전호출 | QnA Q4 |
 | [q05_why-equals-hashcode-tostring.svg](q05_why-equals-hashcode-tostring.svg) | equals/hashCode/toString을 DTO에서 재정의하는 이유 | QnA Q5 |

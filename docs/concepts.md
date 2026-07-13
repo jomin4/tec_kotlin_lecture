@@ -76,6 +76,9 @@
 | `by lazy` / `lateinit` | 🔁 | 섹션10-1 |
 | 위임 프로퍼티 `by`, `getValue`/`setValue` | 🆕 | 섹션10-2 |
 | `inline`/`noinline`/`crossinline`, non-local return | 🆕 | 섹션11-1 |
+| 함수 합성 `andThen`/`compose`, 부분 적용 | 🆕 | 섹션11-3 |
+| 수신객체 지정 람다·중첩 DSL, `@DslMarker` | 🆕 | 섹션12 |
+| `annotation class`, 리플렉션(`declaredFields`/`getAnnotation`) | 🆕 | 섹션13-1 |
 
 ---
 

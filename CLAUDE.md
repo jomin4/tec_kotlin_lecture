@@ -102,6 +102,7 @@
 - ✅ 고급 섹션3(복잡한 함수형) 강의3: 함수 합성 (함수도 값→조합 가능, `andThen`(f먼저 g나중=`g(f(x))`)/`compose`(g먼저 f나중=`f(g(x))`) 직접 만듦=확장함수+고차함수+함수반환+infix, 파이프라인 `trim andThen lower andThen exclaim`, 부분 적용 `multiplier(2)`=설정 고정한 함수 반환) — `section11/Lesson03.kt`  → **고급 섹션3(복잡한 함수형) 완료**
 - ✅ 고급 섹션4(DSL) 강의1: 수신객체 지정 람다 (`T.() -> R`=객체가 `this`로 들어감 vs `(T)->R`=`it`, 람다 안 접두어 없이 멤버 호출, `apply`의 정체, 호출부 `obj.block()`, 미니 DSL `menu { item(...) }`=this=Menu) — `section12/Lesson01.kt`
 - ✅ 고급 섹션4(DSL) 강의2: 빌더 DSL 심화 (수신객체 람다를 중첩→`html { body { p() } }`, 블록마다 `this` 전환(Html→Body), 각 함수가 다음 레벨 `T.()->Unit` 받아 `apply`로 실행, `@DslMarker`=안쪽에서 바깥 수신객체 암묵 호출 차단→실수를 컴파일 에러로) — `section12/Lesson02.kt`  → **고급 섹션4(DSL) 완료**
-- ⏭ 다음: 고급 섹션5(어노테이션과 리플렉션) 강의1 — **어노테이션·리플렉션 기초** (`annotation class`, `KClass`, 리플렉션 API)
+- ✅ 고급 섹션5(어노테이션과 리플렉션) 강의1: 어노테이션&리플렉션 기초 (`annotation class`+`@Retention(RUNTIME)`/`@Target`, `@field:` 사용부위 지정, 자바 리플렉션 `javaClass.declaredFields`/`getAnnotation`/`field.get`으로 런타임에 구조·값 읽기, 미니 직렬화기=Jackson/JPA/Spring의 축소판 원리) — `section13/Lesson01.kt`
+- ⏭ 다음: 고급 섹션5 강의2 — **리플렉션 심화/실전** (또는 커리큘럼 마무리·복습·미니 프로젝트)
 
 > 새 강의를 끝낼 때마다 이 목록을 갱신한다.
