@@ -33,7 +33,7 @@
 ## 난이도 순 커리큘럼
 
 ### Phase 0 — 준비 (★)
-- [ ] **0-1** Spring 모듈 구조 & 소스 탐색법 (core/beans/context/web가 각각 뭘 하나)
+- [x] **0-1** Spring 모듈 구조 & 소스 탐색법 → 어노테이션 처리의 두 훅(BFPP/BPP), 읽는도구=core·처리기=*PostProcessor · `docs/spring-analysis/phase0-1-module-map.md`
 - [ ] **0-2** 순수 리플렉션 복습 + 우리 `validate` ↔ Spring 대응 지도
 
 ### Phase 1 — Spring의 리플렉션 도구층 (★★) — 자기완결적, 읽기 쉬움
@@ -69,4 +69,4 @@
 
 ## 진행 상황
 - ✅ 세팅: 포크(`opensource_spring`) 클론 + 세션 등록 완료, 핵심 클래스 경로 확인
-- ⏭ 다음: **Phase 0-1** (Spring 모듈 구조 & 소스 탐색법)
+- ⏭ 다음: **Phase 0-2** (순수 리플렉션 복습 + 우리 validate ↔ Spring 대응) — 또는 바로 Phase 1-1(ReflectionUtils)

@@ -1,0 +1,45 @@
+<svg viewBox="0 0 640 420" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, sans-serif">
+  <title>Spring 부팅: 어노테이션이 처리되는 두 훅 (BeanFactoryPostProcessor=정의, BeanPostProcessor=인스턴스)</title>
+  <desc>context.refresh() → 단계1 BeanFactoryPostProcessor가 빈 정의 가공(@Component 스캔, @Configuration) → 단계2 BeanPostProcessor가 빈 인스턴스 가공(@Autowired 주입, @Transactional 프록시). 읽는 도구는 spring-core.</desc>
+  <style>
+    .mono{ font-family: ui-monospace,"Cascadia Code",monospace; }
+    .src{ font-size:11px; } .h{ font-size:15px; font-weight:700; } .s{ font-size:10.5px; } .t{ font-size:9px; font-weight:800; } .big{ font-size:12px; font-weight:800; }
+  </style>
+  <rect x="0" y="0" width="640" height="420" fill="#faf9f7"/>
+
+  <text x="22" y="24" class="mono src" fill="#888">spring-beans/.../config/BeanPostProcessor.java:67</text>
+  <text x="22" y="43" class="h" fill="#1a1a1a">Spring 부팅 — 어노테이션이 처리되는 두 훅</text>
+  <text x="22" y="59" class="s" fill="#888">따라갈 것: 내 @어노테이션이 부팅의 어느 단계·어느 PostProcessor에서 처리되나</text>
+
+  <rect x="230" y="72" width="240" height="26" rx="8" fill="#fff" stroke="#ccc"/>
+  <text x="350" y="89" class="mono s" fill="#1a1a1a" text-anchor="middle" font-weight="700">context.refresh()  // 부팅 시작</text>
+  <text x="350" y="112" class="s" fill="#999" text-anchor="middle">↓</text>
+
+  <!-- stage 1 -->
+  <rect x="22" y="118" width="596" height="86" rx="12" fill="#efeaff" stroke="#6d4bff" stroke-width="1.5"/>
+  <rect x="22" y="118" width="5" height="86" fill="#6d4bff"/>
+  <text x="40" y="137" class="mono t" fill="#6d4bff">단계 ① BeanFactoryPostProcessor</text>
+  <text x="40" y="156" class="big" fill="#1a1a1a">빈 "정의(설계도)"를 가공 — 인스턴스 만들기 전</text>
+  <text x="40" y="174" class="s" fill="#666">클래스를 스캔해 어떤 빈을 만들지 정한다</text>
+  <rect x="40" y="182" width="120" height="16" rx="8" fill="#fff" stroke="#ccc"/><text x="50" y="194" class="mono s" fill="#6d4bff">@Component 스캔</text>
+  <rect x="168" y="182" width="150" height="16" rx="8" fill="#fff" stroke="#ccc"/><text x="178" y="194" class="mono s" fill="#6d4bff">@Configuration/@Bean</text>
+  <rect x="326" y="182" width="130" height="16" rx="8" fill="#fff" stroke="#ccc"/><text x="336" y="194" class="mono s" fill="#666">→ 빈 정의 목록</text>
+
+  <text x="350" y="220" class="s" fill="#999" text-anchor="middle">↓  빈을 하나씩 생성하며</text>
+
+  <!-- stage 2 -->
+  <rect x="22" y="226" width="596" height="86" rx="12" fill="#e7f6ec" stroke="#1f8a4c" stroke-width="1.5"/>
+  <rect x="22" y="226" width="5" height="86" fill="#1f8a4c"/>
+  <text x="40" y="245" class="mono t" fill="#1f8a4c">단계 ② BeanPostProcessor</text>
+  <text x="40" y="264" class="big" fill="#1a1a1a">빈 "인스턴스(실물)"를 가공 — 생성 중</text>
+  <text x="40" y="282" class="s" fill="#666">before/afterInitialization 두 훅을 매 빈이 통과</text>
+  <rect x="40" y="290" width="110" height="16" rx="8" fill="#fff" stroke="#ccc"/><text x="50" y="302" class="mono s" fill="#1f8a4c">@Autowired 주입</text>
+  <rect x="158" y="290" width="120" height="16" rx="8" fill="#fff" stroke="#ccc"/><text x="168" y="302" class="mono s" fill="#1f8a4c">@PostConstruct</text>
+  <rect x="286" y="290" width="160" height="16" rx="8" fill="#fff" stroke="#ccc"/><text x="296" y="302" class="mono s" fill="#1f8a4c">@Transactional 프록시</text>
+
+  <!-- core note -->
+  <rect x="22" y="328" width="596" height="72" rx="12" fill="#f6efe4" stroke="#a5641f" stroke-width="1" stroke-dasharray="6 4"/>
+  <text x="38" y="349" class="mono s" fill="#a5641f" font-weight="700">🔧 두 단계 모두 어노테이션 읽는 도구는 한 곳 (spring-core)</text>
+  <text x="38" y="368" class="mono s" fill="#666">core.annotation(AnnotationUtils·MergedAnnotations) + util(ReflectionUtils)</text>
+  <text x="38" y="388" class="s" fill="#1a1a1a" font-weight="700">질문은 늘 하나로 수렴 → "어느 PostProcessor가, ①정의냐 ②인스턴스냐?"</text>
+</svg>

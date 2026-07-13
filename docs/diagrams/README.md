@@ -49,3 +49,4 @@
 | [q03_kt-jar-pipeline.svg](q03_kt-jar-pipeline.svg) | .kt → .class → .jar → 실행 흐름 | QnA Q3 |
 | [q04_npe-safecall.svg](q04_npe-safecall.svg) | NPE: Java 죽음 vs Kotlin 안전호출 | QnA Q4 |
 | [q05_why-equals-hashcode-tostring.svg](q05_why-equals-hashcode-tostring.svg) | equals/hashCode/toString을 DTO에서 재정의하는 이유 | QnA Q5 |
+| [sp0-1_boot-hooks.svg](sp0-1_boot-hooks.svg) | (Spring분석)부팅 두 훅: BeanFactoryPostProcessor(정의)/BeanPostProcessor(인스턴스), 읽는도구=core | Spring Phase 0-1 · [📱Artifact](https://claude.ai/code/artifact/68713e73-64a3-4b57-b296-67167090a314) |
