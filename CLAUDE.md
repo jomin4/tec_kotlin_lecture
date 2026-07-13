@@ -114,6 +114,9 @@
 > 진행 방식(소스 분석 전용 형식, 코틀린 학습과 다름 — 2026-07-13). **척추 = 마법→원리**: "🪄내가 쓰는 사용법"으로 열고 "🔗사용법↔내부처리 대응표"로 닫는다(사용법이 추적 범위의 닻). 흐름: ①헤더(🎯질문+📂`file:line`) ②🪄사용자 관점(Kotlin Spring 실사용+마법 느낀 지점) ③문제정의 ④진입점·호출경로 ⑤🔧내부처리 골든패스 줄단위 해부(모든 인용 `file:line`, 엣지케이스 접기) ⑥흐름 도표(모바일 Artifact+SVG) ⑦🔗사용법↔내부처리 대응표(+🧩우리 미니버전 열) ⑧탐색과제(전달=채팅: 내가 클론에서 호출자·구현체·값을 file:line으로 보여주고 사용자는 추론질문에 답) + 요약. **익사방지: 한 강의=한 질문=한 골든패스.** 학습 기록은 `tec_kotlin_lecture`에, 원본은 읽기용. (상세: `docs/spring-reflection-study-plan.md`)
 > 난이도 순: Phase0(준비)→1(리플렉션 유틸 `ReflectionUtils`/`AnnotationUtils`)→2(어노테이션 모델 `@AliasFor`/`MergedAnnotations`)→3(스캔·`@Autowired` DI)→4(`@Configuration`/`@Transactional` 프록시)→5(웹 `@RequestMapping`·`@Valid`).
 - ✅ 세팅: 포크 클론+세션 등록 완료, 핵심 클래스 경로 확인
-- ⏭ 다음: Phase 0-1 (Spring 모듈 구조 & 소스 탐색법)
+- ✅ Phase 0-1: 모듈 지도 & 어노테이션 처리 두 훅(BFPP=정의/BPP=인스턴스) — `docs/spring-analysis/phase0-1-module-map.md`, 타임라인 도표
+- ✅ 시각화 템플릿 **사용자 확정**(2026-07-13): 김영한 스프링 입문 슬라이드 스타일 = `docs/spring-analysis/viz-template.html`. 앞으로 Spring 도표는 이 킷 컴포넌트 조립.
+- ⏭ 다음: (선택) Phase 0-1 도표를 김영한 스타일로 재적용 → 이후 **Phase 0-2**(리플렉션 복습+우리 validate↔Spring) 또는 **Phase 1-1**(`ReflectionUtils`)
+> ⚠️ 새 세션 재시작 시: `opensource_spring` 클론(`/workspace/opensource_spring`)은 컨테이너 재생성으로 사라짐 → **add_repo(jomin4/opensource_spring) + git clone 재실행** 필요(가이드: `docs/spring-analysis/RESTART.md`).
 
 > 새 강의를 끝낼 때마다 이 목록을 갱신한다.
