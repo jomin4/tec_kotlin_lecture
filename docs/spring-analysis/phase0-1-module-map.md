@@ -2,7 +2,8 @@
 
 > 🎯 분석 질문: 내 Spring 어노테이션은 **어디서·언제** 처리되나?
 > 📂 대상: 모듈 지도 + `spring-beans/.../beans/factory/config/BeanPostProcessor.java:67`
-> 🖼️ 도표: `diagrams/sp0-1_boot-hooks.svg` · [📱Artifact](https://claude.ai/code/artifact/68713e73-64a3-4b57-b296-67167090a314)
+> 🖼️ 도표(타임라인·최종): `diagrams/sp0-1_bean-lifecycle-hooks.svg` · [📱Artifact](https://claude.ai/code/artifact/74e83b31-35c1-4b20-bf02-dab886dfe088)
+> (구버전 박스형 `sp0-1_boot-hooks.svg`는 템플릿 도입 전 — 타임라인 버전으로 대체)
 > 분석 대상 소스: `/workspace/opensource_spring` (spring-framework 7.1.0-SNAPSHOT)
 
 ## 🪄 사용자 관점

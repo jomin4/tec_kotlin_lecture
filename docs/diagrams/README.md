@@ -50,3 +50,4 @@
 | [q04_npe-safecall.svg](q04_npe-safecall.svg) | NPE: Java 죽음 vs Kotlin 안전호출 | QnA Q4 |
 | [q05_why-equals-hashcode-tostring.svg](q05_why-equals-hashcode-tostring.svg) | equals/hashCode/toString을 DTO에서 재정의하는 이유 | QnA Q5 |
 | [sp0-1_boot-hooks.svg](sp0-1_boot-hooks.svg) | (Spring분석)부팅 두 훅: BeanFactoryPostProcessor(정의)/BeanPostProcessor(인스턴스), 읽는도구=core | Spring Phase 0-1 · [📱Artifact](https://claude.ai/code/artifact/68713e73-64a3-4b57-b296-67167090a314) |
+| [sp0-1_bean-lifecycle-hooks.svg](sp0-1_bean-lifecycle-hooks.svg) | (Spring분석·타임라인)빈 생명주기 두 훅: BFPP(①정의)/BPP(②인스턴스), @Transactional 프록시 위치 | Spring Phase 0-1 재제작 · [📱Artifact](https://claude.ai/code/artifact/74e83b31-35c1-4b20-bf02-dab886dfe088) |
